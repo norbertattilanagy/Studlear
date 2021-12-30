@@ -9,7 +9,32 @@
     <link href="assets\css\bootstrap.min.css" rel="stylesheet"/>
     <link href="assets\css\calendar.css" rel="stylesheet"/>
     <script src="assets\js\bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <title>Calendar</title>
+    <style>
+    a {
+      text-decoration: none;
+    }
+    .event {
+      margin-top: 5px;
+      font-weight: 500;
+      font-size: 18px;
+      padding: 1px 30px;
+      border-radius: 5px;
+      background-color: #f7c30d;
+      color: #fff;
+    }
+    .event.green {
+      background-color: #51ce57;
+    }
+    .event.blue {
+      background-color: #518fce;
+    }
+    .event.red {
+      background-color: #ce5151;
+    }
+
+    </style>
   </head>
   <body>
     <!--Top bar-->
@@ -23,18 +48,14 @@
 
 
       <div class="col-md-9 row">
-        <?php include 'Calendar1.php';
-        $date=$_GET['date'];
+        <?php 
 
-        if($date=='')
-          $date=date("Y-m-d");
+        //$_SESSION['calendar_date']=date("Y-m-d");
+        //echo $_SESSION['calendar_date'];
+        if(empty($_SESSION['calendar_date']))
+          $_SESSION['calendar_date']=date("Y-m-d");
 
-        echo calendar($date);
-        /*$calendar = new Calendar('2021-04-02'); 
-        $calendar->add_event('Birthday', '2021-04-04', 1, 'green');
-        $calendar->add_event('Birth', '2021-04-04', 1, 'blue');
-        $calendar->add_event('Doctors', '2021-04-04', 1, 'red');
-        $calendar->add_event('Holiday', '2021-04-04', 4);*/
+        include 'Calendar.php';
         ?>
     
     </div>
@@ -47,3 +68,4 @@
 
 
 </html>
+<?php //session_destroy(); ?>

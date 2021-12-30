@@ -38,6 +38,7 @@
     cursor: pointer;
     min-height: 110px;
 }
+
 .calendar .days .day_num span {
     display: inline-flex;
     width: 30px;
@@ -76,4 +77,20 @@
 .calendar .days .day_num.selected {
     background-color: #f1f2f3;
     cursor: inherit;
+}
+.circle-button {
+  background-color: #f7c30d;
+  border: none;
+  padding: 15px;
+  margin: 4px 2px;
+  border-radius: 50%;
+}
+.circle-button.green {
+    background-color: #51ce57;
+}
+.circle-button.blue {
+    background-color: #518fce;
+}
+.circle-button.red {
+    background-color: #ce5151;
 }
