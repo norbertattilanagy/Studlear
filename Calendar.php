@@ -81,7 +81,7 @@
                 if ($i == date("d") && $active_month == date("m") && $active_year == date("Y"))
                     $selected = ' selected';
 
-                echo '<a class="day_num'.$selected.'" href=Calendar_change.php?button=change_day&day='.$i.'>';
+                echo '<a class="day_num'.$selected.'" href="Calendar_change.php?button=change_day&day='.$i.'">';
                     echo '<span>'.$i.'</span>';
 
                     //event
@@ -91,15 +91,14 @@
                     $results=mysqli_query($db,$sql);
                     $row=mysqli_fetch_array($results,MYSQLI_ASSOC);
 
-                    //echo $row['color'];
-                    //more than 3 event
+                    //more than 3 events
                     if(mysqli_num_rows($results)>3){
                         for ($j=0; $j<2; $j++) { 
                             echo '<div class="event '.$row['color'].'">'.$row['title'].'</div>';
                         }
                         echo '<div class="event ">+'.mysqli_num_rows($results)-2 .'</div>';
                     }
-                    //more than 3 event
+                    //less than 3 events
                     else{
                         foreach ($results as $row) {
                             echo '<div class="event '.$row['color'].'">'.$row['title'].'</div>';
@@ -131,7 +130,7 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Adaugă evniment</h4>
+                <h4 class="modal-title">Adaugă eveniment</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#Add_event_Modal"></button>
             </div>
             <!-- Modal body -->
@@ -204,7 +203,8 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <?php echo '<p class="select_date" id=select_date>'.$_SESSION['calendar_date'].'</p>';
+                <?php 
+                //echo '<p class="select_date" id=select_date>'.$_SESSION['calendar_date'].'</p>';
 
                 $start_event_date=$_SESSION['calendar_date'].' 23:59:59';
                 $end_event_date=$_SESSION['calendar_date'].' 00:00:00';
@@ -215,17 +215,22 @@
                 foreach ($results as $row) {
                     $start_event = strtotime($row["start_event"]);
                     $end_event = strtotime($row["end_event"]);
-
-                    echo '<div class="event '.$row['color'].'">';
-                        echo '<div class="row">';
-                            echo '<div class="col-md-8">';
-                                echo $row['title'];
-                            echo '</div>';
-                            echo '<div class="col-md-4">';
-                                echo date('H:i', $start_event).'-'.date('H:i', $end_event);
+                    $id = $row["id"];
+                    //echo '<div class="d-grid">';
+                    //echo '<a data-bs-toggle="modal" data-bs-target="#Description_event_Modal">';
+                    echo '<a href="Calendar_change.php?button=save_id&id='.$id.'">';
+                        echo '<div class="event '.$row['color'].'">';
+                            echo '<div class="row">';
+                                echo '<div class="col-md-8">';
+                                    echo $row['title'];
+                                echo '</div>';
+                                echo '<div class="col-md-4">';
+                                    echo date('H:i', $start_event).'-'.date('H:i', $end_event);
+                                echo '</div>';
                             echo '</div>';
                         echo '</div>';
-                    echo '</div>';
+                    echo '</a>';
+                   // echo '</button></div>';
                 } ?>
             </div>
             <div class="modal-footer">
@@ -235,11 +240,44 @@
     </div>
 </div>
 
+<!--Modal Description_event_Modal-->
+<div class="modal fade" id="Description_event_Modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Descriere eveniment</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#Description_event_Modal"></button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body">
+                <?php
+                $event_id=$_SESSION['event_id'];
+                $sql="SELECT * FROM calendar WHERE id LIKE $event_id";
+                $results=mysqli_query($db,$sql);
+                $row=mysqli_fetch_array($results,MYSQLI_ASSOC);
+
+                $start_event=date("Y-m-d H:i", strtotime($row["start_event"]));
+                $end_event=date("Y-m-d H:i", strtotime($row["end_event"]));
+
+                echo '<h5>'.$row["title"].'</h5><br>';
+                echo '<p>Început: <b>'.$start_event.'</b></p>';
+                echo '<p>Sfârșit: <b>'.$end_event.'</b></p>';
+                echo '<p>Descriere:<br>'.$row["description"].'</p>';
+                ?>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript">
     $(document).ready(function() {
         if(window.location.href.indexOf('#Event_Modal') != -1) {
             $('#Event_Modal').modal('show');
+        }
+        else if(window.location.href.indexOf('#Description_event_Modal') != -1){
+            $('#Description_event_Modal').modal('show');
         }
     });
 </script>

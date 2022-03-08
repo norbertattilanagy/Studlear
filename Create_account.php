@@ -14,23 +14,17 @@
   <body class="bg-light">
     <div class="col-lg-4 col-md-3"></div>
 
-    <div class="container mt-3 col-lg-4 col-md-6">
+    <div class="container my-3 col-lg-4 col-md-6">
       <div class="row d-flex justify-content-center align-items-center">
-        <p><br></p>
+        
         <a href="Sign_in.php" class="">
           <img src="Images\Sistem\logo4.png" alt="Logo" style="width:300px;" class="mx-auto d-block">
         </a>
         <h2 class="text-center"><br>Întregistrare</h2>
-        <form action="#">
-          <div class="mb-3 mt-3 row">
-            <div class="col">
-              <label for="last_name">Nume:</label>
-              <input type="text" class="form-control" placeholder="Introduceți numele" name="last_name">
-            </div>
-            <div class="col">
-              <label for="first_name">Prenume:</label>
-              <input type="text" class="form-control" placeholder="Introduceți prenumele" name="first_name">
-            </div>
+        <form action="Create_account1.php" method="post">
+          <div class="mb-3">
+              <label for="name">Nume:</label>
+              <input type="text" class="form-control" id="name" placeholder="Introduceți numele" name="name">
           </div>
           <div class="mb-3">
             <label for="email">Email:</label>
@@ -38,18 +32,18 @@
           </div>
           <div class="mb-3">
             <label for="pswd1">Parolă:</label>
-            <input type="password" class="form-control" id="password1" placeholder="Introduceți parola" name="pswd1">
+            <input type="password" class="form-control" id="password1" placeholder="Introduceți parola" name="password1">
           </div>
           <div class="mb-3">
             <label for="pswd2">Confirmați parola:</label>
-            <input type="password" class="form-control" id="password2" placeholder="Confirmați parola" name="pswd2">
+            <input type="password" class="form-control" id="password2" placeholder="Confirmați parola" name="password2">
           </div>
           <div class="mb-3">
             <label for="user_type" class="form-label">Selectați tipul de utilizator:</label>
             <select class="form-select" name="user_type" id="user_type">
-              <option>-</option>
-              <option>Profesor</option>
-              <option>Elev, student</option>
+              <option value="-">-</option>
+              <option value="teacher">Profesor</option>
+              <option value="student">Elev, student</option>
             </select>
           </div>
           <div class="d-grid">
@@ -61,6 +55,5 @@
     </div>
 
     <div class="col-lg-4 col-md-3"></div>
-    
   </body>
 </html>

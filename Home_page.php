@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <!-- Bootstrap CSS -->
     <link href="assets\css\bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <script src="assets\js\bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <title>Home page</title>
@@ -28,13 +29,18 @@
 
     <div class="row">
       <!--Courses group-->
-      <div class="col-md-3">
+      <div class="col-md-3 mt-3">
         <?php include 'Courses_group.php' ?>
       </div>
 
       <div class="col-md-7">
-        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#Create_course">Crează curs</button>
+        
         <div class="container mt-3">
+          <?php
+
+           if($_SESSION['user_type']=='teacher'){ ?>
+            <button type="button" class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#Create_course">Crează curs +</button>
+          <?php } ?>
           <div class="row">
             <?php 
             $user_id=$_SESSION['user_id'];
@@ -81,21 +87,21 @@
           </div>
 
           <!-- Modal body -->
-            <div class="modal-body">
-              <form action="Create_course.php" method="post">
-                <div class="mb-3">
-                  <label for="Cours_name" class="form-label">Nume curs:</label>
-                  <input type="text" class="form-control" id="Cours_name" placeholder="Nume curs" name="Cours_name">
-                </div>
-                <div class="mb-3">
-                  <label for="Cours_password" class="form-label">Parolă curs:</label>
-                  <input type="text" class="form-control" id="Cours_password" placeholder="Parolă curs" name="Cours_password">
-                </div>
-                <div class="d-grid">
-                  <button type="submit" class="btn btn-secondary btn-block mt-3">Crează</button>
-                </div>
-              </form>
-            </div>
+          <div class="modal-body">
+            <form action="Create_course.php" method="post">
+              <div class="mb-3">
+                <label for="Cours_name" class="form-label">Nume curs:</label>
+                <input type="text" class="form-control" id="Cours_name" placeholder="Nume curs" name="Cours_name">
+              </div>
+              <div class="mb-3">
+                <label for="Cours_password" class="form-label">Parolă curs:</label>
+                <input type="text" class="form-control" id="Cours_password" placeholder="Parolă curs" name="Cours_password">
+              </div>
+              <div class="d-grid">
+                <button type="submit" class="btn btn-secondary btn-block mt-3">Crează</button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

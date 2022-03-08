@@ -14,21 +14,21 @@
   <body class="bg-light">
     <div class="col-lg-4 col-md-3"></div>
 
-    <div class="container mt-3 col-lg-4 col-md-6">
+    <div class="container my-3 col-lg-4 col-md-6">
       <div class="row d-flex justify-content-center align-items-center">
         <p><br></p>
         <a href="Sign_in.php" class="">
           <img src="Images\Sistem\logo4.png" alt="Logo" style="width:300px;" class="mx-auto d-block">
         </a>
         <h2 class="text-center"><br>Autentificare</h2>
-        <form action="#">
+        <form action="Sign_in1.php" method="post">
           <div class="mb-3 mt-3">
             <label for="email">Email:</label>
             <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
           </div>
           <div class="mb-3">
             <label for="pwd">Parolă:</label>
-            <input type="password" class="form-control" id="password" placeholder="Enter password" name="pswd">
+            <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
           </div>
           <div class="form-check mb-3">
             <label class="form-check-label">

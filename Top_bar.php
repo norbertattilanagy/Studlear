@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="Home_page.php">
@@ -13,29 +12,39 @@
       <!--Left-->
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" href="Calendar_page.php"><i class="fa fa-calendar"></i> Calendar</a>
+          <a class="nav-link" href="Calendar_page.php"><i class="bi bi-calendar-date"></i></i> Calendar</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Search_courses.php"><i class="fa fa-search"></i> Căutare curs</a>
+          <a class="nav-link" href="Search_courses.php?s=0"><i class="bi bi-search"></i> Căutare curs</a>
         </li>
       </ul>
 
       <!--Right-->
       <ul class="navbar-nav justify-content-end">
         <li class="nav-item">
-          <a href="Sign_in.php" class="nav-link">Sign in</a>
+          <div class="btn-group drop-down">
+              <?php 
+                $user_id=$_SESSION['user_id'];
+                $sql="SELECT * FROM user WHERE id LIKE $user_id";
+                $results=mysqli_query($db,$sql);
+                $row=mysqli_fetch_array($results);
+                $profile_image="Images\Profile\\".$row["profile_image"];
+              
+                if($profile_image=="Images\Profile\\") {
+                  echo '<img src="Images\Sistem\user1.png" alt="Avatar Logo" id="profile_photo" style="width:50px; height:50px;" class="nav-item rounded-circle " data-bs-toggle="dropdown">';
+                }
+                else { 
+                  echo '<img src="'.$profile_image.'" alt="Avatar Logo" id="profile_photo" style="width:50px; height:50px;" class="nav-item rounded-circle" data-bs-toggle="dropdown">';
+                }
+              ?>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a href="My_account.php" class="dropdown-item">Contul meu</a></li>
+              <li><a href="Log_out.php" class="dropdown-item">Log out</a></li>
+            </ul>
+          </div>
         </li>
-
-        <a href="My_account.php" class="nav-link">
-          <img src="Images\Sistem\user1.png" alt="Avatar Logo" style="width:40px;" class="rounded-pill"> 
-        </a>
       </ul> 
-    </div>
-
-
-    
-
-        
+    </div>   
   </div>
 </nav>
 <div style="margin-top:80px"></div>

@@ -40,6 +40,13 @@
     <!--Top bar-->
     <?php include 'Top_bar.php' ?>
 
+    <nav class="ms-4" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasa</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Calendar</li>
+        </ol>
+    </nav>
+
     <div class="row">
       <!--Courses group-->
       <div class="col-md-3">
