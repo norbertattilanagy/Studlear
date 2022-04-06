@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   	<head>
@@ -12,15 +13,6 @@
 	    <script src="assets\js\bootstrap.bundle.min.js"></script>
 	    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 	    <title>Course</title>
-	    <style type="text/css">
-	    	.text-underline-hover {
-			    text-decoration: none;
-			}
-
-			.text-underline-hover:hover {
-			    text-decoration: underline;
-			}
-	    </style>
 	</head>
 	<body>
 		<!--Top bar-->
@@ -34,11 +26,16 @@
     			<li class="breadcrumb-item active" aria-current="page">Căutare utilizatori</li>
   			</ol>
 		</nav>
-
-    	<?php 
-    		if($_GET["s"]==0)
+		<?php 
+    		if(empty($_SESSION["s"]))
     			$_SESSION['search']="";
+    		else if(isset($_SESSION["s"]))
+    		{
+    			if($_SESSION['s']!=1)
+    				$_SESSION['search']="";
+    		}
     	?>
+
     	<div class="row">
 		    <!--Courses group-->
 		    <div class="col-md-3">
@@ -48,56 +45,120 @@
 		    <div class="col-md-9">
 		    	<br>
 		    	<div class="container">
-		    		<form action="Search_users.php?s=1" method="post">
+		    		<form action="Enroll_in_course.php?enroll=7" method="post">
 					    <div class="input-group">
-					        <input type="text" class="form-control" id="search" name="search" placeholder="Search">
+					        <?php 
+					        echo '<input type="search" class="form-control" id="search" name="search" placeholder="Search" value="'.$_SESSION['search'].'" onClick="this.select();">'; ?>
 					        <button type="submit" class="input-group-text btn-primary"><i class="bi bi-search me-2"></i> Search</button>
 					    </div>
 					</form>
-					<?php
-					if(!empty($_POST['search']) || !empty($_SESSION['search']))
-					{
-						if(!empty($_POST['search']))
-						{
-							$search=$_POST['search'];
-							$_SESSION['search']=$_POST['search'];
-						}
-						else
-							$search=$_SESSION['search'];
-						
-						$search_email="'".$search."'";
-						$search_name="'%".$search."%'";
-						$sql="SELECT * FROM user WHERE email LIKE $search_email OR name LIKE $search_name";
-					}
-					else
-					{
-						$sql="SELECT * FROM user";
-					}
-					$results=mysqli_query($db,$sql);
-					$i=1;
-					while ($row=mysqli_fetch_array($results,MYSQLI_ASSOC))
-					{
-						$user_id=$row["id"];
-						$course_id=$_SESSION["course_id"];
+					<table class="table">
+	  					<thead>
+	    					<tr>
+						      	<th scope="col">Id</th>
+						      	<th scope="col">Nume</th>
+						      	<th scope="col">Email</th>
+	    					</tr>
+	  					</thead>
+	  					<tbody>
+							<?php
+							if(isset($_GET['page']))
+						    	$page=$_GET['page'];
+						    else
+						    	$page=1;
 
-						$sql_verify="SELECT * FROM course_user WHERE user_id LIKE $user_id and course_id LIKE $course_id";
-						$results_verify=mysqli_query($db,$sql_verify);
-						$nr_row_verify=mysqli_num_rows($results_verify);
+						    $limit=20;
+					    	$start=$limit*($page-1);
 
-						if($nr_row_verify==0){
-							echo '<div class="mt-3">';
-								echo '<a class="link-dark text-underline-hover" href="Enroll_in_course.php?enroll=2&course_user='.$row["id"].'">';
-										echo '<div class="d-flex justify-content-start">';
-											echo '<div class="d-grid col-1">'.$i.'.</div>
-											<div class="d-grid col-4">'.$row["name"].'</div>
-											<div class="d-grid col-4">'.$row["email"].'</div>';
-										echo '</div>';
-								echo '</a>';
-							echo '</div>';
-							$i++;
-						}
-					}
-					?>
+							if(!empty($_POST['search']) || !empty($_SESSION['search']))
+							{
+								if(!empty($_POST['search']))
+								{
+									$search=$_POST['search'];
+								}
+								else
+									$search=$_SESSION['search'];
+								
+								$search_email="'".$search."'";
+								$search_name="'%".$search."%'";
+								$user_id=$_SESSION['user_id'];
+								$sql="SELECT * FROM user WHERE (email LIKE $search_email OR name LIKE $search_name) AND type NOT LIKE 'admin' AND id NOT LIKE $user_id";
+								$results=mysqli_query($db,$sql);
+								$nr_row=mysqli_num_rows($results);
+								$sql="SELECT * FROM user WHERE (email LIKE $search_email OR name LIKE $search_name) AND type NOT LIKE 'admin' AND id NOT LIKE $user_id LIMIT $start, $limit";
+								$results=mysqli_query($db,$sql);
+							}
+							else
+							{
+								$sql="SELECT * FROM user WHERE type NOT LIKE 'admin' AND id NOT LIKE $user_id";
+								$results=mysqli_query($db,$sql);
+								$nr_row=mysqli_num_rows($results);
+								$user_id=$_SESSION['user_id'];
+								$sql="SELECT * FROM user WHERE type NOT LIKE 'admin' AND id NOT LIKE $user_id LIMIT $start, $limit";
+								$results=mysqli_query($db,$sql);
+							}
+							$nr=($page-1)*$limit+1;
+							while ($row=mysqli_fetch_array($results,MYSQLI_ASSOC))
+							{
+								$user_id=$row["id"];
+								$course_id=$_SESSION["course_id"];
+
+								$sql_verify="SELECT * FROM course_user WHERE user_id LIKE $user_id and course_id LIKE $course_id";
+								$results_verify=mysqli_query($db,$sql_verify);
+								$nr_row_verify=mysqli_num_rows($results_verify);
+
+								if($nr_row_verify==0){
+									echo '<tr>';
+										echo '<td><a href="Enroll_in_course.php?enroll=2&course_user='.$row["id"].'" class="link-dark" style="text-decoration: none;">'.$nr.'.</a></td>';
+										echo '<td><a href="Enroll_in_course.php?enroll=2&course_user='.$row["id"].'" class="link-dark" style="text-decoration: none;">'.$row["name"].'</a></td>';
+										echo '<td><a href="Enroll_in_course.php?enroll=2&course_user='.$row["id"].'" class="link-dark" style="text-decoration: none;">'.$row["email"].'</a></td>';
+									echo '</tr>';
+									$nr++;
+								}
+								
+							}
+							?>
+						</tbody>
+					</table>
+					<?php if($nr_row>$limit){ //pagination?>
+						<ul class="pagination justify-content-center">
+						    <?php
+						    if($nr_row%$limit==0)
+						    	$max_page=intdiv($nr_row,$limit);
+						    else
+						    	$max_page=intdiv($nr_row,$limit)+1;
+
+						    if($page>1)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">Previous</a></li>'; 
+						    else
+						    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page-1).'">Previous</a></li>';
+
+						    if($page==$max_page and $page>4)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-4).'">'.($page-4).'</a></li>';
+						    if(($page==$max_page or $page==$max_page-1) and $page>3)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-3).'">'.($page-3).'</a></li>';
+						    if($page>2)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-2).'">'.($page-2).'</a></li>';
+							if($page>1)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">'.($page-1).'</a></li>';
+
+						    echo '<li class="page-item active"><a class="page-link" href="?page='.$page.'">'.$page.'</a></li>';
+						    if(($page+1)<=$max_page)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">'.($page+1).'</a></li>';
+							if(($page+2)<=$max_page)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+2).'">'.($page+2).'</a></li>';
+
+						    if($page<=2 and ($page+3)<=$max_page)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+3).'">'.($page+3).'</a></li>';
+							if($page==1 and ($page+4)<=$max_page)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+4).'">'.($page+4).'</a></li>';
+						    if($page<$max_page)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">Next</a></li>';
+						    else
+						    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page+1).'">Next</a></li>';
+						    ?>
+						</ul>
+					<?php } ?>
 		    	</div>
 
 		    </div>

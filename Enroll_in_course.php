@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <?php
 //0-enroll search course
 //1-enroll search course
@@ -66,5 +67,27 @@ else if($_GET["enroll"]==5)
 
 	$link='location:'.$_SERVER['HTTP_REFERER'];
     header("$link");
-}	
+}
+else if($_GET["enroll"]==6)
+{
+	$_SESSION['s']=0;
+
+	$link='location:Search_users.php';
+    header("$link");
+}
+else if($_GET["enroll"]==7)
+{
+	$_SESSION['s']=1;
+	$_SESSION['search']=$_POST['search'];
+
+	$link='location:'.$_SERVER['HTTP_REFERER'];
+	header("$link");
+}
+else if($_GET["enroll"]==8)
+{
+	$_SESSION['s']=0;
+
+	$link='location:Search_courses.php';
+    header("$link");
+}
 ?>

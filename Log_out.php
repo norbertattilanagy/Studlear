@@ -1,3 +1,5 @@
+<?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <?php
 session_start();
 $_SESSION = array();

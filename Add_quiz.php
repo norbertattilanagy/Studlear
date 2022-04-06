@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   	<head>
@@ -71,22 +72,21 @@
 
 			    		$date=date('Y-m-d h:i');
 			    		$min=date("Y-m-d")."T".date("H:i");
-			    		if($start_event1>$min)
+			    		if($start_event1<$min)
 			    			$min=$start_event;
-			    		echo $min;
 			    	}
 			    	else
 			    	{
 			    		$min=date("Y-m-d")."T".date("H:i");
-			    		echo $min;
 			    	}	
 			    	
 			    	?>
-			    	<?php echo '<form action="Add_quiz1.php?edit='.$_SESSION['add'].'" method="post" enctype="multipart/form-data">'; ?>
+			    	<?php echo '<form action="Add_quiz1.php?edit='.$_SESSION['add'].'" class="needs-validation" method="post" novalidate>'; ?>
 
 				    	<div class="mt-3">
 					    	<label for="title" class="form-label"><b>Titlu:</b></label>
-					    	<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();">';?>
+					    	<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();" required>';?>
+					    	<div class="invalid-feedback">Introduceți titlul</div>
 					    </div>
 
 					    <div class="mt-3">
@@ -102,6 +102,7 @@
 									fclose($file);
 								}
 							?></textarea>
+							<p class="text-muted">*Nu este obligatoriu</p>
 						</div>
 
 						<div class="mt-3">
@@ -109,24 +110,30 @@
 							<label for="solving_time" class="form-label"><b>Timp limită:</b></label>
 							<div class="row">
 								<div class="col">
-									<?php echo '<input type="number" class="form-control solving_time solving_time_hour" id="solving_time_hour" name="solving_time_hour" placeholder="Oră" value="'.$solving_time_hour.'" min="0" max="24">'; ?>
+									<?php echo '<input type="number" class="form-control solving_time solving_time_hour" id="solving_time_hour" name="solving_time_hour" placeholder="Oră" value="'.$solving_time_hour.'" min="0" max="24" required>'; ?>
+									<div class="invalid-feedback">Introduceți ora</div>
 								</div>
 								<div class="col">
-									<?php echo '<input type="number" class="form-control solving_time solving_time_min" id="solving_time_min" name="solving_time_min" placeholder="Minute" value="'.$solving_time_min.'" min="0" max="60">'; ?>
+									<?php echo '<input type="number" class="form-control solving_time solving_time_min" id="solving_time_min" name="solving_time_min" placeholder="Minute" value="'.$solving_time_min.'" min="0" max="60" required>'; ?>
+									<div class="invalid-feedback">Introduceți minutele</div>
 								</div>
 								<div class="col">
-									<?php echo '<input type="number" class="form-control solving_time solving_time_sec" id="solving_time_sec" name="solving_time_sec" placeholder="Secunde" value="'.$solving_time_sec.'" min="0" max="60">'; ?>
+									<?php echo '<input type="number" class="form-control solving_time solving_time_sec" id="solving_time_sec" name="solving_time_sec" placeholder="Secunde" value="'.$solving_time_sec.'" min="0" max="60" required>'; ?>
+									<div class="invalid-feedback">Introduceți secundele</div>
 								</div>
+
 							</div>
 						</div>
 
 						<div class="mt-3">
 							<label for="start_event" class="form-label"><b>Început:</b></label>
-							<?php echo '<input type="datetime-local" class="form-control" id="start_event" name="start_event" value="'.$start_event.'" min="'.$min.'">'; ?>
+							<?php echo '<input type="datetime-local" class="form-control" id="start_event" name="start_event" value="'.$start_event.'" min="'.$min.'" required>'; ?>
+							<div class="invalid-feedback">Introduceți începutul</div>
 						</div>
 						<div class="mt-3">
 							<label for="end_event" class="form-label"><b>Final:</b></label>
-							<?php echo '<input type="datetime-local" class="form-control" id="end_event" name="end_event" value="'.$end_event.'" min="'.$min.'">'; ?>
+							<?php echo '<input type="datetime-local" class="form-control" id="end_event" name="end_event" value="'.$end_event.'" min="'.$min.'" required>'; ?>
+							<div class="invalid-feedback">Introduceți sfârșitul</div>
 						</div>
 
 						<?php if($_SESSION['add']==0){ ?>
@@ -282,4 +289,22 @@
 	        $('#Answer_type').modal('show');
 	    }
 	});
+</script>
+<script type="text/javascript">
+(function () {
+	
+  	var forms = document.querySelectorAll('.needs-validation') 
+  	Array.prototype.slice.call(forms).forEach(function (form) {
+			
+      	form.addEventListener('submit', function (event)
+      	{			
+        	if (!form.checkValidity())
+        	{	
+          		event.preventDefault()
+          		event.stopPropagation()
+        	}
+        	form.classList.add('was-validated')
+      	}, false)
+    })
+})()
 </script>

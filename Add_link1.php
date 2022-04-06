@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <?php
 //1-add
 //0-edit

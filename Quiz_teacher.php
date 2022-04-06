@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   	<head>
@@ -21,7 +22,7 @@
   			<ol class="breadcrumb">
   		  		<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>
   		  		<?php echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'" style="text-decoration: none;">Curs</a></li>'; ?>
-    			<li class="breadcrumb-item active" aria-current="page">Quiz</li>
+    			<li class="breadcrumb-item active" aria-current="page">Quiz view</li>
   			</ol>
 		</nav>
 		<div class="row">
@@ -47,6 +48,7 @@
 
 
 				<a href="Quiz.php" class="btn btn-success btn-sm me-2"><i class="bi bi-play-fill"></i> Start quiz</a>
+				<a href="Quiz_solve_table.php" class="btn btn-primary btn-sm me-2"><i class="bi bi-check-circle"></i> Rezolvări</a>
 				<a href="Add_quiz1.php?edit=4&add=0" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Editează</a>
 				<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#Delete_quiz"><i class="bi bi-trash"></i> Șterge</button>
 
@@ -320,7 +322,7 @@
 									<b>Posibile răspunsuri:</b><br>
 									<ul>
 										<?php
-										$sql_answer_option="SELECT * FROM text_answer WHERE text_question_id LIKE $answer_id";
+										$sql_answer_option="SELECT * FROM text_posible_answer WHERE text_question_id LIKE $answer_id";
 										$results_answer_option=mysqli_query($db,$sql_answer_option);
 										while($row_answer_option=mysqli_fetch_array($results_answer_option))
 										{

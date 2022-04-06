@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <?php 
 	$name=$_POST['Cours_name'];
 	$password=$_POST['Cours_password'];

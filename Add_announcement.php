@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   	<head>
@@ -51,15 +52,16 @@
 		    			$title=$row['title'];
 		    		}
 			    	?>
-			    	<?php echo '<form action="Add_announcement1.php?edit='.$_SESSION['add'].'" method="post">'; ?>
+			    	<?php echo '<form action="Add_announcement1.php?edit='.$_SESSION['add'].'" class="needs-validation" method="post" novalidate>'; ?>
 			    		
 			    		<div class="mt-3">
 			    			<label for="title" class="form-label"><b>Titlu:</b></label>
-			    			<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();">';?>
+			    			<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();" required>';?>
+			    			<div class="invalid-feedback">Introduceți titlul</div>
 			    		</div>
 			    		<div class="mt-3">
 			    			<label for="message" class="form-label"><b>Mesaj:</b></label>
-							<textarea class="form-control" rows="5" id="message" name="message" onClick="this.select();"><?php
+							<textarea class="form-control" rows="5" id="message" name="message" onClick="this.select();" required><?php
 								if($_SESSION['add']==0)
 								{
 									$target_file=$row['message'];
@@ -70,6 +72,7 @@
 									fclose($file);
 								}
 							?></textarea>
+							<div class="invalid-feedback">Introduceți un mesaj</div>
 						</div>
 						<?php if($_SESSION['add']==0){ ?>
 						<div class="mt-3">
@@ -120,3 +123,21 @@
 
 	</body>
 </html>
+<script type="text/javascript">
+(function () {
+	
+  	var forms = document.querySelectorAll('.needs-validation') 
+  	Array.prototype.slice.call(forms).forEach(function (form) {
+			
+      	form.addEventListener('submit', function (event)
+      	{			
+        	if (!form.checkValidity())
+        	{	
+          		event.preventDefault()
+          		event.stopPropagation()
+        	}
+        	form.classList.add('was-validated')
+      	}, false)
+    })
+})()
+</script>

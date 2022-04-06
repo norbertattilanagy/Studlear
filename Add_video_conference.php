@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   	<head>
@@ -62,7 +63,7 @@
 		    			$end_event=date_format($end_event,"Y-m-d")."T".date_format($end_event,"h:i");
 
 		    			$date=date('Y-m-d h:i');
-		    			if($start_event1>$date)
+		    			if($start_event1<$date)
 		    				$min=date("Y-m-d")."T".date("H:i");
 		    			else
 		    				$min=$start_event;
@@ -73,15 +74,17 @@
 		    			$min=date("Y-m-d")."T".date("H:i");
 		    		}
 			    	?>
-			    	<?php echo '<form action="Add_video_conference1.php?edit='.$_SESSION['add'].'" method="post">'; ?>
+			    	<?php echo '<form action="Add_video_conference1.php?edit='.$_SESSION['add'].'" class="needs-validation" method="post" novalidate>'; ?>
 			    		
 			    		<div class="mt-3">
 			    			<label for="title" class="form-label"><b>Titlu:</b></label>
-			    			<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();">';?>
+			    			<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();" required>';?>
+			    			<div class="invalid-feedback">Introduceți un titlu</div>
 			    		</div>
 			    		<div class="mt-3">
 			    			<label for="link" class="form-label"><b>Link:</b></label>
-							<?php echo '<input type="url" class="form-control" id="link" name="link" value="'.$link.'" onClick="this.select();">';?>
+							<?php echo '<input type="url" class="form-control" id="link" name="link" value="'.$link.'" onClick="this.select();" required>';?>
+							<div class="invalid-feedback">Introduceți un link</div>
 						</div>
 						<div class="mt-3">
 							<label for="password" class="form-label"><b>Parolă:</b></label>
@@ -90,11 +93,13 @@
 						</div>
 						<div class="mt-3">
 							<label for="start_event" class="form-label"><b>Început:</b></label>
-							<?php echo '<input type="datetime-local" class="form-control" id="start_event" name="start_event" value="'.$start_event.'" min="'.$min.'">'; ?>
+							<?php echo '<input type="datetime-local" class="form-control" id="start_event" name="start_event" value="'.$start_event.'" min="'.$min.'" required>'; ?>
+							<div class="invalid-feedback">Introduceți începutul</div>
 						</div>
 						<div class="mt-3">
 							<label for="end_event" class="form-label"><b>Final:</b></label>
-							<?php echo '<input type="datetime-local" class="form-control" id="end_event" name="end_event" value="'.$end_event.'" min="'.$min.'">';?>
+							<?php echo '<input type="datetime-local" class="form-control" id="end_event" name="end_event" value="'.$end_event.'" min="'.$min.'" required>';?>
+							<div class="invalid-feedback">Introduceți finalul</div>
 						</div>
 
 						<?php if($_SESSION['add']==0){ ?>
@@ -147,3 +152,21 @@
 
 	</body>
 </html>
+<script type="text/javascript">
+(function () {
+	
+  	var forms = document.querySelectorAll('.needs-validation') 
+  	Array.prototype.slice.call(forms).forEach(function (form) {
+			
+      	form.addEventListener('submit', function (event)
+      	{			
+        	if (!form.checkValidity())
+        	{	
+          		event.preventDefault()
+          		event.stopPropagation()
+        	}
+        	form.classList.add('was-validated')
+      	}, false)
+    })
+})()
+</script>

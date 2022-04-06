@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   	<head>
@@ -51,16 +52,22 @@
 		    			$title=$row['title'];
 		    		}
 			    	?>
-			    	<?php echo '<form action="Add_course_file1.php?edit='.$_SESSION['add'].'" method="post" enctype="multipart/form-data">'; ?>
+			    	<?php echo '<form action="Add_course_file1.php?edit='.$_SESSION['add'].'" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>'; ?>
 			    		
 			    		<div class="mt-3">
 			    			<label for="title" class="form-label"><b>Titlu:</b></label>
-			    			<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();">';?>
+			    			<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();" required>';?>
+			    			<div class="invalid-feedback">Introduceți titlul</div>
 			    		</div>
 
 			    		<div class="mt-3">
 			    			<label for="input_file" class="form-label"><b>Selectați fișierul:</b></label>
-			    			<input class="form-control" type="file" id="input_file" name="input_file">
+			    			<?php if($_SESSION['add']==1){ ?>
+				    			<input class="form-control" type="file" id="input_file" name="input_file" accept=".pdf" required>
+				    			<div class="invalid-feedback">Alegeți un fișier</div>
+				    		<?php } else { ?>
+				    			<input class="form-control" type="file" id="input_file" name="input_file" accept=".pdf">
+				    		<?php } ?>
 							<p class="text-muted">Tipuri de fișiere acceptate: .pdf</p>
 						</div>
 
@@ -114,3 +121,21 @@
 
 	</body>
 </html>
+<script type="text/javascript">
+(function () {
+	
+  	var forms = document.querySelectorAll('.needs-validation') 
+  	Array.prototype.slice.call(forms).forEach(function (form) {
+			
+      	form.addEventListener('submit', function (event)
+      	{			
+        	if (!form.checkValidity())
+        	{	
+          		event.preventDefault()
+          		event.stopPropagation()
+        	}
+        	form.classList.add('was-validated')
+      	}, false)
+    })
+})()
+</script>

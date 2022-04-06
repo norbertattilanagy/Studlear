@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   	<head>
@@ -54,14 +55,15 @@
 			    		}
 			    		
 			    	?>
-			    	<?php echo '<form action="Add_poll1.php?edit='.$_SESSION['add'].'" method="post" enctype="multipart/form-data">'; ?>
+			    	<?php echo '<form action="Add_poll1.php?edit='.$_SESSION['add'].'" class="needs-validation" method="post" novalidate>'; ?>
 				    	<div class="mt-3">
 					    	<label for="title" class="form-label"><b>Titlu:</b></label>
-					    	<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();">';?>
+					    	<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();" required>';?>
+					    	<div class="invalid-feedback">Introduceți titlul</div>
 					    </div>
 					    <div class="mt-3">
 				    		<label for="question" class="form-label"><b>Întrebare:</b></label>
-							<textarea class="form-control" rows="3" id="question" name="question" onClick="this.select();"><?php
+							<textarea class="form-control" rows="3" id="question" name="question" onClick="this.select();" required><?php
 								if($_SESSION['add']==0)
 								{
 									$target_file=$row['question'];
@@ -72,6 +74,7 @@
 									fclose($file);
 								}
 							?></textarea>
+							<div class="invalid-feedback">Introduceți o întrebare</div>
 						</div>
 						<div class="mt-3">
 							<label for="option_type" class="form-label"><b>Tip răspuns:</b></label>
@@ -93,16 +96,19 @@
 								?>
 								<div class="input-group">
 							    	<?php
-							    	echo '<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();">';
+							    	echo '<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();" required>';
 							    	?>
 							    	<span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+							    	<div class="invalid-feedback">Introduceți opțiunea</div>
 						    	</div>
 						    	<div class="input-group mt-3">
 							    	<?php
-							    	echo '<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();">';
+							    	echo '<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();" required>';
 							    	?>
 							    	<span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+							    	<div class="invalid-feedback">Introduceți opțiunea</div>
 						    	</div>
+						    	
 					    	<?php } else { 
 					    		$sql_option="SELECT * FROM quiz_option WHERE element LIKE 'poll' AND question_id LIKE $poll_id";
 								$results_option=mysqli_query($db,$sql_option);
@@ -111,9 +117,10 @@
 								{ ?>
 									<div class="input-group mb-3">
 								    	<?php
-								    	echo '<input type="text" class="form-control" id="option" name="option[]" value="'.$row_option["option"].'" onClick="this.select();">';
+								    	echo '<input type="text" class="form-control" id="option" name="option[]" value="'.$row_option["option"].'" onClick="this.select();" required>';
 								    	?>
 								    	<span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+								    	<div class="invalid-feedback">Introduceți opțiunea</div>
 							    	</div>
 								<?php }
 							}
@@ -182,7 +189,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		if(x < max_fields){
 			x++;
-			$(wrapper).append('<div class="input-group mt-3"><input type="text" class="form-control" id="option" name="option[]" value="" onClick="this.select();"/><span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span></div>');
+			$(wrapper).append('<div class="input-group mt-3"><input type="text" class="form-control" id="option" name="option[]" value="" onClick="this.select();" required/><span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span><div class="invalid-feedback">Introduceți opțiunea</div></div>');
 		}
 	});
 	
@@ -194,4 +201,22 @@ $(document).ready(function() {
 		}
 	})
 });
+</script>
+<script type="text/javascript">
+(function () {
+	
+  	var forms = document.querySelectorAll('.needs-validation') 
+  	Array.prototype.slice.call(forms).forEach(function (form) {
+			
+      	form.addEventListener('submit', function (event)
+      	{			
+        	if (!form.checkValidity())
+        	{	
+          		event.preventDefault()
+          		event.stopPropagation()
+        	}
+        	form.classList.add('was-validated')
+      	}, false)
+    })
+})()
 </script>

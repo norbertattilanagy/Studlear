@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   	<head>
@@ -56,7 +57,7 @@
 		    			$date_limit=date_format($date_limit1,"Y-m-d")."T".date_format($date_limit1,"h:i");
 
 		    			$date=date('Y-m-d h:i');
-		    			if($date_limit1>$date)
+		    			if($date_limit1<$date)
 		    				$min=date("Y-m-d")."T".date("H:i");
 		    			else
 		    				$min=$date_limit;
@@ -66,14 +67,15 @@
 		    			$min=date("Y-m-d")."T".date("H:i");
 		    		}
 			    	?>
-			    	<?php echo '<form action="Add_homework1.php?edit='.$_SESSION['add'].'" method="post" enctype="multipart/form-data">'; ?>
+			    	<?php echo '<form action="Add_homework1.php?edit='.$_SESSION['add'].'" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>'; ?>
 			    		<div class="mt-3">
 				    		<label for="title" class="form-label"><b>Titlu:</b></label>
-				    		<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();">';?>
+				    		<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();" required>';?>
+				    		<div class="invalid-feedback">Introduceți titlul</div>
 				    	</div>
 				    	<div class="mt-3">
 			    			<label for="requirement" class="form-label"><b>Cerință:</b></label>
-							<textarea class="form-control" rows="5" id="requirement" name="requirement" onClick="this.select();"><?php
+							<textarea class="form-control" rows="5" id="requirement" name="requirement" onClick="this.select();" required><?php
 								if($_SESSION['add']==0)
 								{
 									$target_file=$row['requirement'];
@@ -84,6 +86,7 @@
 									fclose($file);
 								}
 							?></textarea>
+							<div class="invalid-feedback">Introduceți cerința</div>
 						</div>
 
 				    	<?php if($_SESSION['add']==0){ ?>
@@ -112,10 +115,12 @@
 				    	<div class="mt-3">
 				    		<label for="files" class="form-label"><b>Adaugă fișiere:</b></label>
   							<input class="form-control" type="file" id="files" name="files[]" multiple>
+  							<p class="text-muted">*Nu este obligatoriu</p>
 				    	</div>
 				    	<div class="mt-3">
 							<label for="date_limit" class="form-label"><b>Limită:</b></label>
-							<?php echo '<input type="datetime-local" class="form-control" id="date_limit" name="date_limit" value="'.$date_limit.'" min="'.$min.'">';?>
+							<?php echo '<input type="datetime-local" class="form-control" id="date_limit" name="date_limit" value="'.$date_limit.'" min="'.$min.'" required>';?>
+							<div class="invalid-feedback">Introduceți o limită</div>
 						</div>
 				    	<?php if($_SESSION['add']==0){ ?>
 						<div class="mt-3">
@@ -166,3 +171,21 @@
 
 	</body>
 </html>
+<script type="text/javascript">
+(function () {
+	
+  	var forms = document.querySelectorAll('.needs-validation') 
+  	Array.prototype.slice.call(forms).forEach(function (form) {
+			
+      	form.addEventListener('submit', function (event)
+      	{			
+        	if (!form.checkValidity())
+        	{	
+          		event.preventDefault()
+          		event.stopPropagation()
+        	}
+        	form.classList.add('was-validated')
+      	}, false)
+    })
+})()
+</script>

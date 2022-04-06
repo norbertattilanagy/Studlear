@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -7,12 +8,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <!-- Bootstrap CSS -->
     <link href="assets\css\bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <script src="assets\js\bootstrap.bundle.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Sign in</title>
   </head>
+  <?php
+  if(isset($_SESSION['email']))
+    $email=$_SESSION['email'];
+  else
+    $email="";
+  ?>
+
   <body class="bg-light">
+    <?php if(isset($_SESSION['incorect'])) { ?>
+      <div class="alert alert-danger" role="alert">
+        <div class="d-flex justify-content-center">
+          <i class="bi bi-exclamation-triangle-fill me-2"></i>
+          <?php echo $_SESSION['incorect']; ?>
+        </div>
+      </div>
+    <?php } ?>
     <div class="col-lg-4 col-md-3"></div>
+    
 
     <div class="container my-3 col-lg-4 col-md-6">
       <div class="row d-flex justify-content-center align-items-center">
@@ -21,14 +39,16 @@
           <img src="Images\Sistem\logo4.png" alt="Logo" style="width:300px;" class="mx-auto d-block">
         </a>
         <h2 class="text-center"><br>Autentificare</h2>
-        <form action="Sign_in1.php" method="post">
+        <form action="Sign_in1.php" class="needs-validation" name="form1" method="post" novalidate>
           <div class="mb-3 mt-3">
             <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" placeholder="Enter email" name="email">
+            <?php echo '<input type="email" class="form-control" id="email" placeholder="Enter email" value="'.$email.'" name="email" required>'; ?>
+            <div class="invalid-feedback email"><p id="em">Introduceți email-ul</p></div>
           </div>
           <div class="mb-3">
             <label for="pwd">Parolă:</label>
-            <input type="password" class="form-control" id="password" placeholder="Enter password" name="password">
+            <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
+            <div class="invalid-feedback password"><p id="pas">Introduceți parola</p></div>
           </div>
           <div class="form-check mb-3">
             <label class="form-check-label">
@@ -60,3 +80,22 @@
     
   </body>
 </html>
+<script type="text/javascript">
+  (function () {
+  
+    var forms = document.querySelectorAll('.needs-validation') 
+    Array.prototype.slice.call(forms).forEach(function (form) {
+      
+        form.addEventListener('submit', function (event)
+        {     
+          if (!form.checkValidity())
+          { 
+            incorectEmail();
+            event.preventDefault()
+            event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+    })
+})()
+</script>

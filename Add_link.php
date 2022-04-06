@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   	<head>
@@ -54,14 +55,16 @@
 		    			$link=$row['link'];
 		    		}
 			    	?>
-			    	<?php echo '<form action="Add_link1.php?edit='.$_SESSION['add'].'" method="post">'; ?>
+			    	<?php echo '<form action="Add_link1.php?edit='.$_SESSION['add'].'" class="needs-validation" method="post" novalidate>'; ?>
 				    	<div class="mt-3">
 				    		<label for="title" class="form-label"><b>Titlu:</b></label>
-				    		<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();">';?>
+				    		<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();" required>';?>
+				    		<div class="invalid-feedback">Introduceți titlul</div>
 				    	</div>
 				    	<div class="mt-3">
 				    		<label for="link" class="form-label"><b>Link:</b></label>
-							<?php echo '<input type="url" class="form-control" id="link" name="link" value="'.$link.'" onClick="this.select();">';?>
+							<?php echo '<input type="url" class="form-control" id="link" name="link" value="'.$link.'" onClick="this.select();" required>';?>
+							<div class="invalid-feedback">Introduceți un link</div>
 						</div>
 						<div class="mt-3">
 			    			<label for="description" class="form-label"><b>Descriere:</b></label>
@@ -76,6 +79,7 @@
 									fclose($file);
 								}
 							?></textarea>
+							<p class="text-muted">*Nu este obligatoriu</p>
 						</div>
 						<?php if($_SESSION['add']==0){ ?>
 						<div class="mt-3">
@@ -126,3 +130,21 @@
 
 	</body>
 </html>
+<script type="text/javascript">
+(function () {
+	
+  	var forms = document.querySelectorAll('.needs-validation') 
+  	Array.prototype.slice.call(forms).forEach(function (form) {
+			
+      	form.addEventListener('submit', function (event)
+      	{			
+        	if (!form.checkValidity())
+        	{	
+          		event.preventDefault()
+          		event.stopPropagation()
+        	}
+        	form.classList.add('was-validated')
+      	}, false)
+    })
+})()
+</script>

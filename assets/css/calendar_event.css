@@ -52,7 +52,6 @@
     border-radius: 3px;
     background-color: #f7c30d;
     color: #fff;
-    word-wrap: break-word;
 }
 .calendar .days .day_num .event.green {
     background-color: #51ce57;
@@ -62,6 +61,15 @@
 }
 .calendar .days .day_num .event.red {
     background-color: #ce5151;
+}
+.calendar .days .day_num .event.video_conference {
+    background-color: #00dba8;
+}
+.calendar .days .day_num .event.quiz {
+    background-color: #9600db;
+}
+.calendar .days .day_num .event.homework {
+    background-color: #3edb00;
 }
 .calendar .days .day_num:nth-child(7n+1) {
     border-left: 1px solid #e6e9ea;
@@ -93,4 +101,32 @@
 }
 .circle-button.red {
     background-color: #ce5151;
+}
+
+.event {
+    margin-top: 5px;
+    font-weight: 500;
+    font-size: 18px;
+    padding: 1px 30px;
+    border-radius: 5px;
+    background-color: #f7c30d;
+    color: #fff;
+}
+.event.green {
+    background-color: #51ce57;
+}
+.event.blue {
+    background-color: #518fce;
+}
+.event.red {
+    background-color: #ce5151;
+}
+.event.video_conference {
+    background-color: #00dba8;
+}
+.event.quiz {
+    background-color: #9600db;
+}
+.event.homework {
+    background-color: #ff6200;
 }

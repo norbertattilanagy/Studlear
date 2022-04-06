@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <?php
 $_SESSION["course_id"]=$_GET['id'];
 ?>
@@ -283,7 +284,7 @@ $_SESSION["course_id"]=$_GET['id'];
 						  			}
 						  			else if($row_quiz["visibility"]==1)
 						  			{
-						  				echo '<a class="link-dark " style="text-decoration: none;" href="Quiz_student.php?id='.$row_quiz["id"].'"><i class="bi bi-question-diamond me-3"></i>'.$title.'</a>';
+						  				echo '<a class="link-dark " style="text-decoration: none;" href="Quiz_start.php?id='.$row_quiz["id"].'"><i class="bi bi-question-diamond me-3"></i>'.$title.'</a>';
 						  			}
 					  			echo '</div>';
 					  		}
@@ -311,10 +312,11 @@ $_SESSION["course_id"]=$_GET['id'];
 
 		      		<!-- Modal body -->
 		      		<div class="modal-body">
-		      			<form action="Add_lesson.php?edit=0" method="post">
+		      			<form action="Add_lesson.php?edit=0" class="needs-validation" method="post" novalidate>
 		      				<div class="mb-3">
 							    <label for="lesson_title" class="form-label">Titlu lecție:</label>
-							    <input type="text" class="form-control" id="lesson_title" name="lesson_title">
+							    <input type="text" class="form-control" id="lesson_title" name="lesson_title" required>
+							    <div class="invalid-feedback">Introduceți titlul lecției</div>
 							</div>
 							<?php
 								$course_id=$_SESSION["course_id"];
@@ -353,7 +355,7 @@ $_SESSION["course_id"]=$_GET['id'];
 
 		      		<!-- Modal body -->
 		      		<div class="modal-body">
-		      			<form action="Add_lesson.php?edit=1" method="post">
+		      			<form action="Add_lesson.php?edit=1" class="needs-validation" method="post" novalidate>
 		      				<?php
 								$course_id=$_SESSION["course_id"];
 								$sql="SELECT * FROM lesson_group WHERE course_id LIKE $course_id";
@@ -367,7 +369,8 @@ $_SESSION["course_id"]=$_GET['id'];
 							?>
 		      				<div class="mb-3">
 							    <label for="lesson_title" class="form-label" placeholder="">Titlu lecție:</label>
-							    <?php echo '<input type="text" class="form-control" id="lesson_title" name="lesson_title" value="'.$row["group_title"].'" onClick="this.select();">'; ?>
+							    <?php echo '<input type="text" class="form-control" id="lesson_title" name="lesson_title" value="'.$row["group_title"].'" onClick="this.select();" required>'; ?>
+							    <div class="invalid-feedback">Introduceți titlul lecției</div>
 							</div>
 							<div class="mb-3">
 								<label for="order_number">Numărul de ordine:</label>
@@ -451,4 +454,22 @@ $_SESSION["course_id"]=$_GET['id'];
 	        $('#Delete_lesson_group').modal('show');
 	    }
 	});
+</script>
+<script type="text/javascript">
+(function () {
+	
+  	var forms = document.querySelectorAll('.needs-validation') 
+  	Array.prototype.slice.call(forms).forEach(function (form) {
+			
+      	form.addEventListener('submit', function (event)
+      	{			
+        	if (!form.checkValidity())
+        	{	
+          		event.preventDefault()
+          		event.stopPropagation()
+        	}
+        	form.classList.add('was-validated')
+      	}, false)
+    })
+})()
 </script>

@@ -1,3 +1,4 @@
+<?php include 'Page_security.php'; ?>
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="Home_page.php">
@@ -15,8 +16,13 @@
           <a class="nav-link" href="Calendar_page.php"><i class="bi bi-calendar-date"></i></i> Calendar</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="Search_courses.php?s=0"><i class="bi bi-search"></i> Căutare curs</a>
+          <a class="nav-link" href="Enroll_in_course.php?enroll=8"><i class="bi bi-search"></i> Căutare curs</a>
         </li>
+        <?php if($_SESSION['user_type']=="admin"){ ?>
+          <li class="nav-item">
+            <a class="nav-link" href="Search_users_admin1.php?edit=1"><i class="bi bi-search"></i> Căutare utilizatori</a>
+          </li>
+        <?php } ?>
       </ul>
 
       <!--Right-->
@@ -38,7 +44,7 @@
                 }
               ?>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li><a href="My_account.php" class="dropdown-item">Contul meu</a></li>
+              <?php echo '<li><a href="My_account.php?id='.$user_id.'" class="dropdown-item">Contul meu</a></li>'; ?>
               <li><a href="Log_out.php" class="dropdown-item">Log out</a></li>
             </ul>
           </div>

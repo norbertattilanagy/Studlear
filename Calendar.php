@@ -1,14 +1,10 @@
+<?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <?php
-    include 'Conection.php';
-    if(!isset($_SESSION['calendar_type']))
-        $_SESSION['calendar_type']="month";
-        //$events[] = [$txt, $date, $days, $color];
-
     $date = DateTime::createFromFormat("Y-m-d", $_SESSION['calendar_date']);
     $active_year=$date->format('Y');
     $active_month=$date->format('m');
     $active_day=$date->format('d');
-    //$active_year.'-'.$active_month.'-'.$active_day;
 
     $num_days = date('t', strtotime($active_day . '-' .$active_month . '-' .$active_year));
     $num_days_last_month = date('j', strtotime('last day of previous month', strtotime($active_day . '-' . $active_month . '-' .$active_year)));
@@ -16,12 +12,7 @@
     $first_day_of_week = array_search(date('D', strtotime($active_year . '-' . $active_month . '-1')), $days);
 
     $days_write=['Lu','Ma','Mi','Jo','Vi','Sa','Du'];
-
-    //$_SESSION['calendar_date']=$date;
-
-    //above the calendar
 ?>
-
 <div class="calendar">
     <div class="header">
         <div class="month-year">
@@ -41,32 +32,12 @@
                         <?php echo date('F Y', strtotime($active_year . '-' . $active_month . '-' . $active_day)); ?>
                     </h4>
                 </div>
-       
-                <div class="col-sm-4">
-                    <div class="btn-group">
-                        <?php
-                        if($_SESSION["calendar_type"]=="day")
-                            echo '<a class="btn btn-outline-dark active" href="Calendar_change.php?button=day">Zi</a>';
-                        else
-                            echo '<a class="btn btn-outline-dark" href="Calendar_change.php?button=day">Zi</a>';
-                        if($_SESSION["calendar_type"]=="week")
-                            echo '<a class="btn btn-outline-dark active" href="Calendar_change.php?button=week">Saptamana</a>';
-                        else
-                            echo '<a class="btn btn-outline-dark" href="Calendar_change.php?button=week">Saptamana</a>';
-                        if($_SESSION["calendar_type"]=="month")
-                            echo '<a class="btn btn-outline-dark active" href="Calendar_change.php?button=month">Luna</a>';
-                        else
-                            echo '<a class="btn btn-outline-dark" href="Calendar_change.php?button=month">Luna</a>';
-                        ?>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
     <div class="days">
         <?php
         //calendar
-        if($_SESSION['calendar_type']=="month") {
             //calendar header
             foreach ($days_write as $day) {
                 echo '<div class="day_name">' . $day . '</div>';
@@ -81,29 +52,87 @@
                 if ($i == date("d") && $active_month == date("m") && $active_year == date("Y"))
                     $selected = ' selected';
 
-                echo '<a class="day_num'.$selected.'" href="Calendar_change.php?button=change_day&day='.$i.'">';
-                    echo '<span>'.$i.'</span>';
+                echo '<a class="day_num'.$selected.'" href="Calendar_change.php?button=change_day&day='.$i.'" style="text-decoration: none">';
+                echo '<span>'.$i.'</span>';
+                //event
+                $start_event_date=$active_year.'-'.$active_month.'-'.$i.' 00:00:00';
+                $end_event_date=$active_year.'-'.$active_month.'-'.$i.' 23:59:59';
+                $user_id=$_SESSION['user_id'];
+                $sql="SELECT * FROM calendar WHERE start_event >=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event <=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s') and user_id like $user_id";
+                $results=mysqli_query($db,$sql);
 
-                    //event
-                    $start_event_date=$active_year.'-'.$active_month.'-'.$i.' 23:59:59';
-                    $end_event_date=$active_year.'-'.$active_month.'-'.$i.' 00:00:00';
-                    $sql="SELECT * FROM calendar WHERE start_event <=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event >=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s')";
-                    $results=mysqli_query($db,$sql);
-                    $row=mysqli_fetch_array($results,MYSQLI_ASSOC);
 
-                    //more than 3 events
-                    if(mysqli_num_rows($results)>3){
-                        for ($j=0; $j<2; $j++) { 
+                $nr_event=mysqli_num_rows($results);
+                $sql_lesson_group="SELECT l.id FROM lesson_group l LEFT JOIN course_group c ON l.course_id=c.course_id WHERE c.user_id LIKE $user_id";
+                $results_lesson_group=mysqli_query($db,$sql_lesson_group);
+                while($row_lesson_group=mysqli_fetch_array($results_lesson_group,MYSQLI_ASSOC))
+                {
+                    
+                    $lesson_group_id=$row_lesson_group['id'];
+                    $sql_video_conference="SELECT * FROM video_conference WHERE start_event >=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event <=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s') and lesson_group_id IN (SELECT l.id FROM lesson_group l LEFT JOIN course_group c ON l.course_id=c.course_id WHERE c.user_id LIKE $user_id)";
+                    $results_video_conference=mysqli_query($db,$sql_video_conference);
+                    $nr_video_conference=mysqli_num_rows($results_video_conference);
+                    
+                    $sql_quiz="SELECT * FROM quiz WHERE start_event >=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event <=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s') and lesson_group_id IN (SELECT l.id FROM lesson_group l LEFT JOIN course_group c ON l.course_id=c.course_id WHERE c.user_id LIKE $user_id)";
+                    $results_quiz=mysqli_query($db,$sql_quiz);
+                    $nr_quiz=mysqli_num_rows($results_quiz);
+                   
+                    $sql_homework="SELECT * FROM homework WHERE end_event >=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event <=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s') and lesson_group_id IN (SELECT l.id FROM lesson_group l LEFT JOIN course_group c ON l.course_id=c.course_id WHERE c.user_id LIKE $user_id)";
+                    $results_homework=mysqli_query($db,$sql_homework);
+                    $nr_homework=mysqli_num_rows($results_homework);
+                    
+                }
+                $nr_total_event=$nr_event+$nr_video_conference+$nr_quiz+$nr_homework;
+                $limit=2;
+                //more than 3 events
+                if($nr_total_event>3)
+                {
+                    if($limit>0 && $nr_event)
+                    {
+                        $sql="SELECT * FROM calendar WHERE start_event >=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event <=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s') and user_id like $user_id LIMIT $limit";
+                        $results=mysqli_query($db,$sql);
+                        while($row=mysqli_fetch_array($results,MYSQLI_ASSOC))
                             echo '<div class="event '.$row['color'].'">'.$row['title'].'</div>';
-                        }
-                        echo '<div class="event ">+'.mysqli_num_rows($results)-2 .'</div>';
+                        $limit-=$nr_event;
                     }
-                    //less than 3 events
-                    else{
-                        foreach ($results as $row) {
-                            echo '<div class="event '.$row['color'].'">'.$row['title'].'</div>';
-                        }
+                    if($limit>0 && $nr_video_conference)
+                    {
+                        $sql_video_conference="SELECT * FROM video_conference WHERE start_event >=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event <=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s') and lesson_group_id IN (SELECT l.id FROM lesson_group l LEFT JOIN course_group c ON l.course_id=c.course_id WHERE c.user_id LIKE $user_id) LIMIT $limit";
+                        $results_video_conference=mysqli_query($db,$sql_video_conference);
+                        while($row_video_conference=mysqli_fetch_array($results_video_conference,MYSQLI_ASSOC))
+                            echo '<div class="event video_conference">'.$row_video_conference['title'].'</div>';
+                        $limit-=$nr_video_conference;
                     }
+                    if($limit>0 && $nr_quiz)
+                    {
+                        $sql_quiz="SELECT * FROM quiz WHERE start_event >=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event <=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s') and lesson_group_id IN (SELECT l.id FROM lesson_group l LEFT JOIN course_group c ON l.course_id=c.course_id WHERE c.user_id LIKE $user_id) LIMIT $limit";
+                        $results_quiz=mysqli_query($db,$sql_quiz);
+                        while($row_quiz=mysqli_fetch_array($results_quiz,MYSQLI_ASSOC))
+                            echo '<div class="event quiz">'.$row_quiz['title'].'</div>';
+                        $limit-=$nr_quiz;
+                    }
+                    if($limit>0 && $nr_homework)
+                    {
+                        $sql_homework="SELECT * FROM homework WHERE end_event >=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event <=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s') and lesson_group_id IN (SELECT l.id FROM lesson_group l LEFT JOIN course_group c ON l.course_id=c.course_id WHERE c.user_id LIKE $user_id) LIMIT $limit";
+                        $results_homework=mysqli_query($db,$sql_homework);
+                        while($row_homework=mysqli_fetch_array($results_homework,MYSQLI_ASSOC))
+                            echo '<div class="event homework">'.$row_homework['title'].'</div>';
+                        $limit-=$nr_homework;
+                    }
+                    echo '<div class="event">+'.$nr_total_event-2 .'</div>';
+                }
+                //less than 3 events
+                else
+                {
+                    while($row=mysqli_fetch_array($results,MYSQLI_ASSOC))
+                        echo '<div class="event '.$row['color'].'">'.$row['title'].'</div>';
+                    while($row_video_conference=mysqli_fetch_array($results_video_conference,MYSQLI_ASSOC))
+                        echo '<div class="event video_conference">'.$row_video_conference['title'].'</div>';
+                    while($row_quiz=mysqli_fetch_array($results_quiz,MYSQLI_ASSOC))
+                        echo '<div class="event quiz">'.$row_quiz['title'].'</div>';
+                    while($row_homework=mysqli_fetch_array($results_homework,MYSQLI_ASSOC))
+                        echo '<div class="event homework">'.$row_homework['title'].'</div>';
+                }
                 echo '</a>';
             }
 
@@ -116,10 +145,7 @@
 
             for ($i = 1; $i <= ($table_element-$num_days-max($first_day_of_week, 0)); $i++) {
                 echo '<div class="day_num ignore">'.$i.'</div>';
-            }
-            
-            echo 'q='.$_SESSION['calendar_date'];
-        } ?>
+            } ?>
     </div>
 </div>
 <?php $curent_date=$_SESSION['calendar_date'];?>
@@ -135,17 +161,17 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <form clsa="needs-validation" novalidate action="Add_event.php" method="post">
+                <form clsa="needs-validation" novalidate action="Calendar_change.php?button=add_event" method="post">
                     <div class="mb-3">
                         <label for="title" class="form-label">Titlu:</label>
-                            <input type="text" class="form-control" id="title" name="title" required>
-                            <div class="invalid-feedback">Please fill out this field.</div>
+                        <input type="text" class="form-control" id="title" name="title" required>
+                        <div class="invalid-feedback">Please fill out this field.</div>
                     </div>
                     <div class="mb-3">
                         <label for="date" class="form-label">Început:</label>
                         <div class="row">
                             <div class="col">
-                                <input type="date" class="form-control" id="event_date_start" name="event_date_start" value="'.$curent_date.'" min='.date("Y-m-d").'>
+                                <?php echo '<input type="date" class="form-control" id="event_date_start" name="event_date_start" value="'.$curent_date.'" min='.date("Y-m-d").'>'; ?>
                             </div>
                             <div class="col">
                                 <input type="time" class="form-control" id="event_time_start" name="event_time_start" value="08:00">
@@ -156,7 +182,7 @@
                         <label for="date" class="form-label">Sfârșit:</label>
                         <div class="row">
                             <div class="col">
-                                <input type="date" class="form-control" id="event_date_end" name="event_date_end" value="'.$curent_date.'" min='.date("Y-m-d").'>
+                                <?php echo '<input type="date" class="form-control" id="event_date_end" name="event_date_end" value="'.$curent_date.'" min='.date("Y-m-d").'>'; ?>
                             </div>
                             <div class="col">
                                 <input type="time" class="form-control" id="event_time_end" name="event_time_end" value="08:00">
@@ -198,27 +224,23 @@
         <div class="modal-content">
             <!-- Modal Header -->
             <div class="modal-header">
-                <h4 class="modal-title">Evenimente</h4>
+                <?php echo '<h4 class="modal-title">Evenimente</h4>'; ?>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#Event_Modal"></button>
             </div>
             <!-- Modal body -->
             <div class="modal-body">
                 <?php 
-                //echo '<p class="select_date" id=select_date>'.$_SESSION['calendar_date'].'</p>';
 
-                $start_event_date=$_SESSION['calendar_date'].' 23:59:59';
-                $end_event_date=$_SESSION['calendar_date'].' 00:00:00';
-                $sql="SELECT * FROM calendar WHERE start_event <=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event >=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s')";
+                $start_event_date=$_SESSION['calendar_date'].' 00:00:00';
+                $end_event_date=$_SESSION['calendar_date'].' 23:59:59';
+
+                $sql="SELECT * FROM calendar WHERE start_event >=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event <=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s')";
                 $results=mysqli_query($db,$sql);
-                $row=mysqli_fetch_array($results,MYSQLI_ASSOC);
-
-                foreach ($results as $row) {
+                while($row=mysqli_fetch_array($results,MYSQLI_ASSOC)) {
                     $start_event = strtotime($row["start_event"]);
                     $end_event = strtotime($row["end_event"]);
                     $id = $row["id"];
-                    //echo '<div class="d-grid">';
-                    //echo '<a data-bs-toggle="modal" data-bs-target="#Description_event_Modal">';
-                    echo '<a href="Calendar_change.php?button=save_id&id='.$id.'">';
+                    echo '<a href="Calendar_change.php?button=save_id&id='.$id.'" class="link-dark" style="text-decoration: none">';
                         echo '<div class="event '.$row['color'].'">';
                             echo '<div class="row">';
                                 echo '<div class="col-md-8">';
@@ -230,8 +252,71 @@
                             echo '</div>';
                         echo '</div>';
                     echo '</a>';
-                   // echo '</button></div>';
-                } ?>
+                }
+
+                $sql_video_conference="SELECT * FROM video_conference WHERE start_event >=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event <=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s') and lesson_group_id IN (SELECT l.id FROM lesson_group l LEFT JOIN course_group c ON l.course_id=c.course_id WHERE c.user_id LIKE $user_id)";
+                $results_video_conference=mysqli_query($db,$sql_video_conference);
+                while($row_video_conference=mysqli_fetch_array($results_video_conference,MYSQLI_ASSOC))
+                {
+                    $start_event = strtotime($row_video_conference["start_event"]);
+                    $end_event = strtotime($row_video_conference["end_event"]);
+                    $id = $row_video_conference["id"];
+                    echo '<a href="Calendar_change.php?button=save_id&id='.$id.'" class="link-dark" style="text-decoration: none">';
+                        echo '<div class="event video_conference">';
+                            echo '<div class="row">';
+                                echo '<div class="col-md-8">';
+                                    echo $row_video_conference['title'];
+                                echo '</div>';
+                                echo '<div class="col-md-4">';
+                                    echo date('H:i', $start_event).'-'.date('H:i', $end_event);
+                                echo '</div>';
+                            echo '</div>';
+                        echo '</div>';
+                    echo '</a>';
+                }
+
+                $sql_quiz="SELECT * FROM quiz WHERE start_event >=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event <=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s') and lesson_group_id IN (SELECT l.id FROM lesson_group l LEFT JOIN course_group c ON l.course_id=c.course_id WHERE c.user_id LIKE $user_id)";
+                $results_quiz=mysqli_query($db,$sql_quiz);
+                while($row_quiz=mysqli_fetch_array($results_quiz,MYSQLI_ASSOC))
+                {
+                    $start_event = strtotime($row_quiz["start_event"]);
+                    $end_event = strtotime($row_quiz["end_event"]);
+                    $id = $row_quiz["id"];
+                    echo '<a href="Calendar_change.php?button=save_id&id='.$id.'" class="link-dark" style="text-decoration: none">';
+                        echo '<div class="event quiz">';
+                            echo '<div class="row">';
+                                echo '<div class="col-md-8">';
+                                    echo $row_quiz['title'];
+                                echo '</div>';
+                                echo '<div class="col-md-4">';
+                                    echo date('H:i', $start_event).'-'.date('H:i', $end_event);
+                                echo '</div>';
+                            echo '</div>';
+                        echo '</div>';
+                    echo '</a>';
+                }
+
+                $sql_homework="SELECT * FROM homework WHERE end_event >=STR_TO_DATE('$start_event_date', '%Y-%m-%d %H:%i:%s') and end_event <=STR_TO_DATE('$end_event_date', '%Y-%m-%d %H:%i:%s') and lesson_group_id IN (SELECT l.id FROM lesson_group l LEFT JOIN course_group c ON l.course_id=c.course_id WHERE c.user_id LIKE $user_id)";
+                $results_homework=mysqli_query($db,$sql_homework);
+                while($row_homework=mysqli_fetch_array($results_homework,MYSQLI_ASSOC))
+                {
+                    $end_event = strtotime($row_homework["end_event"]);
+                    $id = $row_homework["id"];
+                    echo '<a href="Calendar_change.php?button=save_id&id='.$id.'" class="link-dark" style="text-decoration: none">';
+                        echo '<div class="event homework">';
+                            echo '<div class="row">';
+                                echo '<div class="col-8">';
+                                    echo $row_homework['title'];
+                                echo '</div>';
+                                echo '<div class="col-md-1"></div>';
+                                echo '<div class="col-md-2">';
+                                    echo '-'.date('H:i', $end_event);
+                                echo '</div>';
+                            echo '</div>';
+                        echo '</div>';
+                    echo '</a>';
+                }
+                ?>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#Add_event_Modal">Adaugă eveniment</button>
@@ -251,33 +336,41 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body">
-                <?php
-                $event_id=$_SESSION['event_id'];
-                $sql="SELECT * FROM calendar WHERE id LIKE $event_id";
-                $results=mysqli_query($db,$sql);
-                $row=mysqli_fetch_array($results,MYSQLI_ASSOC);
+                <?php 
+                if(isset($_SESSION['event_id'])){
+                    $event_id=$_SESSION['event_id'];
+                    $sql="SELECT * FROM calendar WHERE id LIKE $event_id";
+                    $results=mysqli_query($db,$sql);
+                    $row=mysqli_fetch_array($results,MYSQLI_ASSOC);
 
-                $start_event=date("Y-m-d H:i", strtotime($row["start_event"]));
-                $end_event=date("Y-m-d H:i", strtotime($row["end_event"]));
+                    $start_event=date("Y-m-d H:i", strtotime($row["start_event"]));
+                    $end_event=date("Y-m-d H:i", strtotime($row["end_event"]));
 
-                echo '<h5>'.$row["title"].'</h5><br>';
-                echo '<p>Început: <b>'.$start_event.'</b></p>';
-                echo '<p>Sfârșit: <b>'.$end_event.'</b></p>';
-                echo '<p>Descriere:<br>'.$row["description"].'</p>';
+                    echo '<h5>'.$row["title"].'</h5><br>';
+                    echo '<p>Început: <b>'.$start_event.'</b></p>';
+                    echo '<p>Sfârșit: <b>'.$end_event.'</b></p>';
+                    echo '<p>Descriere:<br>';
+                    $target_file=$row['description'];
+                    $file = fopen($target_file, "r");
+                    while(!feof($file)) {
+                        echo fgets($file)."<br>";
+                    }
+                    fclose($file);
+                    echo '</p>';
+                }
                 ?>
 
             </div>
         </div>
     </div>
 </div>
-
 <script type="text/javascript">
     $(document).ready(function() {
         if(window.location.href.indexOf('#Event_Modal') != -1) {
             $('#Event_Modal').modal('show');
         }
         else if(window.location.href.indexOf('#Description_event_Modal') != -1){
-            $('#Description_event_Modal').modal('show');
+           $('#Description_event_Modal').modal('show');
         }
     });
 </script>

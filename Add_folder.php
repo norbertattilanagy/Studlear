@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   	<head>
@@ -52,10 +53,11 @@
 		    			$title=$row['title'];
 		    		}
 			    	?>
-			    	<?php echo '<form action="Add_folder1.php?edit='.$_SESSION['add'].'" method="post" enctype="multipart/form-data">'; ?>
+			    	<?php echo '<form action="Add_folder1.php?edit='.$_SESSION['add'].'" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>'; ?>
 			    		<div class="mt-3">
 				    		<label for="title" class="form-label"><b>Titlu:</b></label>
-				    		<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();">';?>
+				    		<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();" required>';?>
+				    		<div class="invalid-feedback">Introduceți titlul</div>
 				    	</div>
 
 
@@ -82,10 +84,14 @@
 								} ?>
 							</div>
 					    <?php } ?>
-					    </div>
-				    	<div class="mt-3">
+				    	<div class="mt-3 ">
 				    		<label for="folder" class="form-label"><b>Adaugă fișiere:</b></label>
-  							<input class="form-control" type="file" id="folder" name="folder[]" multiple>
+				    		<?php if($_SESSION['add']==1){ ?>
+  								<input class="form-control" type="file" id="folder" name="folder[]" multiple required>
+  								<div class="invalid-feedback">Adăugați fișiere</div>
+  							<?php } else { ?>
+  								<input class="form-control" type="file" id="folder" name="folder[]" multiple>
+  							<?php } ?>
 				    	</div>
 				    	<?php if($_SESSION['add']==0){ ?>
 						<div class="mt-3">
@@ -136,3 +142,21 @@
 
 	</body>
 </html>
+<script type="text/javascript">
+(function () {
+	
+  	var forms = document.querySelectorAll('.needs-validation') 
+  	Array.prototype.slice.call(forms).forEach(function (form) {
+			
+      	form.addEventListener('submit', function (event)
+      	{			
+        	if (!form.checkValidity())
+        	{	
+          		event.preventDefault()
+          		event.stopPropagation()
+        	}
+        	form.classList.add('was-validated')
+      	}, false)
+    })
+})()
+</script>

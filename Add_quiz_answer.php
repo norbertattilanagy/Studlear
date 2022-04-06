@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   	<head>
@@ -95,17 +96,17 @@
 		    			$_SESSION['element']=0;
 		    		
 		    		if($_SESSION['add_answer']==1)
-		    			echo '<form action="Add_quiz1.php?edit=8" method="post" enctype="multipart/form-data">';
+		    			echo '<form action="Add_quiz1.php?edit=8" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>';
 		    		else
 		    		{
 		    			$element=$_SESSION['element'];
-		    			echo '<form action="Add_quiz1.php?edit=9&answer_id='.$answer_id.'&element='.$element.'" method="post" enctype="multipart/form-data">';
+		    			echo '<form action="Add_quiz1.php?edit=9&answer_id='.$answer_id.'&element='.$element.'" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>';
 		    		}
 		    		?>
 		    			<!--Question-------------->
 						<div class="mt-3">
 					    	<label for="question" class="form-label"><b>Întrebare:</b></label>
-							<textarea class="form-control" rows="2" id="question" name="question" onClick="this.select();"><?php
+							<textarea class="form-control" rows="2" id="question" name="question" onClick="this.select();" required><?php
 								if($_SESSION['add_answer']==0)
 								{
 									$target_file=$row['question'];
@@ -116,6 +117,7 @@
 									fclose($file);
 								}
 							?></textarea>
+							<div class="invalid-feedback">Introduceți o întrebare</div>
 						</div>
 						<?php
 						if($_SESSION['add_answer']==0)
@@ -125,7 +127,8 @@
 						?>
 							<div class="mt-3">
 								<label for="point" class="form-label"><b>Puncte:</b></label>
-								<?php echo '<input type="number" class="form-control point" id="point" name="point" min="0" value="'.$value.'">'; ?>
+								<?php echo '<input type="number" class="form-control point" id="point" name="point" min="0" value="'.$value.'" required>'; ?>
+								<div class="invalid-feedback">Introduceți punctele</div>
 							</div>
 						<?php
 						$answer_type_checkbox=0;
@@ -151,17 +154,19 @@
 									?>
 									<div class="input-group">
 										<div class="input-group-text">
-									    	<input class="form-check-input" type="radio" id="option_check" name="option_check" value="1">
+									    	<input class="form-check-input" type="radio" id="option_check" name="option_check" value="1" required>
 									  	</div>
-								    	<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();">
+								    	<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();" required>
 								    	<span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+								    	<div class="invalid-feedback">Introduceți opțiunea</div>
 							    	</div>
 							    	<div class="input-group mt-3">
 							    		<div class="input-group-text">
-									    	<input class="form-check-input" type="radio" id="option_check" name="option_check" value="2">
+									    	<input class="form-check-input" type="radio" id="option_check" name="option_check" value="2" required>
 									  	</div>
-								    	<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();">
+								    	<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();" required>
 								    	<span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+								    	<div class="invalid-feedback">Introduceți opțiunea</div>
 							    	</div>
 						    	<?php } else { 
 						    		$sql_option="SELECT * FROM quiz_option WHERE element LIKE 'radio_button' AND question_id LIKE $answer_id";
@@ -174,16 +179,17 @@
 											<div class="input-group-text">
 												<?php
 												if($row_option['correct']==0)
-													echo '<input class="form-check-input" type="radio" id="option_check" name="option_check" value="'.$i.'">';
+													echo '<input class="form-check-input" type="radio" id="option_check" name="option_check" value="'.$i.'" required>';
 												else
-													echo '<input class="form-check-input" type="radio" id="option_check" name="option_check" value="'.$i.'" checked>';
+													echo '<input class="form-check-input" type="radio" id="option_check" name="option_check" value="'.$i.'" checked required>';
 												$i++;
 												?>
 											</div>
 									    	<?php   	
-									    	echo '<input type="text" class="form-control" id="option" name="option[]" value="'.$row_option["option"].'" onClick="this.select();">';
+									    	echo '<input type="text" class="form-control" id="option" name="option[]" value="'.$row_option["option"].'" onClick="this.select();" required>';
 									    	?>
 									    	<span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+									    	<div class="invalid-feedback">Introduceți opțiunea</div>
 								    	</div>
 									<?php }
 								}
@@ -212,17 +218,19 @@
 									$nr_option=2; ?>
 									<div class="input-group">
 										<div class="input-group-text">
-									    	<input class="form-check-input" type="checkbox" id="option_check" name="option_check1">
+									    	<input class="form-check-input" type="checkbox" id="option_check" name="option_check1" required>
 									  	</div>
-								    	<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();">
+								    	<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();" required>
 								    	<span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+								    	<div class="invalid-feedback">Introduceți opțiunea</div>
 							    	</div>
 							    	<div class="input-group mt-3">
 							    		<div class="input-group-text">
-									    	<input class="form-check-input" type="checkbox" id="option_check" name="option_check2">
+									    	<input class="form-check-input" type="checkbox" id="option_check" name="option_check2" required>
 									  	</div>
-								    	<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();">
+								    	<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();" required>
 								    	<span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+								    	<div class="invalid-feedback">Introduceți opțiunea</div>
 							    	</div>
 							    <?php } else { 
 						    		$sql_option="SELECT * FROM quiz_option WHERE element LIKE 'checkbox' AND question_id LIKE $id";
@@ -235,15 +243,16 @@
 											<div class="input-group-text">
 												<?php
 												if($row_option['correct']==0)
-													echo '<input class="form-check-input" type="checkbox" id="option_check" name="option_check'.$i.'">';
+													echo '<input class="form-check-input" type="checkbox" id="option_check" name="option_check'.$i.'" required>';
 												else
-													echo '<input class="form-check-input" type="checkbox" id="option_check" name="option_check'.$i.'" checked>';
+													echo '<input class="form-check-input" type="checkbox" id="option_check" name="option_check'.$i.'" checked required>';
 												$i++; ?>
 											</div>
 									    	<?php
-									    	echo '<input type="text" class="form-control" id="option" name="option[]" value="'.$row_option["option"].'" onClick="this.select();">';
+									    	echo '<input type="text" class="form-control" id="option" name="option[]" value="'.$row_option["option"].'" onClick="this.select();" required>';
 									    	?>
 									    	<span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+									    	<div class="invalid-feedback">Introduceți opțiunea</div>
 								    	</div>
 									<?php }
 								}
@@ -261,42 +270,52 @@
 								<div class="form-check">
 									<?php 
 									if($_SESSION['add_answer']==0 and $row['correct']==1)
-							      		echo '<input type="radio" class="form-check-input" id="true" name="true_false" value="1" checked>';
+							      		echo '<input type="radio" class="form-check-input" id="true" name="true_false" value="1" checked required>';
 							      	else
-							      		echo '<input type="radio" class="form-check-input" id="true" name="true_false" value="1">';
+							      		echo '<input type="radio" class="form-check-input" id="true" name="true_false" value="1" required>';
 							      	?>
 							      	<label class="form-check-label" for="true">Adevărat</label>
 							    </div>
 							    <div class="form-check">
 							    	<?php 
 									if($_SESSION['add_answer']==0 and $row['correct']==0)
-							      		echo '<input type="radio" class="form-check-input" id="false" name="true_false" value="0" checked>';
+							      		echo '<input type="radio" class="form-check-input" id="false" name="true_false" value="0" checked required>';
 							      	else
-							      		echo '<input type="radio" class="form-check-input" id="false" name="true_false" value="0">';
+							      		echo '<input type="radio" class="form-check-input" id="false" name="true_false" value="0" required>';
 							      	?>
 							      	<label class="form-check-label" for="false">Fals</label>
+							      	<div class="invalid-feedback">Alegeți răspunsul</div>
 							    </div>
 							</div>
 						<?php } ?>
 
 						<?php if($_SESSION['answer_type']==7 or $_SESSION['element']=="text") { //add short text 
-							if($row['short']==1){ ?>
+							$short=0;
+							if(isset($row['short']))
+								if($row['short']==1)
+									$short=1;
+							if($_SESSION['answer_type']==7)
+								$short=1;
+
+							if($short==1 or $_SESSION['answer_type']==7){ ?>
 								<div class="input_short_text mt-3">
 									<label class="form-label"><b>Posibil răspuns corect:</b></label>
 									<?php if($_SESSION['add_answer']==1){ ?>
 										<div class="input-group mb-3">
-											<input type="text" class="form-control" id="answer_short_text" name="answer_short_text[]" onClick="this.select();">
+											<input type="text" class="form-control" id="answer_short_text" name="answer_short_text[]" onClick="this.select();" required>
 											<span class="input-group-text remove_short_text_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+											<div class="invalid-feedback">Introduceți răspunsul corect</div>
 										</div>
-									<?php } else { 
+									<?php } else {
 										$text_question_id=$row['id'];
-										$sql_answer="SELECT * FROM text_answer WHERE text_question_id LIKE $text_question_id";
+										$sql_answer="SELECT * FROM text_posible_answer WHERE text_question_id LIKE $text_question_id";
 										$results_answer=mysqli_query($db,$sql_answer);
 										while($row_answer=mysqli_fetch_array($results_answer)) {
 											$value=$row_answer['answer']; ?>
 											<div class="input-group mb-3">
-												<?php echo '<input type="text" class="form-control" id="answer_short_text" name="answer_short_text[]" value="'.$value.'" onClick="this.select();">'; ?>
+												<?php echo '<input type="text" class="form-control" id="answer_short_text" name="answer_short_text[]" value="'.$value.'" onClick="this.select();" required>'; ?>
 												<span class="input-group-text remove_short_text_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+												<div class="invalid-feedback">Introduceți răspunsul corect</div>
 											</div>
 									<?php } } ?>
 								</div>
@@ -315,9 +334,9 @@
 									<div class="input-group">
 										
 										<div class="input-group-text">
-										   	<input class="form-check-input" type="checkbox" id="option_select_check" name="option_select_check2">
+										   	<input class="form-check-input" type="checkbox" id="option_select_check" name="option_select_check1">
 										</div>
-									   	<input type="text" class="form-control" id="select_option" name="select_option[]" onClick="this.select();">
+									   	<input type="text" class="form-control" id="select_option" name="select_option[]" onClick="this.select();" required>
 
 									   	<div class="input-group-text"><b>Grup:</b></div>
 
@@ -330,6 +349,7 @@
 										</select>
 
 									   	<span class="input-group-text remove_select_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+									   	<div class="invalid-feedback">Introduceți opțiunea</div>
 
 									</div>
 									<div class="input-group mt-3">
@@ -338,7 +358,7 @@
 										   	<input class="form-check-input" type="checkbox" id="option_select_check" name="option_select_check2">
 										</div>
 
-									   	<input type="text" class="form-control" id="select_option" name="select_option[]" onClick="this.select();">
+									   	<input type="text" class="form-control" id="select_option" name="select_option[]" onClick="this.select();" required>
 
 									   	<div class="input-group-text"><b>Grup:</b></div>
 
@@ -351,6 +371,7 @@
 										</select>
 
 									   	<span class="input-group-text remove_select_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+									   	<div class="invalid-feedback">Introduceți opțiunea</div>
 
 									</div>
 								<?php } else { 
@@ -372,7 +393,7 @@
 
 										   	<?php 
 										   	$value=$row_select['option'];
-										   	echo '<input type="text" class="form-control" id="select_option" name="select_option[]" value="'.$value.'" onClick="this.select();">'; ?>
+										   	echo '<input type="text" class="form-control" id="select_option" name="select_option[]" value="'.$value.'" onClick="this.select();" required>'; ?>
 
 										   	<div class="input-group-text"><b>Grup:</b></div>
 
@@ -388,6 +409,7 @@
 											</select>
 
 										   	<span class="input-group-text remove_select_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
+										   	<div class="invalid-feedback">Introduceți opțiunea</div>
 
 										</div>
 								<?php }
@@ -420,18 +442,20 @@
 								<div class="col">
 									<?php 
 									if($row_time['solving_time']>0)
-										echo '<input type="number" class="form-control solving_time solving_time_min" id="solving_time_min" name="solving_time_min" placeholder="Minute" value="'.$solving_time_min.'" min="0" max="60" disabled>';
+										echo '<input type="number" class="form-control solving_time solving_time_min" id="solving_time_min" name="solving_time_min" placeholder="Minute" value="'.$solving_time_min.'" min="0" max="60" disabled required>';
 									else
-										echo '<input type="number" class="form-control solving_time solving_time_min" id="solving_time_min" name="solving_time_min" placeholder="Minute" value="'.$solving_time_min.'" min="0" max="60">';
+										echo '<input type="number" class="form-control solving_time solving_time_min" id="solving_time_min" name="solving_time_min" placeholder="Minute" value="'.$solving_time_min.'" min="0" max="60" required>';
 									?>
+									<div class="invalid-feedback">Introduceți minutele</div>
 								</div>
 								<div class="col">
 									<?php
 									if($row_time['solving_time']>0)
-										echo '<input type="number" class="form-control solving_time solving_time_sec" id="solving_time_sec" name="solving_time_sec" placeholder="Secunde" value="'.$solving_time_sec.'" min="1" max="60" disabled>';
+										echo '<input type="number" class="form-control solving_time solving_time_sec" id="solving_time_sec" name="solving_time_sec" placeholder="Secunde" value="'.$solving_time_sec.'" min="1" max="60" disabled required>';
 									else
-										echo '<input type="number" class="form-control solving_time solving_time_sec" id="solving_time_sec" name="solving_time_sec" placeholder="Secunde" value="'.$solving_time_sec.'" min="1" max="60">';
+										echo '<input type="number" class="form-control solving_time solving_time_sec" id="solving_time_sec" name="solving_time_sec" placeholder="Secunde" value="'.$solving_time_sec.'" min="1" max="60" required>';
 									?>
+									<div class="invalid-feedback">Introduceți secundele</div>
 								</div>
 							</div>
 							<?php if($disable==1)
@@ -524,11 +548,11 @@ $(document).ready(function() {
 			x++;
 			if(answer_type==0)
 			{
-				$(wrapper).append(`<div class="input-group mt-3"><div class="input-group-text"><input class="form-check-input" type="radio" id="option_check" name="option_check" value="${x}"></div><input type="text" class="form-control" id="option" name="option[]" value="" onClick="this.select();"/><span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span></div>`);
+				$(wrapper).append(`<div class="input-group mt-3"><div class="input-group-text"><input class="form-check-input" type="radio" id="option_check" name="option_check" value="${x}" required></div><input type="text" class="form-control" id="option" name="option[]" value="" onClick="this.select();" required/><span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span><div class="invalid-feedback">Introduceți opțiunea</div></div>`);
 			}
 			else
 			{
-				$(wrapper).append(`<div class="input-group mt-3"><div class="input-group-text"><input class="form-check-input" type="checkbox" id="option_check" name="option_check${x}"></div><input type="text" class="form-control" id="option" name="option[]" value="" onClick="this.select();"/><span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span></div>`);
+				$(wrapper).append(`<div class="input-group mt-3"><div class="input-group-text"><input class="form-check-input" type="checkbox" id="option_check" name="option_check${x}"></div><input type="text" class="form-control" id="option" name="option[]" value="" onClick="this.select();" required/><span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span><div class="invalid-feedback">Introduceți opțiunea</div></div>`);
 			}
 		}
 		if(x==max_fields)
@@ -564,7 +588,7 @@ $(document).ready(function() {
 
 	$(add_short_text_button).click(function(e){
 		e.preventDefault();
-		$(wrapper_short_text).append(`<div class="input-group mb-3"><input type="text" class="form-control" id="answer_short_text" name="answer_short_text[]" onClick="this.select();"><span class="input-group-text remove_short_text_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span></div>`);
+		$(wrapper_short_text).append(`<div class="input-group mb-3"><input type="text" class="form-control" id="answer_short_text" name="answer_short_text[]" onClick="this.select();" required><span class="input-group-text remove_short_text_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span><div class="invalid-feedback">Introduceți răspunsul corect</div></div>`);
 	});
 	
 	$(wrapper_short_text).on("click", ".remove_short_text_field", function(e) {
@@ -594,7 +618,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		if(x < max_fields){
 			x++;
-			$(wrapper).append(`<div class="input-group mt-3"><div class="input-group-text"><input class="form-check-input" type="checkbox" id="option_select_check" name="option_select_check${x}"></div><input type="text" class="form-control" id="select_option" name="select_option[]" onClick="this.select();"><div class="input-group-text"><b>Grup:</b></div><select class="form-select" aria-label="Default select example"  id="select_group" name="select_group[]"><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option><option>K</option><option>L</option><option>M</option><option>N</option><option>O</option><option>P</option><option>Q</option><option>R</option><option>S</option><option>T</option><option>U</option><option>V</option><option>W</option><option>X</option><option>Y</option><option>Z</option></select><span class="input-group-text remove_select_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span></div></div>`);
+			$(wrapper).append(`<div class="input-group mt-3"><div class="input-group-text"><input class="form-check-input" type="checkbox" id="option_select_check" name="option_select_check${x}"></div><input type="text" class="form-control" id="select_option" name="select_option[]" onClick="this.select();" required><div class="input-group-text"><b>Grup:</b></div><select class="form-select" aria-label="Default select example"  id="select_group" name="select_group[]"><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option><option>I</option><option>J</option><option>K</option><option>L</option><option>M</option><option>N</option><option>O</option><option>P</option><option>Q</option><option>R</option><option>S</option><option>T</option><option>U</option><option>V</option><option>W</option><option>X</option><option>Y</option><option>Z</option></select><span class="input-group-text remove_select_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span><div class="invalid-feedback">Introduceți opțiunea</div></div></div>`);
 		}
 		if(x==max_fields)
 		{
@@ -659,4 +683,22 @@ $(document).ready(function() {
 	var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 	  return new bootstrap.Tooltip(tooltipTriggerEl)
 	})
+</script>
+<script type="text/javascript">
+(function () {
+	
+  	var forms = document.querySelectorAll('.needs-validation') 
+  	Array.prototype.slice.call(forms).forEach(function (form) {
+			
+      	form.addEventListener('submit', function (event)
+      	{			
+        	if (!form.checkValidity())
+        	{	
+          		event.preventDefault()
+          		event.stopPropagation()
+        	}
+        	form.classList.add('was-validated')
+      	}, false)
+    })
+})()
 </script>

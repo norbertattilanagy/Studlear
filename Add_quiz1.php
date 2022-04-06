@@ -1,4 +1,5 @@
 <?php include 'Conection.php'; ?>
+<?php include 'Page_security.php'; ?>
 <?php
 //1-add
 //0-edit
@@ -141,7 +142,7 @@ else if($_GET["edit"]==2)//delete
 		if($element=="radio_button" or $element=="checkbox")
 			$sql="DELETE FROM quiz_option WHERE element LIKE $element1 AND question_id LIKE $answer_id";
 		else if($element=="text")
-			$sql="DELETE FROM text_answer WHERE text_question_id LIKE $answer_id";
+			$sql="DELETE FROM text_posible_answer WHERE text_question_id LIKE $answer_id";
 		else if($element=="select")
 			$sql="DELETE FROM select_option WHERE select_question_id LIKE $answer_id";
 		$results=mysqli_query($db,$sql);
@@ -198,16 +199,209 @@ else if($_GET["edit"]==6)//edit_answer
 	$link='location: Add_quiz_answer.php';
 	header("$link");
 }
-else if($_GET["edit"]==7)//next/previous question
+else if($_GET["edit"]==7)//next/previous question, insert answer
 {
-	if($_GET['next']==1)
-		$_SESSION['question_order']++;
-	else if($_GET['next']==0 and $_SESSION['question_order']>1)
-		$_SESSION['question_order']--;
-	else if($_GET['next']==2)
-		$_SESSION['question_order']=$_GET['nr_question'];
+	$user_id=$_SESSION['user_id'];
+	$question_id=$_GET['answer_id'];
+	$element=$_GET['element'];
 
-	$link='location: Quiz.php';
+	if($_SESSION['user_type']=="student")
+	{
+		$option_id="";
+		$true="";
+		$answer_text="";
+		if($element=="radio_button")
+		{
+			if(isset($_POST['option']))
+				$option_id=$_POST['option'];
+		}
+		else if($element=="checkbox")
+		{
+			if(isset($_POST['option']))
+				$option_id=$_POST['option'];
+		}
+		else if($element=="true_false")
+		{
+			if(isset($_POST['option']))
+				$true=$_POST['option'];
+		}
+		else if($element=="text")
+		{
+			if(isset($_POST['short_text']))
+				echo $answer_text=$_POST['short_text'];
+		}
+		else if($element=="select")
+		{
+			if(isset($_POST['select']))
+				$option_id=$_POST['select'];
+		}
+
+		//point
+		$point=0;
+		if($option_id!="" or $true!="" or $answer_text!="")
+		{
+			if($element=="radio_button")
+			{
+				$element1='"'.$element.'"';
+				$sql="SELECT * FROM quiz_option WHERE element LIKE $element1 AND id LIKE $option_id";
+				$results=mysqli_query($db,$sql);
+				$row=mysqli_fetch_array($results);
+				$sql_answer="SELECT * FROM radio_button WHERE id LIKE $question_id";
+				$results_answer=mysqli_query($db,$sql_answer);
+				$row_answer=mysqli_fetch_array($results_answer);
+				if($row['correct']==1)
+					$point=$row_answer['point'];
+			}
+			else if($element=="checkbox")
+			{
+				$element1='"'.$element.'"';
+				$correct_select=0;
+
+				$sql="SELECT * FROM quiz_option WHERE element LIKE $element1 AND question_id LIKE $question_id AND correct LIKE 1";
+				$results=mysqli_query($db,$sql);
+				$correct=mysqli_num_rows($results);
+
+				foreach($option_id as $i)
+				{
+					$sql="SELECT * FROM quiz_option WHERE element LIKE $element1 AND id LIKE $i";
+					$results=mysqli_query($db,$sql);
+					$row=mysqli_fetch_array($results);
+					if($row['correct']==1)
+						$correct_select++;
+				}
+				$sql_answer="SELECT * FROM checkbox WHERE id LIKE $question_id";
+				$results_answer=mysqli_query($db,$sql_answer);
+				$row_answer=mysqli_fetch_array($results_answer);
+				$point=round($row_answer['point']/$correct*$correct_select);
+			}
+			else if($element=="true_false")
+			{
+				$sql_answer="SELECT * FROM true_false WHERE id LIKE $question_id";
+				$results_answer=mysqli_query($db,$sql_answer);
+				$row_answer=mysqli_fetch_array($results_answer);
+				if(($row_answer['correct']==1 and $true==1) or ($row_answer['correct']==0 and $true==0))
+					$point=$row_answer['point'];
+			}
+			else if($element=="text")
+			{
+				$sql_answer="SELECT * FROM text_question WHERE id LIKE $question_id";
+				$results_answer=mysqli_query($db,$sql_answer);
+				$row_answer=mysqli_fetch_array($results_answer);
+				if($row_answer['short']==1)
+				{
+					$sql_answer_option="SELECT * FROM text_posible_answer WHERE text_question_id LIKE $question_id";
+					$results_answer_option=mysqli_query($db,$sql_answer_option);
+					while($row_answer_option=mysqli_fetch_array($results_answer_option))
+					{
+						if($row_answer_option['answer']==$answer_text)
+						{
+							$point=$row_answer['point'];
+						}
+					}
+				}
+			}
+			else if($element=="select")
+			{
+				$corect_select=0;
+				foreach($option_id as $i)
+				{
+					$sql="SELECT * FROM select_option WHERE id LIKE $i";
+					$results=mysqli_query($db,$sql);
+					$row=mysqli_fetch_array($results);
+					if($row['correct']==1)
+						$corect_select++;
+				}
+				$sql="SELECT DISTINCT `group` FROM select_option WHERE select_question_id LIKE $question_id";
+				$results=mysqli_query($db,$sql);
+				$nr_group=mysqli_num_rows($results);
+
+				$sql_answer="SELECT * FROM select_question WHERE id LIKE $question_id";
+				$results_answer=mysqli_query($db,$sql_answer);
+				$row_answer=mysqli_fetch_array($results_answer);
+
+				$point=round($row_answer['point']/$nr_group*$corect_select);
+			}
+		}
+		
+		//insert
+		if($element=="radio_button")
+		{
+			$sql="INSERT INTO answer_quiz_option (user_id,quiz_option_id,`point`) VALUES ('$user_id','$option_id','$point')";
+		}
+		else if($element=="checkbox")
+		{
+			foreach($option_id as $i)
+			{
+				$sql="INSERT INTO answer_quiz_option (user_id,quiz_option_id,`point`) VALUES ('$user_id','$i','$point')";
+				$results=mysqli_query($db,$sql);
+			}
+		}
+		else if($element=="true_false")
+		{
+			$sql="INSERT INTO answer_true_false (user_id,true_false_id,answer_true,`point`) VALUES ('$user_id','$question_id','$true','$point')";
+		}
+		else if($element=="text")
+		{
+			$sql_select="SELECT * FROM text_question WHERE id LIKE $question_id";
+			$results_select=mysqli_query($db,$sql_select);
+			$row_select=mysqli_fetch_array($results_select);
+			if($row_select['short']==0)
+			{
+				$target_dir="Cours_items/Quiz/Answer_text/";
+				$file_name=date("YmdHis").$user_id.'.txt';
+				$target_file=$target_dir.$file_name;
+
+				$file=fopen($target_file,"w");
+				fwrite($file, $answer_text);
+				fclose($file);
+
+				$sql="INSERT INTO answer_text_question (user_id,text_question_id,answer,`point`) VALUES ('$user_id','$question_id','$target_file','$point')";
+			}
+			else
+			{
+
+				$sql="INSERT INTO answer_text_question (user_id,text_question_id,answer,`point`) VALUES ('$user_id','$question_id','$answer_text','$point')";
+			}
+		}
+		else if($element=="select")
+		{
+			echo $option_id[0];
+			foreach($option_id as $i)
+			{
+				$sql="INSERT INTO answer_select_question (user_id,select_option_id,`point`) VALUES ('$user_id','$i','$point')";
+				$results=mysqli_query($db,$sql);
+			}
+		}
+		if($element!="checkbox" and $element!="select")
+			$results=mysqli_query($db,$sql);
+			
+	}
+
+	if($_POST['button']=="next")
+	{
+		$_SESSION['question_order']++;
+		$link='location: Quiz.php';
+	}
+	else if($_POST['button']=="previous" and $_SESSION['question_order']>1)
+	{
+		$_SESSION['question_order']--;
+		$link='location: Quiz.php';
+	}
+	else if($_POST['button']=="complet")
+	{
+		$_SESSION['target_date']="";
+		if($_SESSION['user_type']=="student")
+			$link='location: Quiz_start.php?id='.$_SESSION['quiz'];
+		else
+			$link='location: Quiz_teacher.php?id='.$_SESSION['quiz'];
+	}
+	else
+	{
+		$_SESSION['question_order']=$_POST['button'];
+		$link='location: Quiz.php';
+	}
+	echo $_POST['button'];
+	
 	header("$link");
 }
 else if($_GET["edit"]==8)//add answer
@@ -330,7 +524,7 @@ else if($_GET["edit"]==8)//add answer
 	{
 		foreach($answer as $i)
 		{
-			$sql="INSERT INTO text_answer (text_question_id,answer) VALUES ('$answer_id','$i')";
+			$sql="INSERT INTO text_posible_answer (text_question_id,answer) VALUES ('$answer_id','$i')";
 			$results=mysqli_query($db,$sql);
 		}
 	}
@@ -524,7 +718,7 @@ else if($_GET["edit"]==9)//edit answer
 	}
 	else if($element=="text")
 	{
-		$sql_answer="SELECT * FROM text_answer WHERE text_question_id LIKE $answer_id";
+		$sql_answer="SELECT * FROM text_posible_answer WHERE text_question_id LIKE $answer_id";
 		$results_answer=mysqli_query($db,$sql_answer);
 		
 		while($row_answer=mysqli_fetch_array($results_answer))//delete
@@ -554,7 +748,7 @@ else if($_GET["edit"]==9)//edit answer
 			}
 			if($insert==1)
 			{
-				$sql_insert="INSERT INTO text_answer (text_question_id,answer) VALUES ('$answer_id','$i')";
+				$sql_insert="INSERT INTO text_posible_answer (text_question_id,answer) VALUES ('$answer_id','$i')";
 				$results_insert=mysqli_query($db,$sql_insert);
 			}		
 		}
@@ -685,7 +879,7 @@ else if($_GET["edit"]==11)//delete answer
 	if($element=="radio_button" or $element=="checkbox")
 		$sql="DELETE FROM quiz_option WHERE element LIKE $element1 AND question_id LIKE $answer_id";
 	else if($element=="text")
-		$sql="DELETE FROM text_answer WHERE text_question_id LIKE $answer_id";
+		$sql="DELETE FROM text_posible_answer WHERE text_question_id LIKE $answer_id";
 	else if($element=="select")
 		$sql="DELETE FROM select_option WHERE select_question_id LIKE $answer_id";
 	$results=mysqli_query($db,$sql);
@@ -705,3 +899,64 @@ else if($_GET["edit"]==11)//delete answer
 	$link='location: Quiz_teacher.php?id='.$_SESSION['quiz'];
 	header("$link");
 }
+else if($_GET["edit"]==12)//update point
+{
+	$answer_user_id=$_SESSION['answer_user_id'];
+	$quiz_id=$_SESSION['quiz'];
+	$sql_order="SELECT * FROM question_order WHERE quiz_id LIKE $quiz_id";
+	$results_order=mysqli_query($db,$sql_order);
+	while($row_order=mysqli_fetch_array($results_order))
+	{
+		$element=$row_order['element'];
+		$answer_id=$row_order['answer_id'];
+		$nr=$row_order['order_number'];
+		$point=$_POST['point'.$nr];
+		$element1='"'.$element.'"';
+		if($element=="radio_button")
+		{
+			$sql_select="SELECT id FROM quiz_option WHERE question_id LIKE $answer_id AND element LIKE $element1";
+			$results_select=mysqli_query($db,$sql_select);
+			while($row_select=mysqli_fetch_array($results_select))
+			{
+				$id=$row_select['id'];
+				$sql_answer="UPDATE answer_quiz_option SET `point`= $point WHERE quiz_option_id LIKE $id AND user_id LIKE $answer_user_id";
+				$results_answer=mysqli_query($db,$sql_answer);
+			}
+		}
+		else if($element=="checkbox")
+		{
+			$sql_select="SELECT id FROM quiz_option WHERE question_id LIKE $answer_id AND element LIKE $element1";
+			$results_select=mysqli_query($db,$sql_select);
+			while($row_select=mysqli_fetch_array($results_select))
+			{
+				$id=$row_select['id'];
+				$sql_answer="UPDATE answer_quiz_option SET `point`=$point WHERE quiz_option_id LIKE $id AND user_id LIKE $answer_user_id";
+				$results_answer=mysqli_query($db,$sql_answer);
+			}
+		}
+		else if($element=="true_false")
+		{
+			$sql_answer="UPDATE answer_true_false SET `point`=$point WHERE true_false_id LIKE $answer_id  AND user_id LIKE $answer_user_id";
+			$results_answer=mysqli_query($db,$sql_answer);
+		}
+		else if($element=="text")
+		{
+			$sql_answer="UPDATE answer_text_question SET `point`=$point WHERE text_question_id LIKE $answer_id  AND user_id LIKE $answer_user_id";
+			$results_answer=mysqli_query($db,$sql_answer);
+		}
+		else if($element=="select")
+		{
+			$sql_select="SELECT id FROM select_option WHERE select_question_id LIKE $answer_id";
+			$results_select=mysqli_query($db,$sql_select);
+			while($row_select=mysqli_fetch_array($results_select))
+			{
+				$id=$row_select['id'];
+				$sql_answer="UPDATE answer_select_question SET `point`=$point WHERE select_option_id LIKE $id AND user_id LIKE $answer_user_id";
+				$results_answer=mysqli_query($db,$sql_answer);
+			}
+		}
+	}
+	$link='location:Quiz_solve_table.php';
+	header("$link");
+}
+?>
