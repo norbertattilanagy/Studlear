@@ -13,6 +13,8 @@ if(empty($row["id"]))
 {
 	if($_SESSION['user_type']=="not_logged")
 		header("location:Sign_in.php");
+	elseif($_SESSION['user_type']=="admin")
+		header("location:Search_courses.php");
 	else
 		header("location:Home_page.php");
 }

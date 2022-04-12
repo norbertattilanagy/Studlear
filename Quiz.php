@@ -20,8 +20,11 @@
 
     	<nav class="ms-4" aria-label="breadcrumb">
   			<ol class="breadcrumb">
-  		  		<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>
-  		  		<?php 
+  		  		<?php
+  		  		if($_SESSION['user_type']=="admin")
+  					echo '<li class="breadcrumb-item"><a href="Search_courses.php" style="text-decoration: none;">Căutare curs</a></li>';
+  				else
+  		  			echo '<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>'; 
   		  		echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'" style="text-decoration: none;">Curs</a></li>';
   		  		if($_SESSION['user_type']=="student")
   		  			echo '<li class="breadcrumb-item"><a href="Quiz_start.php?id='.$_SESSION['quiz'].'" style="text-decoration: none;">Start quiz</a></li>'; 
@@ -360,9 +363,6 @@
 			</div>
 		<?php } ?>
 		</form>
-
-		<!--Footers-->
-    	<?php //include 'Footers.php' ?>
 
 	</body>
 </html>

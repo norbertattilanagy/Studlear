@@ -1,9 +1,13 @@
 <?php include 'Page_security.php'; ?>
 <nav class="navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
   <div class="container-fluid">
-    <a class="navbar-brand" href="Home_page.php">
-      <img src="Images\Sistem\logo4.png" alt="Logo" style="width:100px;" class="img-fluid"> 
-    </a>
+    <?php if($_SESSION['user_type']!="admin"){ ?>
+      <a class="navbar-brand" href="Home_page.php"> 
+        <img src="Images\Sistem\logo.png" alt="Logo" style="width:100px;" class="img-fluid">
+      </a>
+    <?php }
+    else
+      echo '<img src="Images\Sistem\logo.png" alt="Logo" style="width:100px;" class="img-fluid me-3">'; ?>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
       <span class="navbar-toggler-icon"></span>

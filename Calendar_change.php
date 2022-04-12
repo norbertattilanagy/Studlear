@@ -18,7 +18,6 @@ else if($_GET['button']=="next")
 else if($_GET['button']=="today")//go today
 {
     $_SESSION['calendar_date']=date("Y-m-d");
-    echo "qa=".$date;
     $link='location:Calendar_page.php';
     header("$link");
 }
@@ -35,10 +34,17 @@ else if($_GET['button']=="change_day")
 else if($_GET['button']=="save_id")
 {
     $_SESSION['event_id']=$_GET['id'];
+    $_SESSION['event_type']=$_GET['event_type'];
     $link='location:Calendar_page.php#Description_event_Modal';
     header("$link");
 }
-else if($_GET['button']=="add_event")//add even
+else if($_GET['button']=="save_id_home")
+{
+    $_SESSION['event_id']=$_GET['id'];
+    $link='location:Home_page.php#Description_event_Modal';
+    header("$link");
+}
+else if($_GET['button']=="add_event")//add event
 {
     $user_id=$_SESSION['user_id'];
     $title=$_POST['title'];

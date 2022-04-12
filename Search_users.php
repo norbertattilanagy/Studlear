@@ -20,8 +20,12 @@
 
     	<nav class="ms-4" aria-label="breadcrumb">
   			<ol class="breadcrumb">
-  		  		<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasa</a></li>
-  		  		<?php echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'" style="text-decoration: none;">Curs</a></li>'; ?>
+  		  		<?php
+  		  		if($_SESSION['user_type']=="admin")
+  					echo '<li class="breadcrumb-item"><a href="Search_courses.php" style="text-decoration: none;">Căutare curs</a></li>';
+  				else
+  		  			echo '<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>';
+  		  		echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'" style="text-decoration: none;">Curs</a></li>'; ?>
   		  		<?php echo '<li class="breadcrumb-item"><a href="Course_participants.php" style="text-decoration: none;">Participanți curs</a></li>'; ?>
     			<li class="breadcrumb-item active" aria-current="page">Căutare utilizatori</li>
   			</ol>
@@ -163,9 +167,6 @@
 
 		    </div>
 	  	</div>
-
-	  	<!--Footers-->
-    	<?php include 'Footers.php' ?>
 
     	<!--Modal--Add-user-in-course--->
 		<div class="modal fade" id="Add_user_in_course">

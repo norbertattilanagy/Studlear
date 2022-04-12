@@ -20,8 +20,12 @@
 
     	<nav class="ms-4" aria-label="breadcrumb">
   			<ol class="breadcrumb">
-  		  		<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>
-  		  		<?php echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'" style="text-decoration: none;">Curs</a></li>'; ?>
+  		  		<?php
+  		  		if($_SESSION['user_type']=="admin")
+  					echo '<li class="breadcrumb-item"><a href="Search_courses.php" style="text-decoration: none;">Căutare curs</a></li>';
+  				else
+  		  			echo '<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>';
+  		  		echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'" style="text-decoration: none;">Curs</a></li>'; ?>
     			<li class="breadcrumb-item active" aria-current="page">Temă</li>
   			</ol>
 		</nav>
@@ -40,12 +44,12 @@
 				$results=mysqli_query($db,$sql);
 				$row=mysqli_fetch_array($results);
 
-				if($_SESSION['user_type']=="teacher" and $row['visibility']==0){?>
+				if($_SESSION['user_type']!="student" and $row['visibility']==0){?>
 					<h3><b><?php echo $row['title']; ?></b><i class="bi bi-eye-slash ms-4"></i></h3>
 				<?php } else { ?>
 					<h3><b><?php echo $row['title']; ?></b></h3>
 				<?php }
-				if($_SESSION['user_type']=="teacher") { ?>
+				if($_SESSION['user_type']!="student") { ?>
 					<a href="Add_homework1.php?edit=4&add=0" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Editează</a>
 					<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#Delete_homework"><i class="bi bi-trash"></i> Șterge</button>
 				<?php } ?>
@@ -210,9 +214,6 @@
 		    	</div>
 		  	</div>
 		</div>
-
-		<!--Footers-->
-    	<?php include 'Footers.php' ?>
 
 	</body>
 </html>

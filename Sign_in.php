@@ -36,7 +36,7 @@
       <div class="row d-flex justify-content-center align-items-center">
         <p><br></p>
         <a href="Sign_in.php" class="">
-          <img src="Images\Sistem\logo4.png" alt="Logo" style="width:300px;" class="mx-auto d-block">
+          <img src="Images\Sistem\logo.png" alt="Logo" style="width:300px;" class="mx-auto d-block">
         </a>
         <h2 class="text-center"><br>Autentificare</h2>
         <form action="Sign_in1.php" class="needs-validation" name="form1" method="post" novalidate>

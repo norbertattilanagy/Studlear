@@ -21,11 +21,15 @@
 
     	<nav class="ms-4" aria-label="breadcrumb">
   			<ol class="breadcrumb">
-  		  		<li class="breadcrumb-item"><a href="Home_page.php">Acasă</a></li>
-  		  		<?php echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'">Curs</a></li>';
+  		  		<?php
+  		  		if($_SESSION['user_type']=="admin")
+  					echo '<li class="breadcrumb-item"><a href="Search_courses.php" style="text-decoration: none;">Căutare curs</a></li>';
+  				else
+  		  			echo '<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>';
+  		  		echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'" style="text-decoration: none;">Curs</a></li>';
   		  		if($_SESSION['add']==1)
   		  		{
-    				echo '<li class="breadcrumb-item active" aria-current="page"><a href="Add_quiz.php">Adaugă quiz</a></li>';
+    				echo '<li class="breadcrumb-item active" aria-current="page"><a href="Add_quiz.php" style="text-decoration: none;">Adaugă quiz</a></li>';
     				echo '<li class="breadcrumb-item active" aria-current="page">Adaugă întrebare quiz</li>';
     			}
     			else
@@ -509,9 +513,6 @@
 		    	</div>
 		    </div>
 		</div>
-
-		<!--Footers-->
-    	<?php include 'Footers.php' ?>
 
 	</body>
 </html>

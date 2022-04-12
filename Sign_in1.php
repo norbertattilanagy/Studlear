@@ -9,7 +9,11 @@
 	{
 		$_SESSION['user_id']=$row['id'];
 		$_SESSION['user_type']=$row['type'];
-		$link='location:Home_page.php';
+		if($_SESSION['user_type']=="admin")
+			$link='location:Search_courses.php';
+		else
+			$link='location:Home_page.php';
+
 	    header("$link");
 	}
 	else
@@ -23,8 +27,6 @@
 			$_SESSION['email']=$_POST['email'];
 			$_SESSION['incorect']="Parolă inorectă";
 		}
-
-		
 		$link='location:'.$_SERVER['HTTP_REFERER'];
 	    header("$link");
 	}

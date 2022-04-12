@@ -93,7 +93,7 @@ else if($_GET["edit"]==0)//edit
 	$sql="UPDATE quiz SET title=$title, solving_time=$solving_time, start_event=$start_event, end_event=$end_event, lesson_group_id=$lesson_id, visibility=$visibility WHERE id LIKE $quiz_id";
 	$results=mysqli_query($db,$sql);
 
-	if($_SESSION['user_type']=="teacher")
+	if($_SESSION['user_type']!="student")
 		$link='location: Quiz_teacher.php?id='.$_SESSION['quiz'];
 	else
 		$link='location: Quiz.php?id='.$_SESSION['quiz'];

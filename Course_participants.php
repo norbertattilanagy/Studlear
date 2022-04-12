@@ -19,8 +19,12 @@
 
     	<nav class="ms-4" aria-label="breadcrumb">
   			<ol class="breadcrumb">
-  		  		<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasa</a></li>
-  		  		<?php echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'" style="text-decoration: none;">Curs</a></li>'; ?>
+  		  		<?php
+  		  		if($_SESSION['user_type']=="admin")
+  					echo '<li class="breadcrumb-item"><a href="Search_courses.php" style="text-decoration: none;">Căutare curs</a></li>';
+  				else
+  		  			echo '<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>';
+  		  		echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'" style="text-decoration: none;">Curs</a></li>'; ?>
     			<li class="breadcrumb-item active" aria-current="page">Participanți curs</li>
   			</ol>
 		</nav>
@@ -32,7 +36,7 @@
 		    </div>
 
 		    <div class="col-md-9">
-		    	<?php if($_SESSION['user_type']=='teacher') { ?>
+		    	<?php if($_SESSION['user_type']!='student') { ?>
 			      	<a href="Enroll_in_course.php?enroll=6" class="btn btn-primary btn-sm mb-3">Adaugă participanți<i class="bi bi-person-plus ms-2"></i></a>
 			    <?php }	?>
 		    	<?php
@@ -122,8 +126,6 @@
 					<?php } ?>
 		    </div>
 		</div>
-		<!--Footers-->
-    	<?php include 'Footers.php' ?>
 
     	<!--Modal--Delete-user-from-course--->
 		<div class="modal fade" id="Delete_user_from_course">

@@ -23,7 +23,11 @@ $_SESSION["course_id"]=$_GET['id'];
 
     	<nav class="ms-4" aria-label="breadcrumb">
   			<ol class="breadcrumb">
-  		  		<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasa</a></li>
+  		  		<?php
+  		  		if($_SESSION['user_type']=="admin")
+  					echo '<li class="breadcrumb-item"><a href="Search_courses.php" style="text-decoration: none;">Căutare curs</a></li>';
+  				else
+  		  			echo '<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>'; ?>
     			<li class="breadcrumb-item active" aria-current="page">Curs</li>
   			</ol>
 		</nav>
@@ -47,7 +51,7 @@ $_SESSION["course_id"]=$_GET['id'];
 			    	<br>
 			    	<div class="mt-3">
 			    		<a href="Course_participants.php" class="btn btn-primary btn-sm me-2">Participanți<i class="bi bi-people ms-2"></i></a>
-			    		<?php if($_SESSION['user_type']=='teacher') { ?>
+			    		<?php if($_SESSION['user_type']!='student') { ?>
 			      			<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#New_lesson_group">Lecție nouă +</button>
 			      		<?php }	?>
 			    	</div>
@@ -69,7 +73,7 @@ $_SESSION["course_id"]=$_GET['id'];
 					 		<div class="d-flex justify-content-between">
 						 		<b><?php echo $row["group_title"]; ?></b>
 						 		<?php 
-						 		if($_SESSION['user_type']=='teacher') {
+						 		if($_SESSION['user_type']!='student') {
 						 			if($row["visibility"]==0)
 						 				echo '<i class="bi bi-eye-slash"></i>';
 						 		?>
@@ -122,7 +126,7 @@ $_SESSION["course_id"]=$_GET['id'];
 					  		while($row_notification=mysqli_fetch_array($results_notification)){
 					  			$title=$row_notification["title"];
 					  			echo '<div class="mt-3">';
-						  			if($_SESSION['user_type']=='teacher') {
+						  			if($_SESSION['user_type']!='student') {
 							 			if($row_notification["visibility"]==0)
 						  					echo '<a class="link-dark " style="text-decoration: none;" href="Announcement.php?id='.$row_notification["id"].'"><i class="bi bi-megaphone me-3"></i>'.$title.'<i class="bi bi-eye-slash ms-3"></i></a>';
 						  				else
@@ -144,7 +148,7 @@ $_SESSION["course_id"]=$_GET['id'];
 					  		while($row_poll=mysqli_fetch_array($results_poll)){
 					  			$title=$row_poll["title"];
 					  			echo '<div class="mt-3">';
-						  			if($_SESSION['user_type']=='teacher') {
+						  			if($_SESSION['user_type']!='student') {
 							 			if($row_poll["visibility"]==0)
 						  					echo '<a class="link-dark " style="text-decoration: none;" href="Poll.php?id='.$row_poll["id"].'"><i class="bi bi-bar-chart-line me-3"></i>'.$title.'<i class="bi bi-eye-slash ms-3"></i></a>';
 						  				else
@@ -166,7 +170,7 @@ $_SESSION["course_id"]=$_GET['id'];
 					  		while($row_video_conference=mysqli_fetch_array($results_video_conference)){
 					  			$title=$row_video_conference["title"];
 					  			echo '<div class="mt-3">';
-						  			if($_SESSION['user_type']=='teacher') {
+						  			if($_SESSION['user_type']!='student') {
 							 			if($row_video_conference["visibility"]==0)
 						  					echo '<a class="link-dark " style="text-decoration: none;" href="Video_conference.php?id='.$row_video_conference["id"].'"><i class="bi bi-camera-video me-3"></i>'.$title.'<i class="bi bi-eye-slash ms-3"></i></a>';
 						  				else
@@ -188,9 +192,9 @@ $_SESSION["course_id"]=$_GET['id'];
 					  		while($row_course_file=mysqli_fetch_array($results_course_file)){
 					  			$title=$row_course_file["title"];
 					  			echo '<div class="mt-3">';
-						  			if($_SESSION['user_type']=='teacher') {
+						  			if($_SESSION['user_type']!='student') {
 							 			if($row_course_file["visibility"]==0)
-						  					echo '<a class="link-dark " style="text-decoration: none;" href="Course_file.php?id='.$row_course_file["id"].'"><i class="bi bi-book me-3"></i>'.$title.'<i class="bi bi-book ms-3"></i></a>';
+						  					echo '<a class="link-dark " style="text-decoration: none;" href="Course_file.php?id='.$row_course_file["id"].'"><i class="bi bi-book me-3"></i>'.$title.'<i class="bi bi-eye-slash ms-3"></i></a>';
 						  				else
 						  					echo '<a class="link-dark " style="text-decoration: none;" href="Course_file.php?id='.$row_course_file["id"].'"><i class="bi bi-book me-3"></i>'.$title.'</a>';
 						  			}
@@ -210,9 +214,9 @@ $_SESSION["course_id"]=$_GET['id'];
 					  		while($row_homework=mysqli_fetch_array($results_homework)){
 					  			$title=$row_homework["title"];
 					  			echo '<div class="mt-3">';
-						  			if($_SESSION['user_type']=='teacher') {
+						  			if($_SESSION['user_type']!='student') {
 							 			if($row_homework["visibility"]==0)
-						  					echo '<a class="link-dark " style="text-decoration: none;" href="Homework.php?id='.$row_homework["id"].'"><i class="bi bi-book me-3"></i>'.$title.'<i class="bi bi-house-door ms-3"></i></a>';
+						  					echo '<a class="link-dark " style="text-decoration: none;" href="Homework.php?id='.$row_homework["id"].'"><i class="bi bi-book me-3"></i>'.$title.'<i class="bi bi-eye-slash ms-3"></i></a>';
 						  				else
 						  					echo '<a class="link-dark " style="text-decoration: none;" href="Homework.php?id='.$row_homework["id"].'"><i class="bi bi-house-door me-3"></i>'.$title.'</a>';
 						  			}
@@ -232,7 +236,7 @@ $_SESSION["course_id"]=$_GET['id'];
 					  		while($row_folder=mysqli_fetch_array($results_folder)){
 					  			$title=$row_folder["title"];
 					  			echo '<div class="mt-3">';
-						  			if($_SESSION['user_type']=='teacher') {
+						  			if($_SESSION['user_type']!='student') {
 							 			if($row_folder["visibility"]==0)
 						  					echo '<a class="link-dark " style="text-decoration: none;" href="Folder.php?id='.$row_folder["id"].'"><i class="bi bi-folder me-3"></i>'.$title.'<i class="bi bi-eye-slash ms-3"></i></a>';
 						  				else
@@ -254,7 +258,7 @@ $_SESSION["course_id"]=$_GET['id'];
 					  		while($row_link=mysqli_fetch_array($results_link)){
 					  			$title=$row_link["title"];
 					  			echo '<div class="mt-3">';
-						  			if($_SESSION['user_type']=='teacher') {
+						  			if($_SESSION['user_type']!='student') {
 							 			if($row_link["visibility"]==0)
 						  					echo '<a class="link-dark " style="text-decoration: none;" href="Link.php?id='.$row_link["id"].'"><i class="bi bi-link-45deg me-3"></i>'.$title.'<i class="bi bi-eye-slash ms-3"></i></a>';
 						  				else
@@ -276,7 +280,7 @@ $_SESSION["course_id"]=$_GET['id'];
 					  		while($row_quiz=mysqli_fetch_array($results_quiz)){
 					  			$title=$row_quiz["title"];
 					  			echo '<div class="mt-3">';
-						  			if($_SESSION['user_type']=='teacher') {
+						  			if($_SESSION['user_type']!='student') {
 							 			if($row_quiz["visibility"]==0)
 						  					echo '<a class="link-dark " style="text-decoration: none;" href="Quiz_teacher.php?id='.$row_quiz["id"].'"><i class="bi bi-question-diamond me-3"></i>'.$title.'<i class="bi bi-eye-slash ms-3"></i></a>';
 						  				else
@@ -295,9 +299,6 @@ $_SESSION["course_id"]=$_GET['id'];
 		      	</div>
 		    </div>
 	  	</div>
-
-	  	<!--Footers-->
-    	<?php include 'Footers.php' ?>
 	  	
 	  	<!--Modal--New-lesson-group--->
 		<div class="modal fade" id="New_lesson_group">

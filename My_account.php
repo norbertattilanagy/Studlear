@@ -20,7 +20,11 @@
 
     	<nav class="ms-4" aria-label="breadcrumb">
   			<ol class="breadcrumb">
-  		  		<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasa</a></li>
+  		  		<?php
+  		  		if($_SESSION['user_type']=="admin")
+  					echo '<li class="breadcrumb-item"><a href="Search_courses.php" style="text-decoration: none;">Căutare curs</a></li>';
+  				else
+  		  			echo '<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>'; ?>
     			<li class="breadcrumb-item active" aria-current="page">Contul meu</li>
   			</ol>
 		</nav>
@@ -334,8 +338,7 @@
 		    	</div>
 		  	</div>
 		</div>
-	  	<!--Footers-->
-    	<?php include 'Footers.php' ?>
+		
 	</body>
 </html>
 <script type="text/javascript">

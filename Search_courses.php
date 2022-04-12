@@ -26,13 +26,14 @@
 	<body>
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
-
-    	<nav class="ms-4" aria-label="breadcrumb">
-  			<ol class="breadcrumb">
-  		  		<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasa</a></li>
-    			<li class="breadcrumb-item active" aria-current="page">Căutare curs</li>
-  			</ol>
-		</nav>
+		<?php if($_SESSION['user_type']!="admin"){ ?>
+	    	<nav class="ms-4" aria-label="breadcrumb">
+	  			<ol class="breadcrumb">
+	  		  		<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasa</a></li>
+	    			<li class="breadcrumb-item active" aria-current="page">Căutare curs</li>
+	  			</ol>
+			</nav>
+		<?php } ?>
 		<?php 
     		if(empty($_SESSION["s"]))
     			$_SESSION['search']="";
@@ -191,20 +192,8 @@
         		</div>
         	</div>
         </div>
-        <!--Show password-->
-	     <script>
-	        function myFunction() {
-	        	var x = document.getElementById("password");
-	          	if (x.type === "password") {
-	            	x.type = "text";
-	          	} else {
-	            	x.type = "password";
-	          	}
-	        }
-	     </script>
+        
 	    
-	  	<!--Footers-->
-    	<?php include 'Footers.php' ?>
 	</body>
 </html>
 <script type="text/javascript">
@@ -213,4 +202,15 @@
             $('#Enroll_in_course').modal('show');
         }
     });
+</script>
+<!--Show password-->
+<script>
+   function myFunction() {
+   	var x = document.getElementById("password");
+     	if (x.type === "password") {
+       		x.type = "text";
+     	} else {
+       		x.type = "password";
+     	}
+   }
 </script>

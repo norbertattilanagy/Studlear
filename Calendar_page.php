@@ -19,14 +19,18 @@
     <!--Top bar-->
     <?php include 'Top_bar.php' ?>
 
-    <nav class="ms-4" aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasa</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Calendar</li>
-        </ol>
-    </nav>
+    <?php if($_SESSION['user_type']!="admin"){ ?>
+      <nav class="ms-4" aria-label="breadcrumb">
+          <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasa</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Calendar</li>
+          </ol>
+      </nav>
+    <?php } ?>
 
+    <?php if($_SESSION['user_type']!="admin"){ ?>
     <div class="row">
+      
       <!--Courses group-->
       <div class="col-md-3">
         <?php include 'Courses_group.php' ?>
@@ -34,19 +38,20 @@
 
 
       <div class="col-md-9 row">
-        <?php 
+      <?php } 
+      else
+        echo '<div class="mx-4">';
 
         if(empty($_SESSION['calendar_date']))
           $_SESSION['calendar_date']=date("Y-m-d");
 
         include 'Calendar.php';
-        ?>
-    
+        
+    if($_SESSION['user_type']!="admin"){ ?>
+      </div>
+    <?php } ?>
     </div>
-
-
-    <!--Footers-->
-    <?php include 'Footers.php' ?>
+    
   </body>
 
 

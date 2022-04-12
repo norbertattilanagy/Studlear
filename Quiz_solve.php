@@ -20,8 +20,11 @@
 
     	<nav class="ms-4" aria-label="breadcrumb">
   			<ol class="breadcrumb">
-  		  		<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>
-  		  		<?php 
+  		  		<?php
+  		  		if($_SESSION['user_type']=="admin")
+  					echo '<li class="breadcrumb-item"><a href="Search_courses.php" style="text-decoration: none;">Căutare curs</a></li>';
+  				else
+  		  			echo '<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>'; 
   		  		echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'" style="text-decoration: none;">Curs</a></li>'; 
   		  		echo '<li class="breadcrumb-item"><a href="Quiz_teacher.php?id='.$_SESSION['quiz'].'" style="text-decoration: none;">Quiz</a></li>';
   		  		echo '<li class="breadcrumb-item"><a href="Quiz_solve_table.php" style="text-decoration: none;">Tabel rezolvări</a></li>';
@@ -351,7 +354,7 @@
 									<label for="point" class="form-label me-2"><i>Puncte:</i></label>
 			  						<?php 
 			  						$id="point".$row_order['order_number'];
-			  						if($_SESSION['user_type']=="teacher")
+			  						if($_SESSION['user_type']!="student")
 			  							echo '<input type="number" class="form-control me-2 '.$id.'" style="width: 70px; height: 25px;" id="'.$id.'" name="'.$id.'" value="'.$point_value.'" min=0 max='.$row_answer['point'].' onchange="calculateTotal(\''.$id.'\','.$row_order['order_number'].');">'; 
 			  						else
 			  							echo '<b class="me-2">'.$point_value."</b>";
@@ -367,7 +370,7 @@
 						<div class="d-flex justify-content-end">
 							<?php echo '<h3><i class="me-2">Total puncte:</i><b id="total_point"></b> / '.$max_point.'</h3>'; ?>
 						</div>
-						<?php if($_SESSION['user_type']=="teacher"){ ?>
+						<?php if($_SESSION['user_type']!="student"){ ?>
 							<div class="d-grid mt-3">
 								<button type="submit" class="btn btn-secondary">Slavează</button>
 							</div>
@@ -376,9 +379,6 @@
 		    	</div>
 		    </div>
 		</div>
-		<!--Footers-->
-    	<?php include 'Footers.php' ?>
-
 
 	</body>
 </html>

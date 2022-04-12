@@ -18,12 +18,6 @@
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
-    	<nav class="ms-4" aria-label="breadcrumb">
-  			<ol class="breadcrumb">
-  		  		<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasa</a></li>
-    			<li class="breadcrumb-item active" aria-current="page">Căutare utilizatori</li>
-  			</ol>
-		</nav>
 		<?php 
     		if(empty($_SESSION["s"]))
     			$_SESSION['search']="";
@@ -142,9 +136,6 @@
 				</ul>
 			<?php } ?>
 		</div>
-		
-		<!--Footers-->
-    	<?php include 'Footers.php' ?>
 
 	  	<!--Modal--Delete-user--->
 		<div class="modal fade" id="Delete_user">

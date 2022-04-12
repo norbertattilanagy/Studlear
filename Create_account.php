@@ -1,5 +1,5 @@
 <?php include 'Conection.php'; ?>
-<?php include 'Page_security.php'; ?>s
+<?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -19,7 +19,7 @@
       <div class="row d-flex justify-content-center align-items-center">
         
         <a href="Sign_in.php" class="">
-          <img src="Images\Sistem\logo4.png" alt="Logo" style="width:300px;" class="mx-auto d-block">
+          <img src="Images\Sistem\logo.png" alt="Logo" style="width:300px;" class="mx-auto d-block">
         </a>
         <h2 class="text-center"><br>Întregistrare</h2>
         <form action="Create_account1.php" class="needs-validation" method="post" novalidate>
@@ -55,6 +55,9 @@
           <div class="d-grid">
             <br>
             <button type="submit" class="btn btn-dark btn-block">Înregistrare</button>
+          </div>
+          <div class="text-center">
+            <p><br><a href="Sign_in.php">Autentificare</a></p>
           </div>
         </form>
       </div>
