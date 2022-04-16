@@ -1,5 +1,5 @@
 <?php include 'Conection.php'; ?>
-<?php include 'Page_security.php'; ?>
+<?php //include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
   <head>
@@ -13,17 +13,9 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Sign in</title>
   </head>
-  <?php
-  if(isset($_SESSION['email']))
-    $email=$_SESSION['email'];
-  else
-    $email="";
-  ?>
-
-  <body class="bg-light">
-    <?php 
-    if(isset($_SESSION['incorrect'])) {
-      if($_SESSION['incorrect']=="Adresa de email nu există.")
+  <body>
+    <?php if(isset($_SESSION['incorrect'])) {
+      if($_SESSION['incorrect']!="Adresa de email nu există.")
         $_SESSION['incorrect']=""; 
       if($_SESSION['incorrect']!=""){?>
         <div class="alert alert-danger" role="alert">
@@ -33,8 +25,7 @@
           </div>
         </div>
     <?php } } ?>
-    <?php 
-    if(isset($_SESSION['correct'])) { 
+    <?php if(isset($_SESSION['corect'])) {
       if($_SESSION['correct']!=""){?>
         <div class="alert alert-success" role="alert">
           <div class="d-flex justify-content-center">
@@ -43,62 +34,40 @@
           </div>
         </div>
     <?php } } ?>
-    <div class="col-lg-4 col-md-3"></div>
-    
-
     <div class="container my-3 col-lg-4 col-md-6">
       <div class="row d-flex justify-content-center align-items-center">
         <p><br></p>
         <a href="Sign_in.php" class="">
           <img src="Images\Sistem\logo.png" alt="Logo" style="width:300px;" class="mx-auto d-block">
         </a>
-        <h2 class="text-center"><br>Autentificare</h2>
-        <form action="Sign_in1.php" class="needs-validation" name="form1" method="post" novalidate>
-          <div class="mb-3 mt-3">
-            <label for="email">Email:</label>
-            <?php echo '<input type="email" class="form-control" id="email" placeholder="Enter email" value="'.$email.'" name="email" required>'; ?>
-            <div class="invalid-feedback email"><p id="em">Introduceți email-ul</p></div>
+        <h2 class="text-center"><br>Recuperare parolă</h2>
+        <form action="Reset_password1.php?edit=3" class="needs-validation" method="post" novalidate>
+          <div class="mb-3">
+            <label for="password1">Parolă:</label>
+            <input type="password" class="form-control" id="password1" placeholder="Introduceți parola" name="password1" required>
+            <div class="invalid-feedback password1"><p id="p1">Introduceți o parolă</p></div>
           </div>
           <div class="mb-3">
-            <label for="pwd">Parolă:</label>
-            <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
-            <div class="invalid-feedback password"><p id="pas">Introduceți parola</p></div>
-          </div>
-          <div class="form-check mb-3">
-            <label class="form-check-label">
-              <input class="form-check-input" type="checkbox" name="show_password" onclick="myFunction()"> Arată parola
-            </label>
+            <label for="password2">Confirmați parola:</label>
+            <input type="password" class="form-control" id="password2" placeholder="Confirmați parola" name="password2" required>
+            <div class="invalid-feedback password2"><p id="p2">Introduceți o parolă</p></div>
           </div>
           <div class="d-grid">
-            <button type="submit" class="btn btn-dark btn-block">Autentificare</button>
+            <button type="submit" class="btn btn-dark btn-block">Salvează</button>
           </div>
           <div class="text-center">
-            <br><a href="Create_account.php">Înregistrare</a>
-          </div>
-          <div class="text-center">
-            <br><a href="Recovery_password.php">Am uitat parola</a>
+            <br><a href="Sign_in.php">Autentificare</a>
           </div>
         </form>
       </div>
-      <!--Show password-->
-      <script>
-        function myFunction() {
-          var x = document.getElementById("password");
-          if (x.type === "password") {
-            x.type = "text";
-          } else {
-            x.type = "password";
-          }
-        }
-      </script>
     </div>
-
-    <div class="col-lg-4 col-md-3"></div>
-    
   </body>
 </html>
 <script type="text/javascript">
-  (function () {
+var password1=document.getElementById("password1");
+var password2=document.getElementById("password2");
+
+(function () {
   
     var forms = document.querySelectorAll('.needs-validation') 
     Array.prototype.slice.call(forms).forEach(function (form) {
@@ -107,12 +76,38 @@
         {     
           if (!form.checkValidity())
           { 
-            incorectEmail();
-            event.preventDefault()
-            event.stopPropagation()
+              event.preventDefault()
+              event.stopPropagation()
           }
           form.classList.add('was-validated')
         }, false)
     })
 })()
+
+function validatePassword(){
+  if(password1.value=="")
+  {
+    $("#p1").remove();
+    $(".password1").append(`<p id="p1">Introduceți o parolă</p>`);
+  }       
+  if(password2.value=="")
+  {
+    $("#p2").remove();
+    $(".password2").append(`<p id="p2">Introduceți o parolă</p>`);
+  }
+    if(password1.value != password2.value) {
+      $("#p1").remove();
+    $("#p2").remove();
+    $(".password1").append(`<p id="p1">Parola nu coincide</p>`);
+    $(".password2").append(`<p id="p2">Parola nu coincide</p>`);
+
+      password1.setCustomValidity(' ');
+      password2.setCustomValidity(' ');
+    } else {
+      password1.setCustomValidity('');
+      password2.setCustomValidity('');
+    }
+}
+password1.onchange = validatePassword;
+password2.onkeyup = validatePassword;
 </script>

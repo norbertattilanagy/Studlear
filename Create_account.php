@@ -13,6 +13,7 @@
     <title>Create account</title>
   </head>
   <body class="bg-light">
+    <?php $_SESSION['correct']=""; ?>
     <div class="col-lg-4 col-md-3"></div>
 
     <div class="container my-3 col-lg-4 col-md-6">
@@ -35,7 +36,7 @@
           </div>
           <div class="mb-3">
             <label for="password1">Parolă:</label>
-            <input type="password" class="form-control" id="password1" placeholder="Introduceți parola" name="password1" required>
+            <input type="password" class="form-control" id="password1" placeholder="Introduceți parola" name="password1" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="bottom" title="Parola trebuie să conțină cel puțin:" data-bs-content="6 caractere, o majusculă, o minusculă, o vifră" required>
             <div class="invalid-feedback password1"><p id="p1">Introduceți o parolă</p></div>
           </div>
           <div class="mb-3">
@@ -65,6 +66,15 @@
 
   </body>
 </html>
+<script>
+var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+  return new bootstrap.Popover(popoverTriggerEl)
+})
+var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
+  trigger: 'focus'
+})
+</script>
 <script type="text/javascript">
 var password1=document.getElementById("password1");
 var password2=document.getElementById("password2");
@@ -89,6 +99,9 @@ var user_type=document.getElementById("user_type");
 })()
 
 function validatePassword(){
+  var lower_case_letters = /[a-z]/g;
+  var upper_case_letters = /[A-Z]/g;
+  var numbers = /[0-9]/g;
   if(password1.value=="")
   {
     $("#p1").remove();
@@ -99,18 +112,44 @@ function validatePassword(){
     $("#p2").remove();
     $(".password2").append(`<p id="p2">Introduceți o parolă</p>`);
   }
-    if(password1.value != password2.value) {
-      $("#p1").remove();
+  if(password1.value.length<6)
+  {
+    $("#p1").remove();
+    $(".password1").append(`<p id="p1">Parola trebuie să conțonă minim 6 carcatere</p>`);
+    password1.setCustomValidity(' ');
+  }
+  else if(!password1.value.match(lower_case_letters))
+  {
+    $("#p1").remove();
+    $(".password1").append(`<p id="p1">Parola nu conține litere mici</p>`);
+    password1.setCustomValidity(' ');
+  }
+  else if(!password1.value.match(upper_case_letters))
+  {
+    $("#p1").remove();
+    $(".password1").append(`<p id="p1">Parola nu conține litere mari</p>`);
+    password1.setCustomValidity(' ');
+  }
+  else if(!password1.value.match(numbers))
+  {
+    $("#p1").remove();
+    $(".password1").append(`<p id="p1">Parola nu conține cifre</p>`);
+    password1.setCustomValidity(' ');
+  }
+  else if(password1.value != password2.value)
+  {
+    $("#p1").remove();
     $("#p2").remove();
     $(".password1").append(`<p id="p1">Parola nu coincide</p>`);
     $(".password2").append(`<p id="p2">Parola nu coincide</p>`);
-
-      password1.setCustomValidity(' ');
-      password2.setCustomValidity(' ');
-    } else {
-      password1.setCustomValidity('');
-      password2.setCustomValidity('');
-    }
+    password1.setCustomValidity(' ');
+    password2.setCustomValidity(' ');
+  } 
+  else
+  {
+    password1.setCustomValidity('');
+    password2.setCustomValidity('');
+  }
 }
 password1.onchange = validatePassword;
 password2.onkeyup = validatePassword;

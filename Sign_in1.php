@@ -9,6 +9,7 @@
 	{
 		$_SESSION['user_id']=$row['id'];
 		$_SESSION['user_type']=$row['type'];
+		$_SESSION['incorrect']="";
 		if($_SESSION['user_type']=="admin")
 			$link='location:Search_courses.php';
 		else
@@ -21,11 +22,11 @@
 		$sql="SELECT * FROM user WHERE email LIKE $email";
 		$results=mysqli_query($db,$sql);
 		if(empty($row=mysqli_fetch_array($results,MYSQLI_ASSOC)))
-			$_SESSION['incorect']="Email și parolă inorectă.";
+			$_SESSION['incorrect']="Email și parolă inorectă.";
 		else
 		{
 			$_SESSION['email']=$_POST['email'];
-			$_SESSION['incorect']="Parolă inorectă";
+			$_SESSION['incorrect']="Parolă inorectă";
 		}
 		$link='location:'.$_SERVER['HTTP_REFERER'];
 	    header("$link");
