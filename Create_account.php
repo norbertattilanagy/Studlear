@@ -8,12 +8,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <!-- Bootstrap CSS -->
     <link href="assets\css\bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <script src="assets\js\bootstrap.bundle.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <title>Create account</title>
   </head>
   <body class="bg-light">
+    <?php
+    if(isset($_SESSION['name']))
+      $name=$_SESSION['name'];
+    else
+      $name="";
+    if(isset($_SESSION['email_c']))
+      $email=$_SESSION['email_c'];
+    else
+      $email="";
+    ?>
     <?php $_SESSION['correct']=""; ?>
+    <?php 
+    if(isset($_SESSION['incorrect_email'])) {
+      if($_SESSION['incorrect_email']!=""){?>
+        <div class="alert alert-danger" role="alert">
+          <div class="d-flex justify-content-center">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <?php echo $_SESSION['incorrect_email']; ?>
+          </div>
+        </div>
+    <?php } } ?>
     <div class="col-lg-4 col-md-3"></div>
 
     <div class="container my-3 col-lg-4 col-md-6">
@@ -26,32 +47,23 @@
         <form action="Create_account1.php" class="needs-validation" method="post" novalidate>
           <div class="mb-3">
               <label for="name">Nume:</label>
-              <input type="text" class="form-control" id="name" placeholder="Introduceți numele" name="name" required>
+              <?php echo '<input type="text" class="form-control" id="name" placeholder="Introduceți numele" name="name" value="'.$name.'" required>'; ?>
               <div class="invalid-feedback">Introduceți un nume</div>
           </div>
           <div class="mb-3">
             <label for="email">Email:</label>
-            <input type="email" class="form-control" id="email" placeholder="Introduceţi e-mailul" name="email" required>
+            <?php echo '<input type="email" class="form-control" id="email" placeholder="Introduceţi e-mailul" name="email" value="'.$email.'" required>'; ?>
             <div class="invalid-feedback">Introduceți un email</div>
           </div>
           <div class="mb-3">
             <label for="password1">Parolă:</label>
-            <input type="password" class="form-control" id="password1" placeholder="Introduceți parola" name="password1" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-placement="bottom" title="Parola trebuie să conțină cel puțin:" data-bs-content="6 caractere, o majusculă, o minusculă, o vifră" required>
+            <input type="password" class="form-control" id="password1" placeholder="Introduceți parola" name="password1" data-bs-toggle="popover" data-bs-trigger="focus" title="Parola trebuie să conțină cel puțin:" data-bs-content="6 caractere, o majusculă, o minusculă, o vifră" required>
             <div class="invalid-feedback password1"><p id="p1">Introduceți o parolă</p></div>
           </div>
           <div class="mb-3">
             <label for="password2">Confirmați parola:</label>
             <input type="password" class="form-control" id="password2" placeholder="Confirmați parola" name="password2" required>
             <div class="invalid-feedback password2"><p id="p2">Introduceți o parolă</p></div>
-          </div>
-          <div class="mb-3">
-            <label for="user_type" class="form-label">Selectați tipul de utilizator:</label>
-            <select class="form-select" name="user_type" id="user_type" required>
-              <option value="-">-</option>
-              <option value="teacher">Profesor</option>
-              <option value="student">Student</option>
-            </select>
-            <div class="invalid-feedback">Alegeți un tip de utilizator</div>
           </div>
           <div class="d-grid">
             <br>
@@ -78,7 +90,6 @@ var popover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), 
 <script type="text/javascript">
 var password1=document.getElementById("password1");
 var password2=document.getElementById("password2");
-var user_type=document.getElementById("user_type");
 
 (function () {
   
@@ -89,7 +100,6 @@ var user_type=document.getElementById("user_type");
         {     
           if (!form.checkValidity())
           { 
-            validateUser_type();
               event.preventDefault()
               event.stopPropagation()
           }
@@ -153,12 +163,4 @@ function validatePassword(){
 }
 password1.onchange = validatePassword;
 password2.onkeyup = validatePassword;
-function validateUser_type(){
-  if(user_type.value=="-"){
-    user_type.setCustomValidity(' ');
-  } else {
-    user_type.setCustomValidity('');
-  }
-}
-user_type.onchange = validateUser_type;
 </script>

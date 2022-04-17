@@ -11,19 +11,16 @@
 
 	if(isset($_POST['email']))
 	{
-		$_SESSION['email']=$_POST['email'];
+		$_SESSION['email_c']=$_POST['email'];
 		$email="'".$_POST['email']."'";
-	}
-
-	if($_POST['user_type']!="-")
-	{
-		$_SESSION['user_type']=$_POST['user_type'];
-		$type="'".$_POST['user_type']."'";
-	}
-	else
-	{
-		$_SESSION['error'][2]=1;
-		$error=1;
+		$sql="SELECT * FROM user WHERE email LIKE $email";
+		$results=mysqli_query($db,$sql);
+		$nr=mysqli_num_rows($results);
+		if($nr>0)
+		{
+			echo $_SESSION['incorrect_email']="Există deja un cont înregistrat cu această adresă de email.";
+			$error=1;
+		}
 	}
 
 	if(isset($_POST['password1']) and isset($_POST['password2']))
@@ -36,7 +33,6 @@
 		}
 		else
 		{
-			$_SESSION['error'][5]=1;
 			$error=1;
 		}
 	}
@@ -45,8 +41,13 @@
 	{
 		$sql="INSERT INTO user (name,email,password,type) VALUES ($name,$email,$password,$type)";
 		$results=mysqli_query($db,$sql);
+		$link='location:Sign_in.php';
+		$_SESSION['incorrect_email']="";
 	}
-
-	$link='location:'.$_SERVER['HTTP_REFERER'];
+	else
+	{
+		$link='location:Create_account.php';
+	}
+	
 	header("$link");
 ?>

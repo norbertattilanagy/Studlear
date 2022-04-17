@@ -102,8 +102,42 @@ else  if ($_GET["edit"]==3)//edit password
 else  if ($_GET["edit"]==4)//delete profile
 {
 	$user_id=$_SESSION['user_id'];
+
+	$sql="DELETE FROM calendar WHERE user_id LIKE $user_id";
+	$results=mysqli_query($db,$sql);
+
+	$sql="DELETE FROM course_group WHERE user_id LIKE $user_id";
+	$results=mysqli_query($db,$sql);
+
+	$sql="DELETE FROM course_user WHERE user_id LIKE $user_id";
+	$results=mysqli_query($db,$sql);
+
+	$sql="SELECT * FROM answer_homework WHERE user_id LIKE $user_id";
+	$results=mysqli_query($db,$sql);
+	while ($row=mysqli_fetch_array($results))
+	{
+		rmdir($row['folder_name']);
+	}
+	$sql="DELETE FROM answer_homework WHERE user_id LIKE $user_id";
+	$results=mysqli_query($db,$sql);
+
+	$sql="DELETE FROM answer_quiz_option WHERE user_id LIKE $user_id";
+	$results=mysqli_query($db,$sql);
+
+	$sql="DELETE FROM answer_text_question WHERE user_id LIKE $user_id";
+	$results=mysqli_query($db,$sql);
+
+	$sql="DELETE FROM answer_true_false WHERE user_id LIKE $user_id";
+	$results=mysqli_query($db,$sql);
+
+	$sql="DELETE FROM answer_select_question WHERE user_id LIKE $user_id";
+	$results=mysqli_query($db,$sql);
+
 	$sql="DELETE FROM user WHERE id LIKE $user_id";
 	$results=mysqli_query($db,$sql);
+	
+	$_SESSION['user_type']="not_logged";
+
 	$link='location:Sign_in.php';
 	header("$link");
 }

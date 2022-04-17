@@ -21,6 +21,9 @@
   ?>
 
   <body class="bg-light">
+    <?php $_SESSION['incorrect_email']=""; 
+    $_SESSION['name']="";
+    $_SESSION['email_c']="";?>
     <?php 
     if(isset($_SESSION['incorrect'])) {
       if($_SESSION['incorrect']=="Adresa de email nu există.")

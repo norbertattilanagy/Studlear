@@ -1,5 +1,5 @@
 <?php include 'Conection.php'; ?>
-<?php //include 'Page_security.php'; ?>
+<?php include 'Page_security.php'; ?>
 <?php
 if($_GET['edit']==1)
 {

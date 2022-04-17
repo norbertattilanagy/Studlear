@@ -10,6 +10,7 @@
 		$_SESSION['user_id']=$row['id'];
 		$_SESSION['user_type']=$row['type'];
 		$_SESSION['incorrect']="";
+		$_SESSION['email']="";
 		if($_SESSION['user_type']=="admin")
 			$link='location:Search_courses.php';
 		else
