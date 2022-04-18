@@ -24,7 +24,6 @@
     else
       $email="";
     ?>
-    <?php $_SESSION['correct']=""; ?>
     <?php 
     if(isset($_SESSION['incorrect_email'])) {
       if($_SESSION['incorrect_email']!=""){?>

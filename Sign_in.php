@@ -36,19 +36,7 @@
           </div>
         </div>
     <?php } } ?>
-    <?php 
-    if(isset($_SESSION['correct'])) { 
-      if($_SESSION['correct']!=""){?>
-        <div class="alert alert-success" role="alert">
-          <div class="d-flex justify-content-center">
-            <i class="bi bi-check-circle-fill me-2"></i>
-            <?php echo $_SESSION['correct']; ?>
-          </div>
-        </div>
-    <?php } } ?>
     <div class="col-lg-4 col-md-3"></div>
-    
-
     <div class="container my-3 col-lg-4 col-md-6">
       <div class="row d-flex justify-content-center align-items-center">
         <p><br></p>
@@ -77,9 +65,6 @@
           </div>
           <div class="text-center">
             <br><a href="Create_account.php">Înregistrare</a>
-          </div>
-          <div class="text-center">
-            <br><a href="Recovery_password.php">Am uitat parola</a>
           </div>
         </form>
       </div>
