@@ -245,4 +245,11 @@ else if($_GET["edit"]==9)//update point answer teacher
 	$link='location:'.$_SERVER['HTTP_REFERER'];
 	header("$link");
 }
+else
+{
+ 	if($_SESSION['user_type']=="admin")
+		header("location:Search_courses.php");
+	else
+		header("location:Home_page.php");
+}
 ?>

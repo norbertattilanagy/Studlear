@@ -95,7 +95,6 @@
         {     
           if (!form.checkValidity())
           { 
-            incorectEmail();
             event.preventDefault()
             event.stopPropagation()
           }

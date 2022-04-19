@@ -182,3 +182,10 @@ else if($_GET["edit"]==5)//answer poll
 	$link='location: Poll.php?id='.$_SESSION['poll'];
 	header("$link");
 }
+else
+{
+ 	if($_SESSION['user_type']=="admin")
+		header("location:Search_courses.php");
+	else
+		header("location:Home_page.php");
+}

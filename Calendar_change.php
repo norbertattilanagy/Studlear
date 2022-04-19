@@ -1,6 +1,16 @@
 <?php include 'Conection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <?php
+if(empty($_GET['button']))
+{
+    if($_SESSION['user_type']=="admin")
+        header("location:Search_courses.php");
+    else
+    {
+        header("location:Home_page.php");
+        exit();
+    }
+}
 if($_GET['button']=="previous")//change month
 {
     $_SESSION['calendar_date'] = date("Y-m-d", strtotime ( '-1 month' , strtotime ( $_SESSION['calendar_date'] ) )) ;
@@ -66,5 +76,12 @@ else if($_GET['button']=="add_event")//add event
 
     $link='location:'.$_SERVER['HTTP_REFERER'];
         header("$link");
+}
+else
+{
+    if($_SESSION['user_type']=="admin")
+        header("location:Search_courses.php");
+    else
+        header("location:Home_page.php");
 }
 ?>

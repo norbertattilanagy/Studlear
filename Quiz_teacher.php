@@ -366,7 +366,21 @@
 											echo '<option>'.$row_select["option"].'</option>';
 										} ?>
 									</select>
-								<?php }
+									<?php 
+									$first=1;
+									echo '<b>Răspuns corect:</b> ';
+									$results_select=mysqli_query($db,$sql_select);
+									while($row_select=mysqli_fetch_array($results_select))
+									{
+										if($row_select["correct"]==1)
+										{
+											if($first==1)
+												echo $row_select['option'];
+											else
+												echo ' ,'.$row_select['option'];
+										}
+									}
+								}
 							}
 							?>
 							

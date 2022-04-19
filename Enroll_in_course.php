@@ -7,6 +7,17 @@
 //3-enroll course
 //4-delete course
 //5-delete course
+
+if(empty($_GET['enroll']))
+{
+	if($_SESSION['user_type']=="admin")
+		header("location:Search_courses.php");
+	else
+	{
+		header("location:Home_page.php");
+		exit();
+	}
+}
 if($_GET["enroll"]==0)
 {
 	$_SESSION['course_title']=$_GET['course_title'];
@@ -90,4 +101,11 @@ else if($_GET["enroll"]==8)
 	$link='location:Search_courses.php';
     header("$link");
 }
+else
+{
+    if($_SESSION['user_type']=="admin")
+        header("location:Search_courses.php");
+    else
+        header("location:Home_page.php");
+} 
 ?>

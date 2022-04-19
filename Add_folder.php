@@ -27,7 +27,7 @@
   				else
   		  			echo '<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>';
   		  		echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'" style="text-decoration: none;">Curs</a></li>';
-  		  		
+
   		  		if($_SESSION['add']==1)
     				echo '<li class="breadcrumb-item active" aria-current="page">Adaugă folder</li>';
     			else

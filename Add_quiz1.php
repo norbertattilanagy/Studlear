@@ -959,4 +959,11 @@ else if($_GET["edit"]==12)//update point
 	$link='location:Quiz_solve_table.php';
 	header("$link");
 }
+else
+{
+ 	if($_SESSION['user_type']=="admin")
+		header("location:Search_courses.php");
+	else
+		header("location:Home_page.php");
+}
 ?>

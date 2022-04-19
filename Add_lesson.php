@@ -99,4 +99,11 @@ else if($_GET["edit"]==4)//set lesson group id delete
 	$link='location:'.$_SERVER['HTTP_REFERER'].'#Delete_lesson_group';
 	header("$link");
 }
+else
+{
+ 	if($_SESSION['user_type']=="admin")
+		header("location:Search_courses.php");
+	else
+		header("location:Home_page.php");
+}
 ?>
