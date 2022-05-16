@@ -343,9 +343,11 @@
     $(document).ready(function() {
         if(window.location.href.indexOf('#Event_Modal') != -1) {
             $('#Event_Modal').modal('show');
+            window.history.pushState('', 'Calendar_page', 'Calendar_page.php');
         }
         else if(window.location.href.indexOf('#Description_event_Modal') != -1){
            $('#Description_event_Modal').modal('show');
+           window.history.pushState('', 'Calendar_page', 'Calendar_page.php');
         }
     });
 </script>

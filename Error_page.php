@@ -24,7 +24,7 @@ if(empty($_SESSION['error_message']))//security
 	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 	    <script src="assets\js\bootstrap.bundle.min.js"></script>
 	    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	    <title>Course</title>
+	    <title>Studlear</title>
 	</head>
 	<body>
 		<!--Top bar-->
@@ -41,9 +41,9 @@ if(empty($_SESSION['error_message']))//security
     			<li class="breadcrumb-item active" aria-current="page">Error</li>
   			</ol>
 		</nav>
-		<?php if($_SESSION['user_type']!="admin"){ ?>
-			<div class="row">
-
+		
+		<div class="row">
+			<?php if($_SESSION['user_type']!="admin"){ ?>
 	    		<!--Courses group-->
 			    <div class="col-md-3">
 			    	<?php include 'Courses_group.php' ?>
@@ -56,7 +56,8 @@ if(empty($_SESSION['error_message']))//security
           				</div>
         			</div>
 			    </div>
-			</div>
-		<?php } ?>
+			<?php } ?> 
+		<h2 style="text-align: center;"><?php echo $_SESSION['error_message']; ?></h2>
+		</div>
 	</body>
 </html>

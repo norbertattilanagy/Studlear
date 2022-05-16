@@ -99,6 +99,16 @@ else if($_GET["edit"]==4)//set lesson group id delete
 	$link='location:'.$_SERVER['HTTP_REFERER'].'#Delete_lesson_group';
 	header("$link");
 }
+else if($_GET["edit"]==5)//set lesson group id delete
+{
+	$title='"'.$_POST['Cours_name'].'"';
+	$password='"'.$_POST['Cours_password'].'"';
+	$course_id=$_GET['id'];
+	$sql="UPDATE course SET title=$title, password=$password WHERE id LIKE $course_id";
+	$results=mysqli_query($db,$sql);
+	$link='location:'.$_SERVER['HTTP_REFERER'];
+	header("$link");
+}
 else
 {
  	if($_SESSION['user_type']=="admin")

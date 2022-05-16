@@ -12,7 +12,7 @@
 	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 	    <script src="assets\js\bootstrap.bundle.min.js"></script>
 	    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	    <title>Course</title>
+	    <title>Studlear</title>
 	    <style type="text/css">
 	    	.text-underline-hover {
 			    text-decoration: none;
@@ -103,7 +103,7 @@
 							if($_SESSION['user_type']=="admin")
 								echo '<a class="link-dark text-underline-hover" href="Course_page.php?id='.$row['id'].'">';
 							else
-								echo '<a class="link-dark text-underline-hover" href="Enroll_in_course.php?enroll=0&course_title='.$row["title"].'">';
+								echo '<a class="link-dark text-underline-hover" href="Enroll_in_course.php?enroll=0&course_id='.$row["id"].'">';
 									echo '<div class="container-sm p-2 my-3 border border-2 rounded">';
 										echo '<div class="d-flex justify-content-between align-items-center">';
 											echo '<h4>'.$row["title"].'</h4>';
@@ -200,6 +200,7 @@
     $(document).ready(function() {
         if(window.location.href.indexOf('#Enroll_in_course') != -1) {
             $('#Enroll_in_course').modal('show');
+            window.history.pushState('', 'Search_courses', 'Search_courses.php');
         }
     });
 </script>

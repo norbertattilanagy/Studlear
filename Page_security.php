@@ -106,7 +106,10 @@ if(basename($_SERVER['PHP_SELF'])=="My_account.php")
 if(basename($_SERVER['PHP_SELF'])=="Course_page.php")
 {
 	$id=$_GET['id'];
-	$sql="SELECT * FROM course_user WHERE course_id LIKE $id AND user_id LIKE $user_id";
+	if($_SESSION['user_type']!='admin')
+		$sql="SELECT * FROM course_user WHERE course_id LIKE $id AND user_id LIKE $user_id";
+	else
+		$sql="SELECT * FROM course WHERE id LIKE $id";
 	$results=mysqli_query($db,$sql);
 	$row=mysqli_fetch_array($results);
 	if(empty($row['id']))
@@ -119,7 +122,8 @@ if(basename($_SERVER['PHP_SELF'])=="Course_page.php")
 if(basename($_SERVER['PHP_SELF'])=="Announcement.php")
 {
 	$id=$_GET['id'];
-	$sql="SELECT lesson_group_id FROM notification WHERE id LIKE $id";
+	
+	$sql="SELECT * FROM notification WHERE id LIKE $id";
 	$results=mysqli_query($db,$sql);
 	$row=mysqli_fetch_array($results);
 	if(!empty($row['lesson_group_id']))
@@ -130,14 +134,17 @@ if(basename($_SERVER['PHP_SELF'])=="Announcement.php")
 		$row=mysqli_fetch_array($results);
 		if(!empty($row['course_id']))
 		{
-			$course_id=$row['course_id'];
-			$sql="SELECT * FROM course_user WHERE course_id LIKE $course_id AND user_id LIKE $user_id";
-			$results=mysqli_query($db,$sql);
-			$row=mysqli_fetch_array($results);
-			if(empty($row['id']))
+			if($_SESSION['user_type']!='admin')
 			{
-				$_SESSION['error_message']="Id-ul anunțului este invalid.";
-				header("location:Error_page.php");
+				$course_id=$row['course_id'];
+				$sql="SELECT * FROM course_user WHERE course_id LIKE $course_id AND user_id LIKE $user_id";
+				$results=mysqli_query($db,$sql);
+				$row=mysqli_fetch_array($results);
+				if(empty($row['id']))
+				{
+					$_SESSION['error_message']="Id-ul anunțului este invalid.";
+					header("location:Error_page.php");
+				}
 			}
 		}
 		else
@@ -167,14 +174,17 @@ if(basename($_SERVER['PHP_SELF'])=="Video_conference.php")
 		$row=mysqli_fetch_array($results);
 		if(!empty($row['course_id']))
 		{
-			$course_id=$row['course_id'];
-			$sql="SELECT * FROM course_user WHERE course_id LIKE $course_id AND user_id LIKE $user_id";
-			$results=mysqli_query($db,$sql);
-			$row=mysqli_fetch_array($results);
-			if(empty($row['id']))
+			if($_SESSION['user_type']!='admin')
 			{
-				$_SESSION['error_message']="Id-ul videoconferinței este invalid.";
-				header("location:Error_page.php");
+				$course_id=$row['course_id'];
+				$sql="SELECT * FROM course_user WHERE course_id LIKE $course_id AND user_id LIKE $user_id";
+				$results=mysqli_query($db,$sql);
+				$row=mysqli_fetch_array($results);
+				if(empty($row['id']))
+				{
+					$_SESSION['error_message']="Id-ul videoconferinței este invalid.";
+					header("location:Error_page.php");
+				}
 			}
 		}
 		else
@@ -204,14 +214,17 @@ if(basename($_SERVER['PHP_SELF'])=="Course_file.php")
 		$row=mysqli_fetch_array($results);
 		if(!empty($row['course_id']))
 		{
-			$course_id=$row['course_id'];
-			$sql="SELECT * FROM course_user WHERE course_id LIKE $course_id AND user_id LIKE $user_id";
-			$results=mysqli_query($db,$sql);
-			$row=mysqli_fetch_array($results);
-			if(empty($row['id']))
+			if($_SESSION['user_type']!='admin')
 			{
-				$_SESSION['error_message']="Id-ul fișier cursului este invalid.";
-				header("location:Error_page.php");
+				$course_id=$row['course_id'];
+				$sql="SELECT * FROM course_user WHERE course_id LIKE $course_id AND user_id LIKE $user_id";
+				$results=mysqli_query($db,$sql);
+				$row=mysqli_fetch_array($results);
+				if(empty($row['id']))
+				{
+					$_SESSION['error_message']="Id-ul fișier cursului este invalid.";
+					header("location:Error_page.php");
+				}
 			}
 		}
 		else
@@ -241,14 +254,17 @@ if(basename($_SERVER['PHP_SELF'])=="Homework.php")
 		$row=mysqli_fetch_array($results);
 		if(!empty($row['course_id']))
 		{
-			$course_id=$row['course_id'];
-			$sql="SELECT * FROM course_user WHERE course_id LIKE $course_id AND user_id LIKE $user_id";
-			$results=mysqli_query($db,$sql);
-			$row=mysqli_fetch_array($results);
-			if(empty($row['id']))
+			if($_SESSION['user_type']!='admin')
 			{
-				$_SESSION['error_message']="Id-ul temei este invalid.";
-				header("location:Error_page.php");
+				$course_id=$row['course_id'];
+				$sql="SELECT * FROM course_user WHERE course_id LIKE $course_id AND user_id LIKE $user_id";
+				$results=mysqli_query($db,$sql);
+				$row=mysqli_fetch_array($results);
+				if(empty($row['id']))
+				{
+					$_SESSION['error_message']="Id-ul temei este invalid.";
+					header("location:Error_page.php");
+				}
 			}
 		}
 		else
@@ -278,14 +294,17 @@ if(basename($_SERVER['PHP_SELF'])=="Folder.php")
 		$row=mysqli_fetch_array($results);
 		if(!empty($row['course_id']))
 		{
-			$course_id=$row['course_id'];
-			$sql="SELECT * FROM course_user WHERE course_id LIKE $course_id AND user_id LIKE $user_id";
-			$results=mysqli_query($db,$sql);
-			$row=mysqli_fetch_array($results);
-			if(empty($row['id']))
+			if($_SESSION['user_type']!='admin')
 			{
-				$_SESSION['error_message']="Id-ul folderului este invalid.";
-				header("location:Error_page.php");
+				$course_id=$row['course_id'];
+				$sql="SELECT * FROM course_user WHERE course_id LIKE $course_id AND user_id LIKE $user_id";
+				$results=mysqli_query($db,$sql);
+				$row=mysqli_fetch_array($results);
+				if(empty($row['id']))
+				{
+					$_SESSION['error_message']="Id-ul folderului este invalid.";
+					header("location:Error_page.php");
+				}
 			}
 		}
 		else
@@ -315,14 +334,17 @@ if(basename($_SERVER['PHP_SELF'])=="Quiz_teacher.php")
 		$row=mysqli_fetch_array($results);
 		if(!empty($row['course_id']))
 		{
-			$course_id=$row['course_id'];
-			$sql="SELECT * FROM course_user WHERE course_id LIKE $course_id AND user_id LIKE $user_id";
-			$results=mysqli_query($db,$sql);
-			$row=mysqli_fetch_array($results);
-			if(empty($row['id']))
+			if($_SESSION['user_type']!='admin')
 			{
-				$_SESSION['error_message']="Id-ul quizului este invalid.";
-				header("location:Error_page.php");
+				$course_id=$row['course_id'];
+				$sql="SELECT * FROM course_user WHERE course_id LIKE $course_id AND user_id LIKE $user_id";
+				$results=mysqli_query($db,$sql);
+				$row=mysqli_fetch_array($results);
+				if(empty($row['id']))
+				{
+					$_SESSION['error_message']="Id-ul quizului este invalid.";
+					header("location:Error_page.php");
+				}
 			}
 		}
 		else

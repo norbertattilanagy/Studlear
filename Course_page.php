@@ -15,7 +15,7 @@ $_SESSION["course_id"]=$_GET['id'];
 	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 	    <script src="assets\js\bootstrap.bundle.min.js"></script>
 	    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	    <title>Course</title>
+	    <title>Studlear</title>
 	</head>
 	<body>
 		<!--Top bar-->
@@ -45,13 +45,17 @@ $_SESSION["course_id"]=$_GET['id'];
 				    	$sql="SELECT * FROM course WHERE id LIKE $course_id";
 				    	$results=mysqli_query($db,$sql);
 				    	$row=mysqli_fetch_array($results,MYSQLI_ASSOC);
+				    	$course_name=$row["title"];
+				    	$password=$row['password'];
+				    	$course_id=$row['id'];
 				    ?>	
-			    	<?php echo '<h3><u>'.$row["title"].'</u></h3>'; ?>
-			    	<?php echo 'id: '.$row["id"]; ?>
+			    	<?php echo '<h3><u>'.$course_name.'</u></h3>'; ?>
+			    	<?php echo 'id: '.$course_id; ?>
 			    	<br>
 			    	<div class="mt-3">
 			    		<a href="Course_participants.php" class="btn btn-primary btn-sm me-2">Participanți<i class="bi bi-people ms-2"></i></a>
 			    		<?php if($_SESSION['user_type']!='student') { ?>
+			    			<button type="button" class="btn btn-primary btn-sm me-2" data-bs-toggle="modal" data-bs-target="#Edit_course">Editează<i class="bi bi-pencil-square ms-2"></i></button>
 			      			<button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#New_lesson_group">Lecție nouă +</button>
 			      		<?php }	?>
 			    	</div>
@@ -66,7 +70,7 @@ $_SESSION["course_id"]=$_GET['id'];
 			      	?>
 			      	<?php 
 			      	//lesson_group
-					if($row["visibility"]==1 OR $_SESSION['user_type']=='teacher') {	
+					if($row["visibility"]==1 OR $_SESSION['user_type']!='student') {	
 					?>
 		      		<div class="card mt-3">
 					 	<div class="card-header">
@@ -299,6 +303,38 @@ $_SESSION["course_id"]=$_GET['id'];
 		      	</div>
 		    </div>
 	  	</div>
+	  	<!--Edit course modal-->
+	    <div class="modal fade" id="Edit_course">
+	      <div class="modal-dialog">
+	        <div class="modal-content">
+
+	          <!-- Modal Header -->
+	          <div class="modal-header">
+	            <h4 class="modal-title">Editează curs</h4>
+	            <button type="button" class="btn-close" data-bs-dismiss="modal" data-bs-target="#Edit_course"></button>
+	          </div>
+
+	          <!-- Modal body -->
+	          <div class="modal-body">
+	            <?php echo '<form action="Add_lesson.php?edit=5&id='.$course_id.'" class="needs-validation" method="post" novalidate>
+	              <div class="mb-3">'; ?>
+	                <label for="Cours_name" class="form-label">Nume curs:</label>
+	                <?php echo '<input type="text" class="form-control" id="Cours_name" placeholder="Nume curs" name="Cours_name" value="'.$course_name.'" required>'; ?>
+	                <div class="invalid-feedback">Introduceți numele cursului</div>
+	              </div>
+	              <div class="mb-3">
+	                <label for="Cours_password" class="form-label">Parolă curs:</label>
+	                <?php echo '<input type="text" class="form-control" id="Cours_password" placeholder="Parolă curs" name="Cours_password" value="'.$password.'" required>'; ?>
+	                <div class="invalid-feedback">Introduceți parola</div>
+	              </div>
+	              <div class="d-grid">
+	                <button type="submit" class="btn btn-secondary btn-block mt-3">Salvează</button>
+	              </div>
+	            </form>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
 	  	
 	  	<!--Modal--New-lesson-group--->
 		<div class="modal fade" id="New_lesson_group">
@@ -448,12 +484,17 @@ $_SESSION["course_id"]=$_GET['id'];
 <!--Modal-->
 <script type="text/javascript">
 	$(document).ready(function() {
+		var id=<?php echo $_GET['id']; ?>;
+		var url='Course_page.php?id='+id;
 	    if(window.location.href.indexOf('#Edit_lesson_group') != -1) {
 	        $('#Edit_lesson_group').modal('show');
+	        window.history.pushState('', 'Course_page', url);
 	    }
 	    else if(window.location.href.indexOf('#Delete_lesson_group') != -1) {
 	        $('#Delete_lesson_group').modal('show');
+	        window.history.pushState('', 'Course_page', url);
 	    }
+	    
 	});
 </script>
 <script type="text/javascript">

@@ -11,7 +11,7 @@
 	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 	    <script src="assets\js\bootstrap.bundle.min.js"></script>
 	    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	    <title>Course</title>
+	    <title>Studlear</title>
 	</head>
 	<body>
 		<!--Top bar-->
@@ -169,6 +169,7 @@
 	$(document).ready(function() {
 	    if(window.location.href.indexOf('#Delete_user_from_course') != -1) {
 	        $('#Delete_user_from_course').modal('show');
+	        window.history.pushState('', 'Course_participants', 'Course_participants.php');
 	    }
 	});
 </script>
