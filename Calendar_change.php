@@ -33,7 +33,8 @@ else if($_GET['button']=="today")//go today
 }
 else if($_GET['button']=="change_day")
 {
-    echo "i=".$_GET['day'];
+    $_SESSION['event_id']=1;
+    "i=".$_GET['day'];
     $date = DateTime::createFromFormat("Y-m-d", $_SESSION['calendar_date']);
     $year=$date->format('Y');
     $month=$date->format('m');
@@ -65,9 +66,9 @@ else if($_GET['button']=="add_event")//add event
 
     $target_dir="Cours_items/Calendar/";
     $files_name=date("YmdHis").$user_id.'.txt';
-    $target_files=$target_dir.$files_name;
+    $target_file=$target_dir.$files_name;
 
-    $file=fopen($target_files,"w");
+    $file=fopen($target_file,"w");
     fwrite($file, $description);
     fclose($file);
 
@@ -75,7 +76,38 @@ else if($_GET['button']=="add_event")//add event
     $results=mysqli_query($db,$sql);
 
     $link='location:'.$_SERVER['HTTP_REFERER'];
-        header("$link");
+    header("$link");
+}
+elseif($_GET['button']=="edit_event")
+{
+    $event_id=$_SESSION['event_id'];
+    $title='"'.$_POST['title'].'"';
+    $start_event='"'.$_POST['event_date_start'].' '.$_POST['event_time_start'].'"';
+    $end_event='"'.$_POST['event_date_end'].' '.$_POST['event_time_end'].'"';
+    $description=$_POST['description'];
+
+    $sql="SELECT * FROM calendar WHERE id LIKE $event_id";
+    $results=mysqli_query($db,$sql);
+    $row=mysqli_fetch_array($results,MYSQLI_ASSOC);
+    $target_file=$row['description'];
+
+    $file=fopen($target_file,"w");
+    fwrite($file, $description);
+    fclose($file);
+
+    $sql="UPDATE calendar SET title=$title, start_event=$start_event, end_event=$end_event WHERE id LIKE $event_id";
+    //$results=mysqli_query($db,$sql);
+
+    //$link='location:'.$_SERVER['HTTP_REFERER'];
+    //header("$link");
+}
+elseif ($_GET['button']=="delete_event") {
+    $event_id=$_SESSION['event_id'];
+    $sql="DELETE FROM calendar WHERE id LIKE $event_id";
+    $results=mysqli_query($db,$sql);
+
+    $link='location:'.$_SERVER['HTTP_REFERER'];
+    header("$link");
 }
 else
 {

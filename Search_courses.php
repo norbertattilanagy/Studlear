@@ -175,6 +175,9 @@
 			        <div class="modal-body">
 			        	<form action="Enroll_in_course.php?enroll=1" method="post">
 			        		<div class="mb-3">
+								<?php if($_SESSION['incorect_password']==1)
+									echo '<p style="color:red">Parolă incorectă</p>';
+								?>
 			        			<input type="password" class="form-control" placeholder="Introduceți parola" id="password" name="password">
 			        		</div>
 			        		<div class="mb-3">
