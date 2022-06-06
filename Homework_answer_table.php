@@ -80,7 +80,7 @@ if(empty($_SESSION['homework']))
 
 								if(!empty($row_homework["id"]))
 								{
-									$tema="tema";
+									$tema="temă";
 
 									if(empty($row_homework["point"]))
 										$point=0;

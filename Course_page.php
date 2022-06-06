@@ -324,8 +324,7 @@ $_SESSION["course_id"]=$_GET['id'];
 	              </div>
 	              <div class="mb-3">
 	                <label for="Cours_password" class="form-label">Parolă curs:</label>
-	                <?php echo '<input type="text" class="form-control" id="Cours_password" placeholder="Parolă curs" name="Cours_password" value="'.$password.'" required>'; ?>
-	                <div class="invalid-feedback">Introduceți parola</div>
+	                <?php echo '<input type="text" class="form-control" id="Cours_password" placeholder="Parolă curs" name="Cours_password" value="'.$password.'">'; ?>
 	              </div>
 	              <div class="d-grid">
 	                <button type="submit" class="btn btn-secondary btn-block mt-3">Salvează</button>

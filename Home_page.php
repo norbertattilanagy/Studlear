@@ -203,8 +203,8 @@
               </div>
               <div class="mb-3">
                 <label for="Cours_password" class="form-label">Parolă curs:</label>
-                <input type="text" class="form-control" id="Cours_password" placeholder="Parolă curs" name="Cours_password" required>
-                <div class="invalid-feedback">Introduceți parola</div>
+                <input type="text" class="form-control" id="Cours_password" placeholder="Parolă curs" name="Cours_password">
+                <div>*Nu este obligatoriu.</div>
               </div>
               <div class="d-grid">
                 <button type="submit" class="btn btn-secondary btn-block mt-3">Crează</button>

@@ -76,7 +76,8 @@
 
 			    		$date=date('Y-m-d h:i');
 			    		$min=date("Y-m-d")."T".date("H:i");
-			    		if($start_event1<$min)
+			    		echo $start_event."<".$min;
+			    		if($start_event<$min)
 			    			$min=$start_event;
 			    	}
 			    	else

@@ -98,11 +98,14 @@
 			else
 			{
 				$solving_time=$row_answer["solving_time"];
+				$solving_time_hour=0;
 				$solving_time_min=intdiv($solving_time,60);
 		  		$solving_time_sec=$solving_time%60;
 			}
 		$element=$row['element'];
-		echo '<form action="Add_quiz1.php?edit=7&answer_id='.$answer_id.'&element='.$element.'" method="post" enctype="multipart/form-data">';
+		$next_address='"Add_quiz1.php?edit=7&answer_id='.$answer_id.'&element='.$element.'&next=1"';
+		$finalization_address='"Add_quiz1.php?edit=7&answer_id='.$answer_id.'&element='.$element.'&next=0"';
+		echo '<form action="Add_quiz1.php?edit=7&answer_id='.$answer_id.'&element='.$element.'&next=" method="post" enctype="multipart/form-data name="quiz_form" id="quiz_form">';
 		?>
 		<div class="row">
 			<div class="col-md-9">
@@ -142,12 +145,24 @@
 								while($row_option=mysqli_fetch_array($results_option))
 								{
 									$value=$row_option['id'];
+									$option_id=$row_option['id'];
+									$sql_ans="SELECT * FROM answer_quiz_option WHERE quiz_option_id LIKE $option_id  and user_id LIKE $user_id";
+									$results_ans=mysqli_query($db,$sql_ans);
+									$selected=0;
+									while($row_ans=mysqli_fetch_array($results_ans))
+									{
+										if($row_ans['quiz_option_id']==$row_option['id'])
+											$selected=1;
+									}
 									if($row['element']=="radio_button")//radio button
 									{
-										if($row_answer['classic']==1)
-										{ ?>
+										if($row_answer['classic']==1){ ?>
+
 											<div class="form-check mx-5">
-			  									<?php echo '<input class="form-check-input" type="radio" value="'.$value.'" id="option" name="option">'; ?>
+			  									<?php if($selected==1)
+			  										echo '<input class="form-check-input" type="radio" value="'.$value.'" id="option" name="option" checked>'; 
+			  									else
+			  										echo '<input class="form-check-input" type="radio" value="'.$value.'" id="option" name="option">'; ?>
 												<label class="form-check-label" for="option"><?php echo $row_option['option']; ?></label>
 											</div>
 										<?php } else { ?>
@@ -159,8 +174,11 @@
 											} ?>
 
 											<div class="form-check">
-				  								<?php 
-				  								echo '<input class="btn-check" type="radio" value="'.$value.'" id="option'.$nr_option.'"  name="option">';
+				  								<?php
+				  								if($selected==1)
+				  									echo '<input class="btn-check" type="radio" value="'.$value.'" id="option'.$nr_option.'"  name="option" checked>';
+				  								else
+				  									echo '<input class="btn-check" type="radio" value="'.$value.'" id="option'.$nr_option.'"  name="option">';
 												echo '<label class="btn '.$color[$nr_option].' btn-lg" for="option'.$nr_option.'" style="width: 30vw;border-width:4px">'.$row_option['option'].'</label>';
 												?>
 											</div>
@@ -185,7 +203,12 @@
 										if($row_answer['classic']==1)
 										{ ?>
 											<div class="form-check mx-5">
-			  									<?php echo '<input class="form-check-input" type="checkbox" value="'.$value.'" id="option" name="option[]">'; ?>
+			  									<?php 
+			  									if($selected==1)
+			  										echo '<input class="form-check-input" type="checkbox" value="'.$value.'" id="option" name="option[]" checked>'; 
+			  									else
+			  										echo '<input class="form-check-input" type="checkbox" value="'.$value.'" id="option" name="option[]">'; 
+			  									?>
 												<label class="form-check-label" for="option"><?php echo $row_option['option']; ?></label>
 											</div>
 										<?php } else { ?>
@@ -198,7 +221,10 @@
 
 											<div class="form-check">
 				  								<?php
-				  								echo '<input class="btn-check" type="checkbox" value="'.$value.'" id="option'.$nr_option.'" name="option[]">';
+				  								if($selected==1)
+				  									echo '<input class="btn-check" type="checkbox" value="'.$value.'" id="option'.$nr_option.'" name="option[]" checked>';
+				  								else
+				  									echo '<input class="btn-check" type="checkbox" value="'.$value.'" id="option'.$nr_option.'" name="option[]">';
 												echo '<label class="btn '.$color[$nr_option].' btn-lg" for="option'.$nr_option.'" style="width: 30vw;border-width:4px">'.$row_option['option'].'</label>';
 												?>
 											</div>
@@ -222,14 +248,42 @@
 							} 
 							else if($row['element']=="true_false")// true/false
 							{
+								$option_id=$row_answer['id'];
+								$sql_ans="SELECT * FROM answer_true_false WHERE true_false_id LIKE $option_id and user_id LIKE $user_id";
+								$results_ans=mysqli_query($db,$sql_ans);
+								$row_ans=mysqli_fetch_array($results_ans);
+								if(isset($row_ans['answer_true']))
+								{
+									$true=0;
+									if($row_ans['answer_true']==1)
+										$true=1;
+								}
 								if($row_answer['classic']==1)
 								{ ?>
 									<div class="form-check mx-5 ">
-			  							<input class="form-check-input" type="radio" value="1" id="true" name="option">
+										<?php 
+										if(isset($row_ans['answer_true']))
+										{
+											if($true==1)
+				  								echo '<input class="form-check-input" type="radio" value="1" id="true" name="option" checked>';
+				  							else
+			  									echo '<input class="form-check-input" type="radio" value="1" id="true" name="option">';
+				  						}
+			  							else
+			  								echo '<input class="form-check-input" type="radio" value="1" id="true" name="option">'; ?>
 										<label class="form-check-label" for="true">Adevărat</label>
 									</div>
 									<div class="form-check mx-5 mb-5">
-			  							<input class="form-check-input" type="radio" value="0" id="false" name="option">
+										<?php
+										if(isset($row_ans['answer_true']))
+										{
+											if($true==0)
+				  								echo '<input class="form-check-input" type="radio" value="0" id="false" name="option" checked>';
+				  							else
+			  									echo '<input class="form-check-input" type="radio" value="0" id="false" name="option">';
+				  						}
+			  							else
+			  								echo '<input class="form-check-input" type="radio" value="0" id="false" name="option">'; ?>
 										<label class="form-check-label" for="false">Fals</label>
 									</div>
 			  					<?php } 
@@ -237,11 +291,25 @@
 			  					{ ?>
 			  						<div class="d-flex justify-content-between">
 										<div class="form-check">
-			  								<input class="btn-check" type="radio" value="1" id="true" name="option">
+											<?php 
+											if(isset($row_ans['answer_true']))
+											{
+												if($true==1)
+				  									echo '<input class="btn-check" type="radio" value="1" id="true" name="option" checked>';
+				  							}
+			  								else
+			  									echo '<input class="btn-check" type="radio" value="1" id="true" name="option">'; ?>
 											<label class="btn btn-outline-success btn-lg" for="true" style="width: 32vw;border-width:4px">Adevărat</label>
 										</div>
 										<div class="form-check">
-			  								<input class="btn-check" type="radio" value="0" id="true" name="option">
+											<?php 
+											if(isset($row_ans['answer_true']))
+											{
+												if($true==0)
+				  									echo '<input class="btn-check" type="radio" value="0" id="false" name="option" checked>';
+				  							}
+			  								else
+			  									echo '<input class="btn-check" type="radio" value="0" id="false" name="option">'; ?>
 											<label class="btn btn-outline-danger btn-lg" for="false" style="width: 32vw;border-width:4px">Fals</label>
 										</div>
 				  					</div>
@@ -249,13 +317,30 @@
 							}
 							else if($row['element']=="text")//short text
 							{ 
+								$option_id=$row_answer['id'];
+								$sql_ans="SELECT * FROM answer_text_question WHERE text_question_id LIKE $option_id and user_id LIKE $user_id";
+								$results_ans=mysqli_query($db,$sql_ans);
+								$row_ans=mysqli_fetch_array($results_ans);
+								$answer="";
+								if(isset($row_ans['answer']))
+									$answer=$row_ans['answer'];
+
 								if($row_answer['short']==1){ ?>
 									<div class="mx-5 mb-5">
-										<input type="text" class="form-control" id="short_text" name="short_text" autocomplete="off">
+										<?php echo '<input type="text" class="form-control" id="short_text" name="short_text" autocomplete="off" value="'.$answer.'">';?>
 									</div>
 								<?php } else { ?>
 									<div class="mx-5">
-										<textarea class="form-control" id="short_text" name="short_text" rows="3"></textarea>
+										<textarea class="form-control" id="short_text" name="short_text" rows="3"><?php 
+											if(isset($row_ans['answer']))
+											{
+												$target_file=$answer;
+												$file = fopen($target_file, "r");
+												while(!feof($file)) {
+						  							echo fgets($file);
+												}
+												fclose($file);
+											} ?></textarea>
 									</div>
 								<?php } 
 							}
@@ -282,13 +367,22 @@
 								{
 									$i='"'.$i.'"';
 									$sql_select="SELECT * FROM select_option WHERE select_question_id LIKE $answer_id AND `group` LIKE $i ORDER BY RAND()";
-									$results_select=mysqli_query($db,$sql_select); ?>
+									$results_select=mysqli_query($db,$sql_select);
+
+									?>
 									<div class="mx-5">
 										<select class="form-select mt-3 " aria-label="Default select example" id="select" name="select[]">
 											<?php while($row_select=mysqli_fetch_array($results_select))
 											{ 
 												$value=$row_select['id'];
-												echo '<option value='.$value.'>'.$row_select["option"].'</option>';
+												$select_option_id=$row_select['id'];
+												echo $sql_answer_select="SELECT * FROM answer_select_question WHERE user_id LIKE $user_id AND select_option_id LIKE $select_option_id";
+												$results_answer_select=mysqli_query($db,$sql_answer_select);
+												$row_answer_select=mysqli_fetch_array($results_answer_select);
+												if(isset($row_answer_select['id']))
+													echo '<option value='.$value.' selected>'.$row_select["option"].'</option>';
+												else
+													echo '<option value='.$value.'>'.$row_select["option"].'</option>';
 											} ?>
 										</select>
 									</div>
@@ -340,7 +434,7 @@
 				<div class="col-6">
 					<div class="d-grid me-4">
 						<?php if($_SESSION['question_order']<$nr_row) {
-							echo '<button type="submit" class="btn btn-secondary" name="button" value="next">Următorul<i class="bi bi-arrow-right ms-4"></i></button>';
+							echo '<button type="submit" class="btn btn-secondary" name="button" value="next" >Următorul<i class="bi bi-arrow-right ms-4"></i></button>';
 						} else { 
 							echo '<button type="submit" class="btn btn-secondary disabled" name="button" value="next">Următorul<i class="bi bi-arrow-right ms-4"></i></button>';
 						} ?>
@@ -355,25 +449,25 @@
 			<div class="mx-4 mt-3">
 				<div class="d-grid">
 					<?php if($_SESSION['question_order']<$nr_row){
-						echo '<button type="submit" class="btn btn-secondary" name="button" value="next">Următorul<i class="bi bi-arrow-right ms-4"></i></button>';
+						echo '<button type="submit" class="btn btn-secondary" name="button" value="next" id="next_button">Următorul<i class="bi bi-arrow-right ms-4"></i></button>';
 					} else {	
-						echo '<button type="submit" class="btn btn-secondary" name="button" value="complet">Finalizare</button>';
+						echo '<button type="submit" class="btn btn-secondary" name="button" value="complet" id="finaly_button">Finalizare</button>';
 					} ?>
 				</div>
 			</div>
 		<?php } ?>
 		</form>
-
 	</body>
 </html>
 <script language ="javascript" >
-    
+	let next_address=<?php echo $next_address; ?>;
+	let finalization_address=<?php echo $finalization_address; ?>;
     var max=<?php echo $nr_row; ?>;
     var question_order=<?php echo $_SESSION['question_order']; ?>;
     var if_hour=<?php echo $row_quiz['solving_time']; ?>;
     if(if_hour>0)
     	var hour=<?php echo $solving_time_hour; ?>;
-
+	
     var min=<?php echo $solving_time_min; ?>;
     var sec=<?php echo $solving_time_sec+1; ?>;
     var min1;
@@ -402,11 +496,19 @@
 	            if(parseInt(min)==0) 
 	            {
 	                clearTimeout(tim);
-	                
-	                //if(question_order<max)
-	                	//location.href="Add_quiz1.php?edit=7&next=1";
-	                //else
-	                	location.href="#";
+
+	                if(question_order<max)
+	                {
+	                	document.getElementById("quiz_form").action=next_address;
+	                	var button = document.getElementById('next_button');
+    					button.form.submit();
+	                }
+	                else
+	                {
+	                	document.getElementById("quiz_form").action=finalization_address;
+	                	var button = document.getElementById('finaly_button');
+    					button.form.submit();
+	                }
 	            }
 	            else 
 	            {

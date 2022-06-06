@@ -30,19 +30,12 @@ if ($_GET["edit"]==1)//add
 
 		$file_name = $_FILES['input_file']['name'];
 
-		// Select file type
-		$FileType = strtolower(pathinfo($file_name,PATHINFO_EXTENSION));
-		// Valid file extensions
-		$extensions= array("pdf");
-		if(in_array($FileType,$extensions))
-		{
-			mkdir($target_folder);
-			$target_folder1=$target_folder.$file_name;
+		mkdir($target_folder);
+		$target_folder1=$target_folder.$file_name;
 
-			$sql="INSERT INTO course_file (title,file_name,lesson_group_id,visibility) VALUES ('$title','$target_folder','$lesson_id','$visibility')";
-			$results=mysqli_query($db,$sql);
-			move_uploaded_file($_FILES['input_file']['tmp_name'],$target_folder1);
-		}
+		$sql="INSERT INTO course_file (title,file_name,lesson_group_id,visibility) VALUES ('$title','$target_folder','$lesson_id','$visibility')";
+		$results=mysqli_query($db,$sql);
+		move_uploaded_file($_FILES['input_file']['tmp_name'],$target_folder1);
 	}
 	$link='location: Course_page.php?id='.$_SESSION['course_id'];
 	header("$link");

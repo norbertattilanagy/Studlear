@@ -34,7 +34,7 @@
     			}
     			else
     			{
-    				echo '<li class="breadcrumb-item"><a href="Quiz_teacher.php?id='.$_SESSION['quiz'].'">Quiz</a></li>';
+    				echo '<li class="breadcrumb-item"><a href="Quiz_teacher.php?id='.$_SESSION['quiz'].'" style="text-decoration: none;">Quiz</a></li>';
 
     				if($_SESSION['add_answer']==1)
     					echo '<li class="breadcrumb-item active" aria-current="page">Adaugă întrebare quiz</li>';
@@ -64,6 +64,7 @@
 
 		    		if($_SESSION['add_answer']==0)
 		    		{
+		    			echo $_SESSION['element'];
 		    			$_SESSION['answer_type']=0;
 		    			$answer_id=$_SESSION['answer_id'];
 		    			if($_SESSION['element']=="radio_button")
@@ -222,7 +223,7 @@
 									$nr_option=2; ?>
 									<div class="input-group">
 										<div class="input-group-text">
-									    	<input class="form-check-input" type="checkbox" id="option_check" name="option_check1" required>
+									    	<input class="form-check-input" type="checkbox" id="option_check" name="option_check1">
 									  	</div>
 								    	<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();" required>
 								    	<span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
@@ -230,7 +231,7 @@
 							    	</div>
 							    	<div class="input-group mt-3">
 							    		<div class="input-group-text">
-									    	<input class="form-check-input" type="checkbox" id="option_check" name="option_check2" required>
+									    	<input class="form-check-input" type="checkbox" id="option_check" name="option_check2">
 									  	</div>
 								    	<input type="text" class="form-control" id="option" name="option[]" onClick="this.select();" required>
 								    	<span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span>
@@ -247,9 +248,9 @@
 											<div class="input-group-text">
 												<?php
 												if($row_option['correct']==0)
-													echo '<input class="form-check-input" type="checkbox" id="option_check" name="option_check'.$i.'" required>';
+													echo '<input class="form-check-input" type="checkbox" id="option_check" name="option_check'.$i.'">';
 												else
-													echo '<input class="form-check-input" type="checkbox" id="option_check" name="option_check'.$i.'" checked required>';
+													echo '<input class="form-check-input" type="checkbox" id="option_check" name="option_check'.$i.'" checked>';
 												$i++; ?>
 											</div>
 									    	<?php
@@ -455,9 +456,9 @@
 								<div class="col">
 									<?php
 									if($row_time['solving_time']>0)
-										echo '<input type="number" class="form-control solving_time solving_time_sec" id="solving_time_sec" name="solving_time_sec" placeholder="Secunde" value="'.$solving_time_sec.'" min="1" max="60" disabled required>';
+										echo '<input type="number" class="form-control solving_time solving_time_sec" id="solving_time_sec" name="solving_time_sec" placeholder="Secunde" value="'.$solving_time_sec.'" min="0" max="60" disabled required>';
 									else
-										echo '<input type="number" class="form-control solving_time solving_time_sec" id="solving_time_sec" name="solving_time_sec" placeholder="Secunde" value="'.$solving_time_sec.'" min="1" max="60" required>';
+										echo '<input type="number" class="form-control solving_time solving_time_sec" id="solving_time_sec" name="solving_time_sec" placeholder="Secunde" value="'.$solving_time_sec.'" min="0" max="60" required>';
 									?>
 									<div class="invalid-feedback">Introduceți secundele</div>
 								</div>
@@ -479,7 +480,7 @@
 							}
 							?>
 							<div class="mt-3">
-								<label for="order_number" class="form-label"><b>Nuărul de ordine:</b></label>
+								<label for="order_number" class="form-label"><b>Numărul de ordine:</b></label>
 								<select class="form-select" id="order_number" name="order_number">
 									<?php for($i=1;$i<=$max_order;$i++) {
 										if($_SESSION['add_answer']==0)
@@ -549,11 +550,11 @@ $(document).ready(function() {
 			x++;
 			if(answer_type==0)
 			{
-				$(wrapper).append(`<div class="input-group mt-3"><div class="input-group-text"><input class="form-check-input" type="radio" id="option_check" name="option_check" value="${x}" required></div><input type="text" class="form-control" id="option" name="option[]" value="" onClick="this.select();" required/><span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span><div class="invalid-feedback">Introduceți opțiunea</div></div>`);
+				$(wrapper).append(`<div class="input-group mt-3"><div class="input-group-text"><input class="form-check-input" type="radio" id="option_check" name="option_check" value="${x}"></div><input type="text" class="form-control" id="option" name="option[]" value="" onClick="this.select();" required/><span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span><div class="invalid-feedback">Introduceți opțiunea</div></div>`);
 			}
 			else
 			{
-				$(wrapper).append(`<div class="input-group mt-3"><div class="input-group-text"><input class="form-check-input" type="checkbox" id="option_check" name="option_check${x}"></div><input type="text" class="form-control" id="option" name="option[]" value="" onClick="this.select();" required/><span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span><div class="invalid-feedback">Introduceți opțiunea</div></div>`);
+				$(wrapper).append(`<div class="input-group mt-3"><div class="input-group-text"><input class="form-check-input" type="checkbox" id="option_check" name="option_check${x}"></div><input type="text" class="form-control" id="option" name="option[]" value="" onClick="this.select();"/><span class="input-group-text remove_field"><a href="#" class="link-dark"><i class="bi bi-dash-circle"></i></a></span><div class="invalid-feedback">Introduceți opțiunea</div></div>`);
 			}
 		}
 		if(x==max_fields)

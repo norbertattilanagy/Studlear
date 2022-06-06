@@ -25,7 +25,10 @@
 			$sql="SELECT * FROM user WHERE email LIKE $email";
 			$results=mysqli_query($db,$sql);
 			if(empty($row=mysqli_fetch_array($results,MYSQLI_ASSOC)))
+			{
+				$_SESSION['email']=$_POST['email'];
 				$_SESSION['incorrect']="Email și parolă inorectă.";
+			}
 			else
 			{
 				$_SESSION['email']=$_POST['email'];

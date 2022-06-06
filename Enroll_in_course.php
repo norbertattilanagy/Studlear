@@ -39,7 +39,7 @@ else if($_GET["enroll"]==1)
 		$user_id=$_SESSION["user_id"];
 		$sql_insert="INSERT INTO course_user (course_id, user_id, admin) VALUES ($id, $user_id, 0)";
 		$results_insert=mysqli_query($db,$sql_insert);
-		$link='location:'.$_SERVER['HTTP_REFERER'];
+		$link='location:Course_page.php?id='.$id;
 	}
 	else
 	{

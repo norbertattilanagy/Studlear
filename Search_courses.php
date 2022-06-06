@@ -173,21 +173,29 @@
 
 			        <!-- Modal body -->
 			        <div class="modal-body">
-			        	<form action="Enroll_in_course.php?enroll=1" method="post">
-			        		<div class="mb-3">
-								<?php if($_SESSION['incorect_password']==1)
-									echo '<p style="color:red">Parolă incorectă</p>';
-								?>
-			        			<input type="password" class="form-control" placeholder="Introduceți parola" id="password" name="password">
-			        		</div>
-			        		<div class="mb-3">
-			        			<label class="form-check-label">
-					              	<input class="form-check-input" type="checkbox"  name="show_password" onclick="myFunction()"> Arată parola
-					            </label>
-			        		</div>
-			        		<div class="d-grid">
-			        			<button type="submit" class="btn btn-dark btn-block">Înscriere</button>
-			        		</div>
+			        	<form action="Enroll_in_course.php?enroll=1" class="needs-validation" method="post" novalidate>
+			        		<?php
+			        		$course_id=$_SESSION['course_id'];
+			        		$sql="SELECT * FROM course WHERE id LIKE $course_id";
+			        		$results=mysqli_query($db,$sql);
+			        		$row=mysqli_fetch_array($results);
+			        		if($row['password']!=""){ ?>
+				        		<div class="mb-3">
+									<?php if($_SESSION['incorect_password']==1)
+										echo '<p style="color:red">Parolă incorectă</p>';
+									?>
+				        			<input type="password" class="form-control" placeholder="Introduceți parola" id="password" name="password" required>
+				        			<div class="invalid-feedback">Introduceți parola</div>
+				        		</div>
+				        		<div class="mb-3">
+				        			<label class="form-check-label">
+						              	<input class="form-check-input" type="checkbox"  name="show_password" onclick="myFunction()"> Arată parola
+						            </label>
+				        		</div>
+				        	<?php } ?>
+				        	<div class="d-grid">
+				        		<button type="submit" class="btn btn-dark btn-block">Înscriere</button>
+				        	</div>
 				            
 			        	</form>
 			        </div>
@@ -217,4 +225,22 @@
        		x.type = "password";
      	}
    }
+</script>
+<script type="text/javascript">
+(function () {
+  
+    var forms = document.querySelectorAll('.needs-validation') 
+    Array.prototype.slice.call(forms).forEach(function (form) {
+      
+        form.addEventListener('submit', function (event)
+        {     
+          if (!form.checkValidity())
+          { 
+              event.preventDefault()
+              event.stopPropagation()
+          }
+          form.classList.add('was-validated')
+        }, false)
+    })
+})()
 </script>

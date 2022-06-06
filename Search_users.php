@@ -59,7 +59,7 @@
 					<table class="table">
 	  					<thead>
 	    					<tr>
-						      	<th scope="col">Id</th>
+						      	<th scope="col">Nr.</th>
 						      	<th scope="col">Nume</th>
 						      	<th scope="col">Email</th>
 	    					</tr>

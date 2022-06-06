@@ -82,7 +82,7 @@
 					      		<?php echo '<h5><b>Email: '.$row['email'].'</b></h5>'; ?>
 					      		<?php echo '<h5><b>Tip cont: '.$row['type'].'</b></h5>'; ?>	
 				      		</div>
-				      		<?php if($_SESSION['user_type']=="admin"){ ?>
+				      		<?php if($_SESSION['user_type']=="admin" and $search_user_id!=$user_id){ ?>
 				      			<div class="d-grid mt-3">
 								  	<button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#Edit_user_type">Editeză tipul de utilizator</button>
 								</div>
@@ -91,9 +91,13 @@
 					      		<div class="d-grid mt-3">
 								  	<button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#Edit_profile_data">Editeză datele</button>
 								</div>
+							<?php } 
+							if($search_user_id==$user_id){ ?>
 								<div class="d-grid mt-3">
 								  	<button type="button" class="btn btn-primary btn-block" data-bs-toggle="modal" data-bs-target="#Change_password">Schimbă parola</button>
 								</div>
+							<?php }
+							if($_SESSION['user_type']=="admin" or $search_user_id==$user_id){ ?>
 								<div class="d-grid mt-3">
 								  	<button type="button" class="btn btn-danger btn-block" data-bs-toggle="modal" data-bs-target="#Delete_account">Șterge contul</button>
 								</div>

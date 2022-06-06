@@ -15,9 +15,9 @@ if ($_GET["edit"]==1)//add
 	$solving_time=0;
 	if(!empty($_POST['solving_time_hour']))
 		$solving_time=$solving_time+$_POST['solving_time_hour']*3600;
-	else if(!empty($_POST['solving_time_min']))
+	if(!empty($_POST['solving_time_min']))
 		$solving_time=$solving_time+$_POST['solving_time_min']*60;
-	else if(!empty($_POST['solving_time_sec']))
+	if(!empty($_POST['solving_time_sec']))
 		$solving_time=$solving_time+$_POST['solving_time_sec'];
 
 	$start_event=$_POST['start_event'];
@@ -62,9 +62,9 @@ else if($_GET["edit"]==0)//edit
 	$solving_time=0;
 	if(!empty($_POST['solving_time_hour']))
 		$solving_time=$solving_time+$_POST['solving_time_hour']*3600;
-	else if(!empty($_POST['solving_time_min']))
+	if(!empty($_POST['solving_time_min']))
 		$solving_time=$solving_time+$_POST['solving_time_min']*60;
-	else if(!empty($_POST['solving_time_sec']))
+	if(!empty($_POST['solving_time_sec']))
 		$solving_time=$solving_time+$_POST['solving_time_sec'];
 
 	$start_event='"'.$_POST['start_event'].'"';
@@ -322,72 +322,150 @@ else if($_GET["edit"]==7)//next/previous question, insert answer
 				$point=round($row_answer['point']/$nr_group*$corect_select);
 			}
 		}
-		
 		//insert
-		if($element=="radio_button")
+		if(isset($_POST['option']) or isset($_POST['short_text']) or isset($_POST['select']))
 		{
-			$sql="INSERT INTO answer_quiz_option (user_id,quiz_option_id,`point`) VALUES ('$user_id','$option_id','$point')";
-		}
-		else if($element=="checkbox")
-		{
-			foreach($option_id as $i)
+			if($element=="radio_button")
 			{
-				$sql="INSERT INTO answer_quiz_option (user_id,quiz_option_id,`point`) VALUES ('$user_id','$i','$point')";
+				$element1='"'.$element.'"';
+				$sql="SELECT * FROM quiz_option WHERE element LIKE $element1 AND question_id LIKE $question_id";
 				$results=mysqli_query($db,$sql);
-			}
-		}
-		else if($element=="true_false")
-		{
-			$sql="INSERT INTO answer_true_false (user_id,true_false_id,answer_true,`point`) VALUES ('$user_id','$question_id','$true','$point')";
-		}
-		else if($element=="text")
-		{
-			$sql_select="SELECT * FROM text_question WHERE id LIKE $question_id";
-			$results_select=mysqli_query($db,$sql_select);
-			$row_select=mysqli_fetch_array($results_select);
-			if($row_select['short']==0)
-			{
-				$target_dir="Cours_items/Quiz/Answer_text/";
-				$file_name=date("YmdHis").$user_id.'.txt';
-				$target_file=$target_dir.$file_name;
+				while($row=mysqli_fetch_array($results))
+				{
+					$option=$row['id'];
+					$sql_delete="DELETE FROM answer_quiz_option WHERE quiz_option_id LIKE $option and user_id LIKE $user_id";
+					$results_delete=mysqli_query($db,$sql_delete);
+				}
 
-				$file=fopen($target_file,"w");
-				fwrite($file, $answer_text);
-				fclose($file);
-
-				$sql="INSERT INTO answer_text_question (user_id,text_question_id,answer,`point`) VALUES ('$user_id','$question_id','$target_file','$point')";
+				$sql="INSERT INTO answer_quiz_option (user_id,quiz_option_id,`point`) VALUES ('$user_id','$option_id','$point')";
 			}
-			else
+			else if($element=="checkbox")
 			{
-
-				$sql="INSERT INTO answer_text_question (user_id,text_question_id,answer,`point`) VALUES ('$user_id','$question_id','$answer_text','$point')";
-			}
-		}
-		else if($element=="select")
-		{
-			echo $option_id[0];
-			foreach($option_id as $i)
-			{
-				$sql="INSERT INTO answer_select_question (user_id,select_option_id,`point`) VALUES ('$user_id','$i','$point')";
+				$element1='"'.$element.'"';
+				$sql="SELECT * FROM quiz_option WHERE element LIKE $element1 AND question_id LIKE $question_id";
 				$results=mysqli_query($db,$sql);
+				while($row=mysqli_fetch_array($results))
+				{
+					$option=$row['id'];
+					$sql_delete="DELETE FROM answer_quiz_option WHERE quiz_option_id LIKE $option and user_id LIKE $user_id";
+					$results_delete=mysqli_query($db,$sql_delete);
+				}
+
+				foreach($option_id as $i)
+				{
+					$sql="INSERT INTO answer_quiz_option (user_id,quiz_option_id,`point`) VALUES ('$user_id','$i','$point')";
+					$results=mysqli_query($db,$sql);
+				}
 			}
+			else if($element=="true_false")
+			{
+				$sql="SELECT * FROM true_false WHERE id LIKE $question_id";
+				$results=mysqli_query($db,$sql);
+				while($row=mysqli_fetch_array($results))
+				{
+					$option=$row['id'];
+					$sql_delete="DELETE FROM answer_true_false WHERE true_false_id LIKE $option and user_id LIKE $user_id";
+					$results_delete=mysqli_query($db,$sql_delete);
+				}
+				$sql="INSERT INTO answer_true_false (user_id,true_false_id,answer_true,`point`) VALUES ('$user_id','$question_id','$true','$point')";
+			}
+			else if($element=="text")
+			{
+				$sql_select="SELECT * FROM text_question WHERE id LIKE $question_id";
+				$results_select=mysqli_query($db,$sql_select);
+				$row_select=mysqli_fetch_array($results_select);
+				if($row_select['short']==0)
+				{
+					$sql="SELECT * FROM answer_text_question WHERE text_question_id LIKE $question_id and user_id LIKE $user_id";
+					$results=mysqli_query($db,$sql);
+					$row=mysqli_fetch_array($results);
+					if(isset($row['id']))
+					{
+						$target_file=$row['answer'];
+					}
+					else
+					{
+						$target_dir="Cours_items/Quiz/Answer_text/";
+						$file_name=date("YmdHis").$user_id.'.txt';
+						$target_file=$target_dir.$file_name;
+					}
+					
+					$file=fopen($target_file,"w");
+					fwrite($file, $answer_text);
+					fclose($file);
+
+					if(empty($row['id']))
+					{
+						$sql="INSERT INTO answer_text_question (user_id,text_question_id,answer,`point`) VALUES ('$user_id','$question_id','$target_file','$point')";
+					}
+				}
+				else
+				{
+					$sql="SELECT * FROM text_question WHERE id LIKE $question_id";
+					$results=mysqli_query($db,$sql);
+					while($row=mysqli_fetch_array($results))
+					{
+						$option=$row['id'];
+						$sql_delete="DELETE FROM answer_text_question WHERE text_question_id LIKE $option and user_id LIKE $user_id";
+						$results_delete=mysqli_query($db,$sql_delete);
+					}
+
+					$sql="INSERT INTO answer_text_question (user_id,text_question_id,answer,`point`) VALUES ('$user_id','$question_id','$answer_text','$point')";
+				}
+			}
+			else if($element=="select")
+			{
+				$sql="SELECT * FROM select_option WHERE select_question_id LIKE $question_id";
+				$results=mysqli_query($db,$sql);
+				while($row=mysqli_fetch_array($results))
+				{
+					$option=$row['id'];
+					$sql_delete="DELETE FROM answer_select_question WHERE select_option_id LIKE $option and user_id LIKE $user_id";
+					$results_delete=mysqli_query($db,$sql_delete);
+				}
+
+				foreach($option_id as $i)
+				{
+					$sql="INSERT INTO answer_select_question (user_id,select_option_id,`point`) VALUES ('$user_id','$i','$point')";
+					$results=mysqli_query($db,$sql);
+				}
+			}
+			if($element!="checkbox" and $element!="select")
+				$results=mysqli_query($db,$sql);
 		}
-		if($element!="checkbox" and $element!="select")
-			$results=mysqli_query($db,$sql);
-			
 	}
-
-	if($_POST['button']=="next")
+	if($_GET['next']=="")
+	{
+		if($_POST['button']=="next")
+		{
+			$_SESSION['question_order']++;
+			$link='location: Quiz.php';
+		}
+		else if($_POST['button']=="previous" and $_SESSION['question_order']>1)
+		{
+			$_SESSION['question_order']--;
+			$link='location: Quiz.php';
+		}
+		else if($_POST['button']=="complet")
+		{
+			$_SESSION['target_date']="";
+			if($_SESSION['user_type']=="student")
+				$link='location: Quiz_start.php?id='.$_SESSION['quiz'];
+			else
+				$link='location: Quiz_teacher.php?id='.$_SESSION['quiz'];
+		}
+		else
+		{
+			$_SESSION['question_order']=$_POST['button'];
+			$link='location: Quiz.php';
+		}
+	}
+	else if($_GET['next']==1)
 	{
 		$_SESSION['question_order']++;
 		$link='location: Quiz.php';
 	}
-	else if($_POST['button']=="previous" and $_SESSION['question_order']>1)
-	{
-		$_SESSION['question_order']--;
-		$link='location: Quiz.php';
-	}
-	else if($_POST['button']=="complet")
+	else if($_GET['next']==0)
 	{
 		$_SESSION['target_date']="";
 		if($_SESSION['user_type']=="student")
@@ -395,13 +473,7 @@ else if($_GET["edit"]==7)//next/previous question, insert answer
 		else
 			$link='location: Quiz_teacher.php?id='.$_SESSION['quiz'];
 	}
-	else
-	{
-		$_SESSION['question_order']=$_POST['button'];
-		$link='location: Quiz.php';
-	}
-	echo $_POST['button'];
-	
+
 	header("$link");
 }
 else if($_GET["edit"]==8)//add answer
@@ -424,7 +496,7 @@ else if($_GET["edit"]==8)//add answer
 	$solving_time=0;
 	if(!empty($_POST['solving_time_min']))
 		$solving_time=$solving_time+$_POST['solving_time_min']*60;
-	else if(!empty($_POST['solving_time_sec']))
+	if(!empty($_POST['solving_time_sec']))
 		$solving_time=$solving_time+$_POST['solving_time_sec'];
 
 	$sql_quiz="SELECT * FROM question_order WHERE quiz_id LIKE $quiz_id";
@@ -474,13 +546,13 @@ else if($_GET["edit"]==8)//add answer
 	}
 	else if($_SESSION['answer_type']==6)//true/false modern
 	{
-		$element="false";
+		$element="true_false";
 		$correct=$_POST['true_false'];
 		$sql="INSERT INTO true_false (question,`point`,correct,quiz_id,classic,solving_time) VALUES ('$target_file','$point','$correct','$quiz_id','0','$solving_time')";
 	}
 	else if($_SESSION['answer_type']==7)//short text
 	{
-		$element="short_text";
+		$element="text";
 		$sql="INSERT INTO text_question (question,`point`,short,quiz_id,solving_time) VALUES ('$target_file','$point','1','$quiz_id','$solving_time')";
 	}
 	else if($_SESSION['answer_type']==8)//long text
@@ -585,7 +657,7 @@ else if($_GET["edit"]==9)//edit answer
 	$solving_time=0;
 	if(!empty($_POST['solving_time_min']))
 		$solving_time=$solving_time+$_POST['solving_time_min']*60;
-	else if(!empty($_POST['solving_time_sec']))
+	if(!empty($_POST['solving_time_sec']))
 		$solving_time=$solving_time+$_POST['solving_time_sec'];
 
 	$order_number=$_POST['order_number'];
@@ -812,12 +884,12 @@ else if($_GET["edit"]==9)//edit answer
 	}
 
 	//order
-	$sql_select="SELECT * FROM question_order WHERE quiz_id LIKE $quiz_id";
+	$sql_select="SELECT * FROM question_order WHERE answer_id LIKE $answer_id";
 	$results_select=mysqli_query($db,$sql_select);
 	$row_select=mysqli_fetch_array($results_select);
 	$old_order_number=$row_select["order_number"];
-
-	if($old_order_number>$order_number)//move
+	
+	if($old_order_number>=$order_number)//move
 	{
 		$sql_update="UPDATE question_order SET order_number = order_number+1 WHERE order_number >= $order_number AND order_number < $old_order_number AND quiz_id LIKE $quiz_id";
 		$results_update=mysqli_query($db,$sql_update);

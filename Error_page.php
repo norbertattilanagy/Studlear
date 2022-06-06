@@ -49,15 +49,12 @@ if(empty($_SESSION['error_message']))//security
 			    	<?php include 'Courses_group.php' ?>
 			    </div>
 			    <div class="col-md-9">
-			    	<div class="alert alert-danger mx-4" role="alert">
-          				<div class="d-flex justify-content-center">
-            				<i class="bi bi-exclamation-triangle-fill me-2"></i>
-            				<?php echo $_SESSION['error_message']; ?>
-          				</div>
+			    	<div class="alert alert-danger mx-4 mt-5" role="alert">
+          				<h2 style="text-align: center;"><i class="bi bi-exclamation-triangle-fill me-4"></i><?php echo $_SESSION['error_message']; ?><i class="bi bi-exclamation-triangle-fill ms-4"></i></h2>
         			</div>
 			    </div>
 			<?php } ?> 
-		<h2 style="text-align: center;"><?php echo $_SESSION['error_message']; ?></h2>
+		
 		</div>
 	</body>
 </html>

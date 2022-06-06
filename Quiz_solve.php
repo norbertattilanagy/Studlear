@@ -26,8 +26,13 @@
   				else
   		  			echo '<li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasă</a></li>'; 
   		  		echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'" style="text-decoration: none;">Curs</a></li>'; 
-  		  		echo '<li class="breadcrumb-item"><a href="Quiz_teacher.php?id='.$_SESSION['quiz'].'" style="text-decoration: none;">Quiz</a></li>';
-  		  		echo '<li class="breadcrumb-item"><a href="Quiz_solve_table.php" style="text-decoration: none;">Tabel rezolvări</a></li>';
+  		  		if($_SESSION['user_type']=="student")
+  		  			echo '<li class="breadcrumb-item"><a href="Quiz_start.php?id='.$_SESSION['quiz'].'" style="text-decoration: none;">Start quiz</a></li>';
+  		  		else
+  		  		{
+  		  			echo '<li class="breadcrumb-item"><a href="Quiz_teacher.php?id='.$_SESSION['quiz'].'" style="text-decoration: none;">Quiz</a></li>';
+  		  			echo '<li class="breadcrumb-item"><a href="Quiz_solve_table.php" style="text-decoration: none;">Tabel rezolvări</a></li>';
+  		  		}
   		  		?>
     			<li class="breadcrumb-item active" aria-current="page">Rezolvări</li>
   			</ol>
@@ -101,7 +106,7 @@
 									$results_option=mysqli_query($db,$sql_option);
 									$nr_option=0;
 									$max_option=mysqli_num_rows($results_option)-1;
-
+									$point_value=0;
 									
 									while($row_option=mysqli_fetch_array($results_option))
 									{
@@ -165,7 +170,6 @@
 								//checkbox		
 										else if($element=="checkbox")
 										{
-
 											if($row_answer['classic']==1)
 											{ ?>
 												<div class="form-check">
@@ -176,7 +180,8 @@
 														else
 															$correct_answer=$correct_answer.'; '.$row_option['option']; ?>
 				  										<input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" checked disabled>
-				  									<?php } else { ?>
+				  									<?php } else { 
+				  										 ?>
 														<input class="form-check-input" type="checkbox" value="" id="flexCheckDisabled" disabled>
 				  									<?php } ?>
 
@@ -226,50 +231,76 @@
 									$sql_answer_true_false="SELECT * FROM answer_true_false WHERE user_id LIKE $answer_user_id AND true_false_id LIKE $answer_id";
 									$results_answer_true_false=mysqli_query($db,$sql_answer_true_false);
 									$row_answer_true_false=mysqli_fetch_array($results_answer_true_false);
-									$point_value=$row_answer_true_false['point'];
+									if(empty($row_answer_true_false['point']))
+										$point_value=0;
+									else
+										$point_value=$row_answer_true_false['point'];
 
 									if($row_answer['classic']==1)
 									{ 
-
-										if($row_answer_true_false['answer_true']==1){ ?>
-											<div class="form-check">
-				  								<input class="form-check-input" type="radio" value="1" id="true" disabled checked>
+										if(isset($row_answer_true_false['answer_true']))
+										{
+											if($row_answer_true_false['answer_true']==1){ ?>
+												<div class="form-check">
+					  								<input class="form-check-input" type="radio" value="1" id="true" disabled checked>
+													<label class="form-check-label" for="true">Adevărat</label>
+												</div>
+												<div class="form-check">
+					  								<input class="form-check-input" type="radio" value="0" id="false" disabled>
+													<label class="form-check-label" for="false">Fals</label>
+												</div>
+					  						<?php } else { ?>
+												<div class="form-check">
+					  								<input class="form-check-input" type="radio" value="1" id="true" disabled>
+													<label class="form-check-label" for="true">Adevărat</label>
+												</div>
+												<div class="form-check">
+					  								<input class="form-check-input" type="radio" value="0" id="false" disabled checked>
+													<label class="form-check-label" for="false">Fals</label>
+												</div>
+					  						<?php }
+					  					} else { ?>
+					  						<div class="form-check">
+					  							<input class="form-check-input" type="radio" value="1" id="true" disabled>
 												<label class="form-check-label" for="true">Adevărat</label>
 											</div>
 											<div class="form-check">
-				  								<input class="form-check-input" type="radio" value="0" id="false" disabled>
+					  							<input class="form-check-input" type="radio" value="0" id="false" disabled>
 												<label class="form-check-label" for="false">Fals</label>
 											</div>
-				  						<?php } else { ?>
-											<div class="form-check">
-				  								<input class="form-check-input" type="radio" value="1" id="true" disabled>
-												<label class="form-check-label" for="true">Adevărat</label>
-											</div>
-											<div class="form-check">
-				  								<input class="form-check-input" type="radio" value="0" id="false" disabled checked>
-												<label class="form-check-label" for="false">Fals</label>
-											</div>
-				  						<?php }
+					  					<?php }
 				  					} 
 				  					else
 				  					{ ?>
 				  						<div class="d-flex justify-content-between">
-					  						<?php if($row_answer_true_false['answer_true']==1){ ?>
-												<div class="form-check">
-													<input class="btn-check" type="radio" value="1" id="true" disabled checked>
+					  						<?php 
+					  						if(isset($row_answer_true_false['answer_true'])){
+						  						if($row_answer_true_false['answer_true']==1){ ?>
+													<div class="form-check">
+														<input class="btn-check" type="radio" value="1" id="true" disabled checked>
+														<label class="btn btn-outline-success btn-lg" for="option" style="width: 30vw;border-width:4px">Adevărat</label>
+													</div>
+													<div class="form-check">
+						  								<input class="btn-check" type="radio" value="1" id="true" disabled>
+														<label class="btn btn-outline-danger btn-lg" for="option" style="width: 30vw;border-width:4px">Fals</label>
+													</div>
+						  						<?php } else if($row_answer_true_false['answer_true']==0) { ?>
+													<div class="form-check">
+						  								<input class="btn-check" type="radio" value="1" id="true" disabled>
+														<label class="btn btn-outline-success btn-lg" for="option" style="width: 30vw;border-width:4px">Adevărat</label>
+													</div>
+													<div class="form-check">
+						  								<input class="btn-check" type="radio" value="1" id="true" disabled checked>
+														<label class="btn btn-outline-danger btn-lg" for="option" style="width: 30vw;border-width:4px">Fals</label>
+													</div>
+					  							<?php }
+					  						} else { ?>
+					  							<div class="form-check">
+													<input class="btn-check" type="radio" value="1" id="true" disabled>
 													<label class="btn btn-outline-success btn-lg" for="option" style="width: 30vw;border-width:4px">Adevărat</label>
 												</div>
 												<div class="form-check">
-					  								<input class="btn-check" type="radio" value="1" id="true" disabled>
-													<label class="btn btn-outline-danger btn-lg" for="option" style="width: 30vw;border-width:4px">Fals</label>
-												</div>
-					  						<?php } else { ?>
-												<div class="form-check">
-					  								<input class="btn-check" type="radio" value="1" id="true" disabled>
-													<label class="btn btn-outline-success btn-lg" for="option" style="width: 30vw;border-width:4px">Adevărat</label>
-												</div>
-												<div class="form-check">
-					  								<input class="btn-check" type="radio" value="1" id="true" disabled checked>
+						  							<input class="btn-check" type="radio" value="1" id="true" disabled>
 													<label class="btn btn-outline-danger btn-lg" for="option" style="width: 30vw;border-width:4px">Fals</label>
 												</div>
 					  						<?php } ?>
@@ -281,11 +312,17 @@
 									$sql_answer_text="SELECT * FROM answer_text_question WHERE user_id LIKE $answer_user_id AND text_question_id LIKE $answer_id";
 									$results_answer_text=mysqli_query($db,$sql_answer_text);
 									$row_answer_text=mysqli_fetch_array($results_answer_text);
-									$point_value=$row_answer_text['point'];
+									if(isset($row_answer_text['point']))
+										$point_value=$row_answer_text['point'];
+									else
+										$point_value=0;
 
 									if($row_answer['short']==1)//short text
 									{
-										echo '<input type="text" class="form-control" id="short_text" name="short_text" value="'.$row_answer_text['answer'].'" disabled>';
+										$answer="";
+										if(isset($row_answer_text['answer']))
+											$answer=$row_answer_text['answer'];
+										echo '<input type="text" class="form-control" id="short_text" name="short_text" value="'.$answer.'" disabled>';
 									}
 									else //long text
 									{
@@ -302,8 +339,7 @@
 								}
 								else if($element=="select")//select
 								{
-									
-
+									$point_value=0;
 									$sql_select="SELECT * FROM select_option WHERE select_question_id LIKE $answer_id ORDER BY `group`";
 									$results_select=mysqli_query($db,$sql_select);
 									$i=0;
@@ -325,9 +361,9 @@
 									{
 										$i='"'.$i.'"';
 										$sql_select="SELECT * FROM select_option WHERE select_question_id LIKE $answer_id AND `group` LIKE $i";
-										$results_select=mysqli_query($db,$sql_select); ?>
-
-										<?php while($row_select=mysqli_fetch_array($results_select))
+										$results_select=mysqli_query($db,$sql_select);
+										
+										while($row_select=mysqli_fetch_array($results_select))
 										{
 											$select_option_id=$row_select['id'];
 											$sql_answer_select="SELECT * FROM answer_select_question WHERE user_id LIKE $answer_user_id AND select_option_id LIKE $select_option_id";

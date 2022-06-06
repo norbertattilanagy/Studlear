@@ -386,32 +386,33 @@
 							
 						</div>
 						
-
 						<div class="mt-2">
 							<?php
-							if($row_answer['solving_time']>0)
-							{
-								$solving_time=$row_answer["solving_time"];
-						    	$solving_time_min=intdiv($solving_time,60);
-						    	$solving_time_sec=$solving_time%60;
-
-						    	if($solving_time_min<10)
-						    		$solving_time_min="0".$solving_time_min;
-						    	else if($solving_time_min==0)
-						    		$solving_time_min="00";
-
-						    	if($solving_time_sec<10)
-						    		$solving_time_sec="0".$solving_time_sec;
-						    	else if($solving_time_sec==0)
-						    		$solving_time_sec="00";
+							if($row['solving_time']==0){ 
+								if($row_answer['solving_time']>0)
+								{
+									$solving_time=$row_answer["solving_time"];
+							    	$solving_time_min=intdiv($solving_time,60);
+							    	$solving_time_sec=$solving_time%60;
+							    	if($solving_time_min<10)
+							    		$solving_time_min="0".$solving_time_min;
+							    	else if($solving_time_min==0)
+							    		$solving_time_min="00";
+							    	if($solving_time_sec<10)
+							    		$solving_time_sec="0".$solving_time_sec;
+							    	else if($solving_time_sec==0)
+							    		$solving_time_sec="00";
+								}
 							}?>
 							<div class="d-flex justify-content-between">
 								<?php
-								echo "<i>Timp: <b>".$solving_time_min.':'.$solving_time_sec."</b></i>";
+								if($row['solving_time']==0)
+									echo "<i>Timp: <b>".$solving_time_min.':'.$solving_time_sec."</b></i>";
+								else
+									echo "<i></i>";
 								echo "<i>Puncte: <b>".$row_answer['point']."</b></i>";
 								?>
 							</div>
-							
 						</div>
 						<hr>
 

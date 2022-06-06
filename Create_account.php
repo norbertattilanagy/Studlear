@@ -121,6 +121,22 @@ function validatePassword(){
     $("#p2").remove();
     $(".password2").append(`<p id="p2">Introduceți o parolă</p>`);
   }
+  if(password1.value != password2.value)
+  {
+    //lert(password1.value);
+    //alert(password2.value);
+    $("#p1").remove();
+    $("#p2").remove();
+    $(".password1").append(`<p id="p1">Parola nu coincide</p>`);
+    $(".password2").append(`<p id="p2">Parola nu coincide</p>`);
+    password1.setCustomValidity(' ');
+    password2.setCustomValidity(' ');
+  }
+  else
+  {
+    password1.setCustomValidity('');
+    password2.setCustomValidity('');
+  }
   if(password1.value.length<6)
   {
     $("#p1").remove();
@@ -145,16 +161,7 @@ function validatePassword(){
     $(".password1").append(`<p id="p1">Parola nu conține cifre</p>`);
     password1.setCustomValidity(' ');
   }
-  else if(password1.value != password2.value)
-  {
-    $("#p1").remove();
-    $("#p2").remove();
-    $(".password1").append(`<p id="p1">Parola nu coincide</p>`);
-    $(".password2").append(`<p id="p2">Parola nu coincide</p>`);
-    password1.setCustomValidity(' ');
-    password2.setCustomValidity(' ');
-  } 
-  else
+  else if(password1.value == password2.value)
   {
     password1.setCustomValidity('');
     password2.setCustomValidity('');

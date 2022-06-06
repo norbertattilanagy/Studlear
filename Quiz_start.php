@@ -93,6 +93,7 @@
 			    		$start_event=date_format($start_event,"Y.m.d. H:i");
 			    		$end_event=date_create($row['end_event']);
 			    		$end_event=date_format($end_event,"Y.m.d. H:i");
+			    		$today=date("Y.m.d. H:i");
 
 			    		echo 'Început: <b>'.$start_event.'</b><br>';
 						echo 'Final: <b>'.$end_event.'</b>';
@@ -185,10 +186,14 @@
 						}
 						if($resolved==0){ ?>
 							</div>
-							<div class="d-grid mt-3">
-								<a class="btn btn-secondary" href="Quiz.php">Start quiz</a>
-							</div>
-						<?php } else 
+							<?php 
+							//if($start_event<$today and $today<$end_event){ ?>
+								<div class="d-grid mt-3">
+									<a class="btn btn-secondary" href="Quiz.php">Start quiz</a>
+								</div>
+							<?php //}
+						} 
+						else 
 						{
 							echo '<br>Puncte: <b>'.$point.' / '.$max_point.'</b>';
 							echo '</div>';
