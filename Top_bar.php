@@ -6,8 +6,11 @@
         <img src="Images\Sistem\logo.png" alt="Logo" style="width:100px;" class="img-fluid">
       </a>
     <?php }
-    else
-      echo '<img src="Images\Sistem\logo.png" alt="Logo" style="width:100px;" class="img-fluid me-3">'; ?>
+    else { ?>
+      <a class="navbar-brand" href="Enroll_in_course.php?enroll=8.php"> 
+        <img src="Images\Sistem\logo.png" alt="Logo" style="width:100px;" class="img-fluid me-3">
+      </a>
+    <?php } ?>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
       <span class="navbar-toggler-icon"></span>
@@ -49,7 +52,7 @@
               ?>
             <ul class="dropdown-menu dropdown-menu-end">
               <?php echo '<li><a href="My_account.php?id='.$user_id.'" class="dropdown-item">Contul meu</a></li>'; ?>
-              <li><a href="Log_out.php" class="dropdown-item">Log out</a></li>
+              <li><a href="Log_out.php" class="dropdown-item">Deconectare</a></li>
             </ul>
           </div>
         </li>

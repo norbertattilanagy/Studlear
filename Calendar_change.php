@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <?php
 if(empty($_GET['button']))
@@ -72,7 +72,7 @@ else if($_GET['button']=="add_event")//add event
     fwrite($file, $description);
     fclose($file);
 
-    $sql="INSERT INTO calendar (title,start_event,end_event,color,description,user_id) VALUES ('$title','$start_event','$end_event','$color','$target_files','$user_id')";
+    $sql="INSERT INTO calendar (title,start_event,end_event,color,description,user_id) VALUES ('$title','$start_event','$end_event','$color','$target_file','$user_id')";
     $results=mysqli_query($db,$sql);
 
     $link='location:'.$_SERVER['HTTP_REFERER'];
@@ -96,10 +96,10 @@ elseif($_GET['button']=="edit_event")
     fclose($file);
 
     $sql="UPDATE calendar SET title=$title, start_event=$start_event, end_event=$end_event WHERE id LIKE $event_id";
-    //$results=mysqli_query($db,$sql);
+    $results=mysqli_query($db,$sql);
 
-    //$link='location:'.$_SERVER['HTTP_REFERER'];
-    //header("$link");
+    $link='location:'.$_SERVER['HTTP_REFERER'];
+    header("$link");
 }
 elseif ($_GET['button']=="delete_event") {
     $event_id=$_SESSION['event_id'];

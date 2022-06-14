@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
@@ -57,7 +57,7 @@
 			            </select>
 			            <div class="invalid-feedback">Alegeți un tip de utilizator</div>
 			        </div>
-			        <div class="d-grid">
+			        <div class="d-grid mb-3">
 			            <br>
 			            <button type="submit" class="btn btn-dark btn-block">Creare cont</button>
 			        </div>

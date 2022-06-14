@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
@@ -88,7 +88,7 @@
 			    	?>
 			    	<?php echo '<form action="Add_quiz1.php?edit='.$_SESSION['add'].'" class="needs-validation" method="post" novalidate>'; ?>
 
-				    	<div class="mt-3">
+				    	<div>
 					    	<label for="title" class="form-label"><b>Titlu:</b></label>
 					    	<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();" required>';?>
 					    	<div class="invalid-feedback">Introduceți titlul</div>
@@ -179,7 +179,7 @@
 	    					<label class="form-check-label" for="visibility">Vizibilitate</label>
 						</div>
 
-					    <div class="d-grid mt-3">
+					    <div class="d-grid mt-3 mb-3">
 					    	<?php
 					    	if($_SESSION['add']==1)
 								echo '<button type="submit" class="btn btn-secondary btn-block">Adaugă întrebare</button>';

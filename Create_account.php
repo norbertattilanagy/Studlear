@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
@@ -50,9 +50,9 @@
               <div class="invalid-feedback">Introduceți un nume</div>
           </div>
           <div class="mb-3">
-            <label for="email">Email:</label>
+            <label for="email">E-mail:</label>
             <?php echo '<input type="email" class="form-control" id="email" placeholder="Introduceţi e-mailul" name="email" value="'.$email.'" required>'; ?>
-            <div class="invalid-feedback">Introduceți un email</div>
+            <div class="invalid-feedback">Introduceți un e-mail</div>
           </div>
           <div class="mb-3">
             <label for="password1">Parolă:</label>

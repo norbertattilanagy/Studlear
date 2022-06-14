@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php
 $page='"'.basename($_SERVER['PHP_SELF']).'"';
 

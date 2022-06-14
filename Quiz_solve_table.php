@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
@@ -164,8 +164,8 @@
 
 					    		echo '<tr>';
 						    		echo '<th>'.$nr.'</th>';
-						    		echo '<td><a href="#" class="link-dark" style="text-decoration:none;">'.$row['name'].'</a></td>';
-						    		echo '<td><a href="#" class="link-dark" style="text-decoration:none;">'.$row['email'].'</a></td>';
+						    		echo '<td><a href="My_account.php?id='.$row['id'].'" class="link-dark" style="text-decoration:none;">'.$row['name'].'</a></td>';
+						    		echo '<td><a href="My_account.php?id='.$row['id'].'" class="link-dark" style="text-decoration:none;">'.$row['email'].'</a></td>';
 						    		echo '<td><b>'.$point.'</b> / '.$max_point.'</td>';
 						    		if($resolved==0)
 						    			echo '<td><i class="bi bi-x-circle ms-4" style="color:red;"></i></td>';

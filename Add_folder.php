@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
@@ -29,11 +29,11 @@
   		  		echo '<li class="breadcrumb-item"><a href="Course_page.php?id='.$_SESSION['course_id'].'" style="text-decoration: none;">Curs</a></li>';
 
   		  		if($_SESSION['add']==1)
-    				echo '<li class="breadcrumb-item active" aria-current="page">Adaugă folder</li>';
+    				echo '<li class="breadcrumb-item active" aria-current="page">Adaugă dosar</li>';
     			else
     			{
     				echo '<li class="breadcrumb-item"><a href="Folder.php?id='.$_SESSION['folder'].'" style="text-decoration: none;">Folder</a></li>';
-    				echo '<li class="breadcrumb-item active" aria-current="page">Editează folder</li>';
+    				echo '<li class="breadcrumb-item active" aria-current="page">Editează dosar</li>';
     			}
     			?>
   			</ol>
@@ -58,7 +58,7 @@
 		    		}
 			    	?>
 			    	<?php echo '<form action="Add_folder1.php?edit='.$_SESSION['add'].'" class="needs-validation" method="post" enctype="multipart/form-data" novalidate>'; ?>
-			    		<div class="mt-3">
+			    		<div>
 				    		<label for="title" class="form-label"><b>Titlu:</b></label>
 				    		<?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$title.'" onClick="this.select();" required>';?>
 				    		<div class="invalid-feedback">Introduceți titlul</div>
@@ -133,7 +133,7 @@
 	      					
 	    					<label class="form-check-label" for="visibility">Vizibilitate</label>
 						</div>
-						<div class="d-grid mt-3">
+						<div class="d-grid mt-3 mb-3">
 						    <button type="submit" class="btn btn-secondary btn-block">Salvează</button>
 						</div>
 					</form>

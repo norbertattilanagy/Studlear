@@ -1,12 +1,10 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <?php if($_SESSION['user_type']!='admin'){ ?>
 	<div class="d-none d-md-block">
 		<div class="container">
 
-			<h5>Cursuri favorite:</h5>
 			<button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#New_group_Modal">Grup nou +</button>
-
 			
 			<div class="accordion accordion-flush mt-3" id="accordionFlushExample">
 				<?php 

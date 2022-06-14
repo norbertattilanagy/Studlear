@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
@@ -75,12 +75,20 @@
 				      		<?php } ?>
 			      		</div>
 			      	</div>
+			      	<?php 
+			      	if($row['type']=="teacher")
+			      		$user_t="Profesor";
+			      	elseif($row['type']=="student")
+			      		$user_t="Student";
+			      	else
+			      		$user_t="Administrator";
+			      	?>
 			      	<div class="col-xl-9 col-md-8 mt-4">
 			      		<div class="mx-4">
 				      		<div class="container p-3 border border-3 rounded-1">
 					      		<?php echo '<h5><b>Nume: '.$row['name'].'</b></h5>'; ?>
 					      		<?php echo '<h5><b>Email: '.$row['email'].'</b></h5>'; ?>
-					      		<?php echo '<h5><b>Tip cont: '.$row['type'].'</b></h5>'; ?>	
+					      		<?php echo '<h5><b>Tip cont: '.$user_t.'</b></h5>'; ?>	
 				      		</div>
 				      		<?php if($_SESSION['user_type']=="admin" and $search_user_id!=$user_id){ ?>
 				      			<div class="d-grid mt-3">

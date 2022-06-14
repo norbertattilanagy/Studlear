@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
@@ -41,7 +41,7 @@
       <?php } 
       else
         echo '<div class="mx-4">';
-
+        setlocale(LC_ALL, 'ro', 'ro_RO');
         if(empty($_SESSION['calendar_date']))
           $_SESSION['calendar_date']=date("Y-m-d");
 
@@ -54,7 +54,6 @@
         $num_days_last_month = date('j', strtotime('last day of previous month', strtotime($active_day . '-' . $active_month . '-' .$active_year)));
         $days = [0 => 'Mon', 1 => 'Tue', 2 => 'Wed', 3 => 'Thu', 4 => 'Fri', 5 => 'Sat', 6 => 'Sun'];
         $first_day_of_week = array_search(date('D', strtotime($active_year . '-' . $active_month . '-1')), $days);
-
         $days_write=['Lu','Ma','Mi','Jo','Vi','Sa','Du'];
         ?>
         <div class="calendar mb-3">
@@ -73,7 +72,7 @@
 
                         <div class="col-sm-4">
                             <h4>
-                                <?php echo date('F Y', strtotime($active_year . '-' . $active_month . '-' . $active_day)); ?>
+                                <?php echo strftime('%B %Y', strtotime($active_year . '-' . $active_month . '-' . $active_day)); ?>
                             </h4>
                         </div>
                     </div>
@@ -396,58 +395,61 @@
                     <div class="modal-body">
                         <?php 
                         if(isset($_SESSION['event_id']) and isset($_SESSION['event_type'])){
-                          $event_id=$_SESSION['event_id'];
-                          if($_SESSION['event_type']=='event')
-                              $sql="SELECT * FROM calendar WHERE id LIKE $event_id";
-                          if($_SESSION['event_type']=="video_conference")
-                              $sql="SELECT * FROM video_conference WHERE id LIKE $event_id";
-                          if($_SESSION['event_type']=="quiz")
-                              $sql="SELECT * FROM quiz WHERE id LIKE $event_id";
-                          if($_SESSION['event_type']=="homework")
-                              $sql="SELECT * FROM homework WHERE id LIKE $event_id";
+                            $event_id=$_SESSION['event_id'];
+                            if($_SESSION['event_type']=='event')
+                                $sql="SELECT * FROM calendar WHERE id LIKE $event_id";
+                            if($_SESSION['event_type']=="video_conference")
+                                $sql="SELECT * FROM video_conference WHERE id LIKE $event_id";
+                            if($_SESSION['event_type']=="quiz")
+                                $sql="SELECT * FROM quiz WHERE id LIKE $event_id";
+                            if($_SESSION['event_type']=="homework")
+                                $sql="SELECT * FROM homework WHERE id LIKE $event_id";
                           
-                          $results=mysqli_query($db,$sql);
-                          $row=mysqli_fetch_array($results,MYSQLI_ASSOC);
-                          echo '<h5>'.$row["title"].'</h5><br>';
-                          if($_SESSION['event_type']!="homework")
-                          {
-                              $start_event=date("Y-m-d H:i", strtotime($row["start_event"]));
-                              echo '<p>Început: <b>'.$start_event.'</b></p>';
-                          }
-                          $end_event=date("Y-m-d H:i", strtotime($row["end_event"]));
-                          echo '<p>Sfârșit: <b>'.$end_event.'</b></p>';
-                          if($_SESSION['event_type']=="event")
-                          {
-                              echo '<p>Descriere:<br>';
-                              $target_file=$row['description'];
-                              $file = fopen($target_file, "r");
-                              while(!feof($file)) {
-                                  echo fgets($file)."<br>";
-                              }
-                              fclose($file);
-                              echo '</p>';
-                          }
-                          if($_SESSION['event_type']=="video_conference")
-                          {
-                              echo '<div class="d-grid">';
-                                  echo '<a href="Video_conference.php?id='.$id.'" class="btn btn-secondary" type="button">Accesează</a>';
-                              echo '</div>';
-                          }
-                          else if($_SESSION['event_type']=="quiz")
-                          {
-                              echo '<div class="d-grid">';
-                                  if($_SESSION['user_type']=="student")
-                                      echo '<a href="Quiz_start.php?id='.$id.'" class="btn btn-secondary" type="button">Accesează</a>';
-                                  else
-                                      echo '<a href="Quiz_teacher.php?id='.$id.'" class="btn btn-secondary" type="button">Accesează</a>';
-                              echo '</div>';
-                          }
-                          else if($_SESSION['event_type']=="homework")
-                          {
-                              echo '<div class="d-grid">';
-                                  echo '<a href="Homework.php?id='.$id.'" class="btn btn-secondary" type="button">Accesează</a>';
-                              echo '</div>';
-                          }   
+                            $results=mysqli_query($db,$sql);
+                            $row=mysqli_fetch_array($results,MYSQLI_ASSOC);
+                            echo '<h5>'.$row["title"].'</h5><br>';
+                            if($_SESSION['event_type']!="homework")
+                            {
+                                $start_event=date("Y-m-d H:i", strtotime($row["start_event"]));
+                                echo '<p>Început: <b>'.$start_event.'</b></p>';
+                            }
+                            $end_event=date("Y-m-d H:i", strtotime($row["end_event"]));
+                            echo '<p>Sfârșit: <b>'.$end_event.'</b></p>';
+                            if($_SESSION['event_type']=="event")
+                            { 
+                                echo '<p>Descriere:<br>';
+                                if(isset($row['description']))
+                                {
+                                    $target_file=$row['description'];
+                                    $file = fopen($target_file, "r");
+                                    while(!feof($file)) {
+                                        echo fgets($file)."<br>";
+                                    }
+                                    fclose($file);
+                                }
+                                echo '</p>';
+                            }
+                            if($_SESSION['event_type']=="video_conference")
+                            {
+                                echo '<div class="d-grid">';
+                                    echo '<a href="Video_conference.php?id='.$event_id.'" class="btn btn-secondary" type="button">Accesează</a>';
+                                echo '</div>';
+                            }
+                            else if($_SESSION['event_type']=="quiz")
+                            {
+                                echo '<div class="d-grid">';
+                                    if($_SESSION['user_type']=="student")
+                                        echo '<a href="Quiz_start.php?id='.$event_id.'" class="btn btn-secondary" type="button">Accesează</a>';
+                                    else
+                                        echo '<a href="Quiz_teacher.php?id='.$event_id.'" class="btn btn-secondary" type="button">Accesează</a>';
+                                echo '</div>';
+                            }
+                            else if($_SESSION['event_type']=="homework")
+                            {
+                                echo '<div class="d-grid">';
+                                    echo '<a href="Homework.php?id='.$event_id.'" class="btn btn-secondary" type="button">Accesează</a>';
+                                echo '</div>';
+                            }   
                         }
                         ?>
                         <?php if($_SESSION['event_type']=="event"){ ?>
@@ -460,6 +462,7 @@
                 </div>
             </div>
         </div>
+        
         <!--Modal Edit_event_Modal-->
         <div class="modal fade" id="Edit_event">
             <div class="modal-dialog">
@@ -477,7 +480,7 @@
                     ?>
                     <!-- Modal body -->
                     <div class="modal-body">
-                        <form action="Calendar_change.php?button=edit_event" method="post">
+                        <form action="Calendar_change.php?button=edit_event" class="needs-validation" method="post" novalidate>
                             <div class="mb-3">
                                 <label for="title" class="form-label">Titlu:</label>
                                 <?php echo '<input type="text" class="form-control" id="title" name="title" value="'.$row['title'].'" onClick="this.select();">'; ?>
@@ -488,7 +491,11 @@
                                 <div class="row">
                                     <div class="col">
                                         <?php $start_event=date("Y-m-d", strtotime($row["start_event"]));
-                                        echo '<input type="date" class="form-control" id="event_date_start" name="event_date_start" value="'.$start_event.'" min='.date("Y-m-d").'>'; ?>
+                                        if($start_event<date("Y-m-d"))
+                                            $min_date=$start_event;
+                                        else
+                                            $min_date=date("Y-m-d");
+                                        echo '<input type="date" class="form-control" id="event_date_start" name="event_date_start" value="'.$start_event.'" min='.$min_date.'>'; ?>
                                     </div>
                                     <div class="col">
                                         <?php $start_event=date("H:i", strtotime($row["start_event"]));
@@ -496,12 +503,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-3">
+                           <div class="mb-3">
                                 <label for="date" class="form-label">Sfârșit:</label>
                                 <div class="row">
                                     <div class="col">
                                         <?php $end_event=date("Y-m-d", strtotime($row["end_event"]));
-                                        echo '<input type="date" class="form-control" id="event_date_end" name="event_date_end" value="'.$end_event.'" min='.date("Y-m-d").'>'; ?>
+                                        echo '<input type="date" class="form-control" id="event_date_end" name="event_date_end" value="'.$end_event.'" min='.$min_date.'>'; ?>
                                     </div>
                                     <div class="col">
                                         <?php $end_event=date("H:i", strtotime($row["end_event"]));
@@ -511,16 +518,17 @@
                             </div>
                             <div class="mb-3">
                                 <label for="description" class="form-label">Descriere:</label>
-                                <textarea class="form-control" rows="3" id="description" name="description" onClick="this.select();">
-                                    <?php 
-                                    $target_file=$row['description'];
-                                    $file = fopen($target_file,"r");
-                                    while(!feof($file)) {
-                                        echo fgets($file);
-                                    }
-                                    fclose($file);
-                                    ?>
-                                </textarea>
+                                <textarea class="form-control" rows="3" id="description" name="description" onClick="this.select();"><?php
+                                    if(isset($row['description']))
+                                    {
+                                        $target_file=$row['description'];
+                                        $file = fopen($target_file,"r");
+                                        while(!feof($file)) {
+                                            echo fgets($file);
+                                        }
+                                        fclose($file);
+                                    }  
+                                ?></textarea>
                             </div>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-secondary btn-block mt-3">Salvează</button>
@@ -530,7 +538,7 @@
                 </div>
             </div>
         </div>
-
+        
         <!--Modal Delete_event_Modal-->
         <div class="modal fade" id="Delete_event">
             <div class="modal-dialog">
@@ -577,4 +585,22 @@
          window.history.pushState('', 'Calendar_page', 'Calendar_page.php');
       }
   });
+</script>
+<script type="text/javascript">
+(function () {
+    
+    var forms = document.querySelectorAll('.needs-validation') 
+    Array.prototype.slice.call(forms).forEach(function (form) {
+            
+        form.addEventListener('submit', function (event)
+        {           
+            if (!form.checkValidity())
+            {   
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.classList.add('was-validated')
+        }, false)
+    })
+})()
 </script>

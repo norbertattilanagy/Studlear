@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <?php 
 if(empty($_SESSION['homework']))
@@ -51,7 +51,7 @@ if(empty($_SESSION['homework']))
 		    	$homework_id=$_SESSION['homework'];
 		    	$course_id=$_SESSION['course_id'];
 
-		    	$sql="SELECT * FROM user AS u JOIN course_user AS c ON u.id=c.user_id WHERE c.course_id LIKE $course_id and u.type LIKE 'student' ORDER BY name";
+		    	$sql="SELECT * FROM course_user AS c JOIN user AS u ON u.id=c.user_id WHERE c.course_id LIKE $course_id and u.type LIKE 'student' ORDER BY name";
 		    	$results=mysqli_query($db,$sql);
 		    	?>
 		    	<div class="me-3">
@@ -88,13 +88,15 @@ if(empty($_SESSION['homework']))
 										$point=$row_homework["point"];
 								}
 								
-
 								echo '<tr>';
 	        						echo '<td>'.$i.'</td>';
-	        						echo '<td>'.$row["name"].'</td>';
-	        						echo '<td>'.$row["email"].'</td>';
+	        						echo '<td><a href="My_account.php?id='.$row['id'].'" class="link-dark" style="text-decoration:none;">'.$row['name'].'</a></td>';
+	        						echo '<td><a href="My_account.php?id='.$row['id'].'" class="link-dark" style="text-decoration:none;">'.$row['email'].'</a></td>';
 	        						echo '<td><a href="Add_homework1.php?edit=7&user_id='.$user_id.'" class="link-dark">'.$tema.'</a></td>';
-	        						echo '<td><a href="Add_homework1.php?edit=8&user_id='.$user_id.'" class="link-dark" style="text-decoration: none;">'.$point.'</a></td>';
+	        						if($point>0)
+	        							echo '<td><a href="Add_homework1.php?edit=8&user_id='.$user_id.'" class="link-dark" style="text-decoration: none;">'.$point.'</a></td>';
+	        						else
+	        							echo '<td>'.$point.'</td>';
 	        					echo '</tr>';
 	        					$i++;
 							}

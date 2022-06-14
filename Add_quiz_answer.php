@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
@@ -109,7 +109,7 @@
 		    		}
 		    		?>
 		    			<!--Question-------------->
-						<div class="mt-3">
+						<div>
 					    	<label for="question" class="form-label"><b>Întrebare:</b></label>
 							<textarea class="form-control" rows="2" id="question" name="question" onClick="this.select();" required><?php
 								if($_SESSION['add_answer']==0)
@@ -505,7 +505,7 @@
 
 
 
-						<div class="d-grid mt-3">
+						<div class="d-grid mt-3 mb-3">
 						    <button type="submit" class="btn btn-secondary btn-block">Salvează</button>
 						</div>
 

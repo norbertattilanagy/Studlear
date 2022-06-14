@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
@@ -46,13 +46,13 @@
         <h2 class="text-center"><br>Autentificare</h2>
         <form action="Sign_in1.php" class="needs-validation" name="form1" method="post" novalidate>
           <div class="mb-3 mt-3">
-            <label for="email">Email:</label>
-            <?php echo '<input type="email" class="form-control" id="email" placeholder="Enter email" value="'.$email.'" name="email" required>'; ?>
-            <div class="invalid-feedback email"><p id="em">Introduceți email-ul</p></div>
+            <label for="email">E-mail:</label>
+            <?php echo '<input type="email" class="form-control" id="email" placeholder="Introduceți e-mailul" value="'.$email.'" name="email" required>'; ?>
+            <div class="invalid-feedback email"><p id="em">Introduceți un e-mail</p></div>
           </div>
           <div class="mb-3">
             <label for="pwd">Parolă:</label>
-            <input type="password" class="form-control" id="password" placeholder="Enter password" name="password" required>
+            <input type="password" class="form-control" id="password" placeholder="Introduceți parola" name="password" required>
             <div class="invalid-feedback password"><p id="pas">Introduceți parola</p></div>
           </div>
           <div class="form-check mb-3">

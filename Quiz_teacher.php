@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <!doctype html>
 <html lang="en">
@@ -418,7 +418,7 @@
 
 					<?php }//while ?>
 
-					<div class="d-grid">
+					<div class="d-grid mb-3">
 						<button class="btn btn-secondary btn-block" data-bs-toggle="modal" data-bs-target="#Answer_type"><i class="bi bi-plus-circle me-2"></i>Adaugă întrebare</button>
 					</div>
 				</div>

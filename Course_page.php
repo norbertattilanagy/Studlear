@@ -1,4 +1,4 @@
-<?php include 'Conection.php'; ?>
+<?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <?php
 $_SESSION["course_id"]=$_GET['id'];
@@ -103,13 +103,13 @@ $_SESSION["course_id"]=$_GET['id'];
 	    											<?php echo '<a class="dropdown-item" href="Add_homework1.php?edit=3&add=1&lesson_id='.$row["id"].'"><i class="bi bi-house-door"></i> Adaugă temă</a>'; ?>
 	    										</li>
 	    										<li>
-	    											<?php echo '<a class="dropdown-item" href="Add_folder1.php?edit=3&add=1&lesson_id='.$row["id"].'"><i class="bi bi-folder"></i> Adaugă folder</a>'; ?>
+	    											<?php echo '<a class="dropdown-item" href="Add_folder1.php?edit=3&add=1&lesson_id='.$row["id"].'"><i class="bi bi-folder"></i> Adaugă dosar</a>'; ?>
 	    										</li>
 	    										<li>
 	    											<?php echo '<a class="dropdown-item" href="Add_link1.php?edit=3&add=1&lesson_id='.$row["id"].'"><i class="bi bi-link-45deg"></i> Adaugă link</a>'; ?>
 	    										</li>
 	    										<li>
-	    											<?php echo '<a class="dropdown-item" href="Add_quiz1.php?edit=3&add=1&lesson_id='.$row["id"].'"><i class="bi bi-question-diamond"></i> Adaugă quiz</a>'; ?>
+	    											<?php echo '<a class="dropdown-item" href="Add_quiz1.php?edit=3&add=1&lesson_id='.$row["id"].'"><i class="bi bi-question-diamond"></i> Adaugă test</a>'; ?>
 	    										</li>
 	  										</ul>
 										</div>
