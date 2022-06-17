@@ -18,7 +18,7 @@
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
-    	<nav class="ms-4" aria-label="breadcrumb">
+    	<nav class="mx-3" aria-label="breadcrumb">
   			<ol class="breadcrumb">
   		  		<?php
   		  		if($_SESSION['user_type']=="admin")
@@ -37,7 +37,7 @@
 		    	<?php include 'Courses_group.php' ?>
 		    </div>
 		    <div class="col-md-9">
-		    	
+		    	<div class="mx-3 mb-3">
 			    	<?php
 			    	$notification_id=$_GET['id'];
 			    	$_SESSION['notification']=$notification_id;
@@ -65,7 +65,7 @@
 						fclose($file);
 				    	?>
 				    </p>
-		    	
+		    	</div>
 		    </div>
 		</div>
 

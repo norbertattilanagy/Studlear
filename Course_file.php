@@ -18,7 +18,7 @@
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
-    	<nav class="ms-4" aria-label="breadcrumb">
+    	<nav class="mx-3" aria-label="breadcrumb">
   			<ol class="breadcrumb">
   		  		<?php
   		  		if($_SESSION['user_type']=="admin")
@@ -37,38 +37,47 @@
 		    	<?php include 'Courses_group.php' ?>
 		    </div>
 		    <div class="col-md-9">
-		    	<?php
-		    	$course_file_id=$_GET['id'];
-			    $_SESSION['course_file']=$course_file_id;
-			    $sql="SELECT * FROM course_file WHERE id LIKE $course_file_id";
-				$results=mysqli_query($db,$sql);
-				$row=mysqli_fetch_array($results);
+		    	<div class="mx-3">
+			    	<?php
+			    	$course_file_id=$_GET['id'];
+				    $_SESSION['course_file']=$course_file_id;
+				    $sql="SELECT * FROM course_file WHERE id LIKE $course_file_id";
+					$results=mysqli_query($db,$sql);
+					$row=mysqli_fetch_array($results);
 
-				if($_SESSION['user_type']!="student" and $row['visibility']==0) { ?>
-						<h3><b><?php echo $row['title']; ?></b><i class="bi bi-eye-slash ms-4"></i></h3>
-				<?php } else { ?>
-						<h3><b><?php echo $row['title']; ?></b></h3>
-				<?php }
+					if($_SESSION['user_type']!="student" and $row['visibility']==0) { ?>
+							<h3><b><?php echo $row['title']; ?></b><i class="bi bi-eye-slash ms-4"></i></h3>
+					<?php } else { ?>
+							<h3><b><?php echo $row['title']; ?></b></h3>
+					<?php }
 
-				if($_SESSION['user_type']!="student") { ?>
-					<a href="Add_course_file1.php?edit=4&add=0" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Editează</a>
-					<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#Delete_course_file"><i class="bi bi-trash"></i> Șterge</button>
-				<?php } ?>
+					if($_SESSION['user_type']!="student") { ?>
+						<a href="Add_course_file1.php?edit=4&add=0" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Editează</a>
+						<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#Delete_course_file"><i class="bi bi-trash"></i> Șterge</button>
+					<?php } ?>
 
-				<div class="mt-3 me-2">
-					<?php
-					$target_folder=$row['file_name'];
-					$files = scandir($target_folder);
-					for($i=0; $i<3; $i++)
-					{
-						if($files[$i]!="." and $files[$i]!="..")
+					<div class="my-3">
+
+						<?php
+						$target_folder=$row['file_name'];
+						$files = scandir($target_folder);
+						for($i=0; $i<3; $i++)
 						{
-							$target_file=$target_folder.$files[$i];
-							echo '<iframe src= "'.$target_file.'" width="100%" height="500px"><a href="'.$target_file.'" class="link-dark" style="text-decoration: none;"><i class="bi bi-file-earmark me-3"></i>'.$files[$i].'</a></iframe>';
+							if($files[$i]!="." and $files[$i]!="..")
+							{
+								$target_file=$target_folder.$files[$i];
+								echo '<div class="d-none d-md-block">';//no phone view
+									echo '<iframe src= "'.$target_file.'" width="100%" height="500px"><a href="'.$target_file.'" class="link-dark" style="text-decoration: none;"><i class="bi bi-file-earmark me-3"></i>'.$files[$i].'</a></iframe>';
+								echo '</div>';
+								 
+                        		echo '<div class="d-md-none d-block">';//phone view
+                        				echo '<a href="'.$target_file.'" class="link-dark" style="text-decoration: none;"><i class="bi bi-file-earmark me-3"></i>'.$files[$i].'</a>';
+                        		echo '</div>';
+							}
 						}
-					}
-					
-					?>
+						
+						?>
+					</div>
 				</div>
 		    </div>
 		</div>

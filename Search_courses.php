@@ -116,46 +116,45 @@
 					?>
 		    	</div>
 
-		    	<?php if($nr_row>$limit){ //pagination?>
-						<ul class="pagination justify-content-center">
-						    <?php
-						    if($nr_row%$limit==0)
-						    	$max_page=intdiv($nr_row,$limit);
-						    else
-						    	$max_page=intdiv($nr_row,$limit)+1;
 
-						    if($page>1)
-						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">Previous</a></li>'; 
-						    else
-						    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page-1).'">Previous</a></li>';
+				<ul class="pagination justify-content-center">
+				    <?php
+				    if($nr_row%$limit==0)
+				    	$max_page=intdiv($nr_row,$limit);
+				    else
+				    	$max_page=intdiv($nr_row,$limit)+1;		
 
-						    if($page==$max_page and $page>4)
-						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-4).'">'.($page-4).'</a></li>';
-						    if(($page==$max_page or $page==$max_page-1) and $page>3)
-						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-3).'">'.($page-3).'</a></li>';
-						    if($page>2)
-						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-2).'">'.($page-2).'</a></li>';
-							if($page>1)
-						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">'.($page-1).'</a></li>';
+				    if($page>1)
+				    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">Previous</a></li>'; 
+				    else
+				    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page-1).'">Previous</a></li>';
 
-						    echo '<li class="page-item active"><a class="page-link" href="?page='.$page.'">'.$page.'</a></li>';
-						    if(($page+1)<=$max_page)
-						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">'.($page+1).'</a></li>';
-							if(($page+2)<=$max_page)
-						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+2).'">'.($page+2).'</a></li>';
+				    if($page==$max_page and $page>4)
+				    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-4).'">'.($page-4).'</a></li>';
+				    if(($page==$max_page or $page==$max_page-1) and $page>3)
+				    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-3).'">'.($page-3).'</a></li>';
+				    if($page>2)
+				    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-2).'">'.($page-2).'</a></li>';
+					if($page>1)
+				    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">'.($page-1).'</a></li>';
 
-						    if($page<=2 and ($page+3)<=$max_page)
-						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+3).'">'.($page+3).'</a></li>';
-							if($page==1 and ($page+4)<=$max_page)
-						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+4).'">'.($page+4).'</a></li>';
-						    if($page<$max_page)
-						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">Next</a></li>';
-						    else
-						    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page+1).'">Next</a></li>';
-						    ?>
-						</ul>
-					<?php } 
+				    echo '<li class="page-item active" aria-current="page"><span class="page-link">'.$page.'</span></li>';
+				    if(($page+1)<=$max_page)
+				    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">'.($page+1).'</a></li>';
+					if(($page+2)<=$max_page)
+				    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+2).'">'.($page+2).'</a></li>';
 
+				    if($page<=2 and ($page+3)<=$max_page)
+				    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+3).'">'.($page+3).'</a></li>';
+					if($page==1 and ($page+4)<=$max_page)
+				    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+4).'">'.($page+4).'</a></li>';
+				    if($page<$max_page)
+				    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">Next</a></li>';
+				    else
+				    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page+1).'">Next</a></li>';
+				    ?>
+				</ul>
+				<?php 
 			if($_SESSION['user_type']!="admin"){ ?>
 		    </div>
 	  	</div>

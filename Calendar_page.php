@@ -20,7 +20,7 @@
     <?php include 'Top_bar.php' ?>
 
     <?php if($_SESSION['user_type']!="admin"){ ?>
-      <nav class="ms-4" aria-label="breadcrumb">
+      <nav class="mx-3" aria-label="breadcrumb">
           <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="Home_page.php" style="text-decoration: none;">Acasa</a></li>
             <li class="breadcrumb-item active" aria-current="page">Calendar</li>
@@ -40,7 +40,7 @@
       <div class="col-md-9 row">
       <?php } 
       else
-        echo '<div class="mx-4">';
+
         setlocale(LC_ALL, 'ro', 'ro_RO');
         if(empty($_SESSION['calendar_date']))
           $_SESSION['calendar_date']=date("Y-m-d");
@@ -59,26 +59,40 @@
         <div class="calendar mb-3">
             <div class="header">
                 <div class="month-year">
-                    <div class="row">
-                        <!--Left button group-->
-                        <div class="col-sm-4">
-                            <div class="btn-group">
-                                <a class="btn btn-outline-dark" href="Calendar_change.php?button=previous"><</a>
-                                <a class="btn btn-outline-dark" href="Calendar_change.php?button=today">Azi</a>
-                                <a class="btn btn-outline-dark" href="Calendar_change.php?button=next">></a>
+                    <div class="d-none d-md-block">
+                        <div class="row">
+                            <!--Left button group-->
+                            <div class="col-sm-4">
+                                <div class="btn-group">
+                                    <a class="btn btn-outline-dark" href="Calendar_change.php?button=previous"><</a>
+                                    <a class="btn btn-outline-dark" href="Calendar_change.php?button=today">Azi</a>
+                                    <a class="btn btn-outline-dark" href="Calendar_change.php?button=next">></a>
+                                </div>
+                                <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#Add_event_Modal">+</button>
                             </div>
-                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#Add_event_Modal">+</button>
-                        </div>
 
-                        <div class="col-sm-4">
-                            <h4>
-                                <?php echo strftime('%B %Y', strtotime($active_year . '-' . $active_month . '-' . $active_day)); ?>
-                            </h4>
+                            <div class="col-sm-4">
+                                <h4>
+                                    <?php echo strftime('%B %Y', strtotime($active_year . '-' . $active_month . '-' . $active_day)); ?>
+                                </h4>
+                            </div>
                         </div>
+                    </div>
+                    <?php //phone view?>
+                    <div class="d-md-none d-block">
+                        <h4>
+                            <?php echo strftime('%B %Y', strtotime($active_year . '-' . $active_month . '-' . $active_day)); ?>
+                        </h4>
+                        <div class="btn-group">
+                            <a class="btn btn-outline-dark" href="Calendar_change.php?button=previous"><</a>
+                            <a class="btn btn-outline-dark" href="Calendar_change.php?button=today">Azi</a>
+                            <a class="btn btn-outline-dark" href="Calendar_change.php?button=next">></a>
+                        </div>
+                        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#Add_event_Modal">+</button>
                     </div>
                 </div>
             </div>
-            <div class="days">
+            <div class="days ms-4">
                 <?php
                 //calendar
                     //calendar header
@@ -204,8 +218,10 @@
                     for ($i = 1; $i <= ($table_element-$num_days-max($first_day_of_week, 0)); $i++) {
                         echo '<div class="day_num ignore">'.$i.'</div>';
                     } ?>
+                </div>
             </div>
         </div>
+
         <?php $curent_date=$_SESSION['calendar_date'];?>
 
         <!--Modal Add_event_Modal-->

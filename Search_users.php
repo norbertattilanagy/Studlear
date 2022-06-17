@@ -18,7 +18,7 @@
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
-    	<nav class="ms-4" aria-label="breadcrumb">
+    	<nav class="mx-3" aria-label="breadcrumb">
   			<ol class="breadcrumb">
   		  		<?php
   		  		if($_SESSION['user_type']=="admin")
@@ -48,7 +48,7 @@
 
 		    <div class="col-md-9">
 		    	<br>
-		    	<div class="container">
+		    	<div class="mx-3 mb-3">
 		    		<form action="Enroll_in_course.php?enroll=7" method="post">
 					    <div class="input-group">
 					        <?php 

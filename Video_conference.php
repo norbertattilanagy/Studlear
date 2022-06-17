@@ -18,7 +18,7 @@
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
-    	<nav class="ms-4" aria-label="breadcrumb">
+    	<nav class="mx-3" aria-label="breadcrumb">
   			<ol class="breadcrumb">
   		  		<?php
   		  		if($_SESSION['user_type']=="admin")
@@ -37,37 +37,38 @@
 		    	<?php include 'Courses_group.php' ?>
 		    </div>
 		    <div class="col-md-9">
-		    	
-			    <?php
-			    $video_conference_id=$_GET['id'];
-			    $_SESSION['video_conference']=$video_conference_id;
-				$sql="SELECT * FROM video_conference WHERE id LIKE $video_conference_id";
-				$results=mysqli_query($db,$sql);
-				$row=mysqli_fetch_array($results);
+		    	<div class="mx-3 mb-3">
+				    <?php
+				    $video_conference_id=$_GET['id'];
+				    $_SESSION['video_conference']=$video_conference_id;
+					$sql="SELECT * FROM video_conference WHERE id LIKE $video_conference_id";
+					$results=mysqli_query($db,$sql);
+					$row=mysqli_fetch_array($results);
 
-				if($_SESSION['user_type']!="student" and $row['visibility']==0){?>
-					<h3><b><?php echo $row['title']; ?></b><i class="bi bi-eye-slash ms-4"></i></h3>
-				<?php } else { ?>
-					<h3><b><?php echo $row['title']; ?></b></h3>
-				<?php }
-				if($_SESSION['user_type']!="student") { ?>
-					<a href="Add_video_conference1.php?edit=4&add=0" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Editează</a>
-					<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#Delete_video_conference"><i class="bi bi-trash"></i> Șterge</button>
-				<?php } ?>
+					if($_SESSION['user_type']!="student" and $row['visibility']==0){?>
+						<h3><b><?php echo $row['title']; ?></b><i class="bi bi-eye-slash ms-4"></i></h3>
+					<?php } else { ?>
+						<h3><b><?php echo $row['title']; ?></b></h3>
+					<?php }
+					if($_SESSION['user_type']!="student") { ?>
+						<a href="Add_video_conference1.php?edit=4&add=0" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Editează</a>
+						<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#Delete_video_conference"><i class="bi bi-trash"></i> Șterge</button>
+					<?php } ?>
 
-				<div class="mt-3">
-					<?php
-					$start_event=date_create($row['start_event']);
-		    		$start_event=date_format($start_event,"Y.m.d. H:i");
-		    		$end_event=date_create($row['end_event']);
-		    		$end_event=date_format($end_event,"Y.m.d. H:i");
+					<div class="mt-3">
+						<?php
+						$start_event=date_create($row['start_event']);
+			    		$start_event=date_format($start_event,"Y.m.d. H:i");
+			    		$end_event=date_create($row['end_event']);
+			    		$end_event=date_format($end_event,"Y.m.d. H:i");
 
-					echo '<p><a href="'.$row["link"].'">'.$row["link"].'</a></p>';
-					if($row["password"]!="")
-						echo '<p><b>Parolă: '.$row["password"].'</b></p>';
-					echo '<p>Început: '.$start_event.'</p>';
-					echo '<p>Final: '.$end_event.'</p>';
-					?>
+						echo '<p><a href="'.$row["link"].'">'.$row["link"].'</a></p>';
+						if($row["password"]!="")
+							echo '<p><b>Parolă: '.$row["password"].'</b></p>';
+						echo '<p>Început: '.$start_event.'</p>';
+						echo '<p>Final: '.$end_event.'</p>';
+						?>
+					</div>
 				</div>
 			</div>
 		</div>

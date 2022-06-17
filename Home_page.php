@@ -35,7 +35,7 @@
 
       <div class="col-md-7">
         
-        <div class="container mt-3">
+        <div class="mx-3 my-3">
           <?php
            if($_SESSION['user_type']=='teacher'){ ?>
             <button type="button" class="btn btn-primary btn-sm mb-3" data-bs-toggle="modal" data-bs-target="#Create_course">Crează curs +</button>
@@ -67,7 +67,7 @@
         </div>
       </div>
       <div class="col-md-2">
-        <div class="me-4 mt-3">
+        <div class="mx-3 my-3">
           <h4>Evenimente:</h4>
           <?php 
           $user_id=$_SESSION['user_id'];

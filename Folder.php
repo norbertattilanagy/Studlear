@@ -18,7 +18,7 @@
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
-    	<nav class="ms-4" aria-label="breadcrumb">
+    	<nav class="mx-3" aria-label="breadcrumb">
   			<ol class="breadcrumb">
   		  		<?php
   		  		if($_SESSION['user_type']=="admin")
@@ -37,40 +37,41 @@
 		    	<?php include 'Courses_group.php' ?>
 		    </div>
 		    <div class="col-md-9">
-		    	<?php
-			    $folder_id=$_GET['id'];
-			    $_SESSION['folder']=$folder_id;
-				$sql="SELECT * FROM folder WHERE id LIKE $folder_id";
-				$results=mysqli_query($db,$sql);
-				$row=mysqli_fetch_array($results);
+		    	<div class="mx-3 mb-3">
+			    	<?php
+				    $folder_id=$_GET['id'];
+				    $_SESSION['folder']=$folder_id;
+					$sql="SELECT * FROM folder WHERE id LIKE $folder_id";
+					$results=mysqli_query($db,$sql);
+					$row=mysqli_fetch_array($results);
 
-				if($_SESSION['user_type']!="student" and $row['visibility']==0){?>
-					<h3><b><?php echo $row['title']; ?></b><i class="bi bi-eye-slash ms-4"></i></h3>
-				<?php } else { ?>
-					<h3><b><?php echo $row['title']; ?></b></h3>
-				<?php }
-				if($_SESSION['user_type']!="student") { ?>
-					<a href="Add_folder1.php?edit=4&add=0" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Editează</a>
-					<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#Delete_folder"><i class="bi bi-trash"></i> Șterge</button>
-				<?php } ?>
+					if($_SESSION['user_type']!="student" and $row['visibility']==0){?>
+						<h3><b><?php echo $row['title']; ?></b><i class="bi bi-eye-slash ms-4"></i></h3>
+					<?php } else { ?>
+						<h3><b><?php echo $row['title']; ?></b></h3>
+					<?php }
+					if($_SESSION['user_type']!="student") { ?>
+						<a href="Add_folder1.php?edit=4&add=0" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Editează</a>
+						<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#Delete_folder"><i class="bi bi-trash"></i> Șterge</button>
+					<?php } ?>
 
-				<div class="mt-3">
-					<?php
-					$target_folder=$row["folder_name"];
-					$files = scandir($target_folder);
-					$nr_files = count($files);
-					for($i=0; $i<$nr_files; $i++)
-					{
-						if($files[$i]!="." and $files[$i]!="..")
+					<div class="mt-3">
+						<?php
+						$target_folder=$row["folder_name"];
+						$files = scandir($target_folder);
+						$nr_files = count($files);
+						for($i=0; $i<$nr_files; $i++)
 						{
-							$target_file=$target_folder.$files[$i];
-							echo '<p><a href="'.$target_file.'" class="link-dark" style="text-decoration: none;"><i class="bi bi-file-earmark me-3"></i>'.$files[$i].'</a></p>';
+							if($files[$i]!="." and $files[$i]!="..")
+							{
+								$target_file=$target_folder.$files[$i];
+								echo '<p><a href="'.$target_file.'" class="link-dark" style="text-decoration: none;"><i class="bi bi-file-earmark me-3"></i>'.$files[$i].'</a></p>';
+							}
+							
 						}
 						
-					}
-					
-					?>
-					<a href=""></a>
+						?>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -18,7 +18,7 @@
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
-    	<nav class="ms-4" aria-label="breadcrumb">
+    	<nav class="mx-3" aria-label="breadcrumb">
   			<ol class="breadcrumb">
   		  		<?php
   		  		if($_SESSION['user_type']=="admin")
@@ -37,35 +37,37 @@
 		    	<?php include 'Courses_group.php' ?>
 		    </div>
 		    <div class="col-md-9">
-		    	<?php
-			    $link_id=$_GET['id'];
-			    $_SESSION['link']=$link_id;
-				$sql="SELECT * FROM link WHERE id LIKE $link_id";
-				$results=mysqli_query($db,$sql);
-				$row=mysqli_fetch_array($results);
+		    	<div class="mx-3 mb-3">
+			    	<?php
+				    $link_id=$_GET['id'];
+				    $_SESSION['link']=$link_id;
+					$sql="SELECT * FROM link WHERE id LIKE $link_id";
+					$results=mysqli_query($db,$sql);
+					$row=mysqli_fetch_array($results);
 
-				if($_SESSION['user_type']!="student" and $row['visibility']==0){?>
-					<h3><b><?php echo $row['title']; ?></b><i class="bi bi-eye-slash ms-4"></i></h3>
-				<?php } else { ?>
-					<h3><b><?php echo $row['title']; ?></b></h3>
-				<?php }
-				if($_SESSION['user_type']!="student") { ?>
-					<a href="Add_link1.php?edit=4&add=0" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Editează</a>
-					<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#Delete_link"><i class="bi bi-trash"></i> Șterge</button>
-				<?php } ?>
+					if($_SESSION['user_type']!="student" and $row['visibility']==0){?>
+						<h3><b><?php echo $row['title']; ?></b><i class="bi bi-eye-slash ms-4"></i></h3>
+					<?php } else { ?>
+						<h3><b><?php echo $row['title']; ?></b></h3>
+					<?php }
+					if($_SESSION['user_type']!="student") { ?>
+						<a href="Add_link1.php?edit=4&add=0" class="btn btn-primary btn-sm me-2"><i class="bi bi-pencil-square"></i> Editează</a>
+						<button class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#Delete_link"><i class="bi bi-trash"></i> Șterge</button>
+					<?php } ?>
 
-				<div class="mt-3">
-					<?php echo '<p><a href="'.$row["link"].'">'.$row["link"].'</a></p>'; ?>
-					<p class="mt-3">
-						<?php
-						$target_file=$row['description'];
-						$file = fopen($target_file, "r");
-						while(!feof($file)) {
-		  					echo fgets($file)."<br>";
-						}
-						fclose($file);
-				    	?>
-				    </p>
+					<div class="mt-3">
+						<?php echo '<p><a href="'.$row["link"].'">'.$row["link"].'</a></p>'; ?>
+						<p class="mt-3">
+							<?php
+							$target_file=$row['description'];
+							$file = fopen($target_file, "r");
+							while(!feof($file)) {
+			  					echo fgets($file)."<br>";
+							}
+							fclose($file);
+					    	?>
+					    </p>
+					</div>
 				</div>
 			</div>
 		</div>

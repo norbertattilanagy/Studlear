@@ -2,7 +2,7 @@
 <?php include 'Page_security.php'; ?>
 <?php if($_SESSION['user_type']!='admin'){ ?>
 	<div class="d-none d-md-block">
-		<div class="container">
+		<div class="mx-3">
 
 			<button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#New_group_Modal">Grup nou +</button>
 			

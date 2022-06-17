@@ -18,7 +18,7 @@
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
-    	<nav class="ms-4" aria-label="breadcrumb">
+    	<nav class="mx-3" aria-label="breadcrumb">
   			<ol class="breadcrumb">
   		  		<?php
   		  		if($_SESSION['user_type']=="admin")
@@ -109,7 +109,7 @@
 		?>
 		<div class="row">
 			<div class="col-md-9">
-				<div class="ms-4">
+				<div class="mx-3 mb-3">
 					
 					<div class="card" style="height: 50vh;">
 					  	<div class="card-header">
@@ -395,58 +395,61 @@
 				</div>
 			</div>
 			<div class="col-md-3">
-
-				<h3 class="mb-3" id="showtime" style="text-align: center;"></h3>
-				<?php
-				$element=$row['element'];
-				$sql_question="SELECT * FROM question_order WHERE quiz_id LIKE $quiz_id ORDER BY order_number";
-				$results_question=mysqli_query($db,$sql_question);
-				$nr_row=mysqli_num_rows($results_question);
-				while($row_question=mysqli_fetch_array($results_question))
-				{
-					if($row_question['order_number']!=$_SESSION['question_order'])
+				<div class="mx-3 mb-3">
+					<h3 class="mb-3" id="showtime" style="text-align: center;"></h3>
+					<?php
+					$element=$row['element'];
+					$sql_question="SELECT * FROM question_order WHERE quiz_id LIKE $quiz_id ORDER BY order_number";
+					$results_question=mysqli_query($db,$sql_question);
+					$nr_row=mysqli_num_rows($results_question);
+					while($row_question=mysqli_fetch_array($results_question))
 					{
-						$order_number=$row_question['order_number'];
-						if($row_quiz['solving_time']>0)
-							echo '<button type="submit" class="btn btn-outline-dark me-2 mb-2" style="width: 50px;" name="button" value="'.$order_number.'">'.$order_number.'</a>';
+						if($row_question['order_number']!=$_SESSION['question_order'])
+						{
+							$order_number=$row_question['order_number'];
+							if($row_quiz['solving_time']>0)
+								echo '<button type="submit" class="btn btn-outline-dark me-2 mb-2" style="width: 50px;" name="button" value="'.$order_number.'">'.$order_number.'</a>';
+							else
+								echo '<button type="submit" class="btn btn-outline-dark disabled me-2 mb-2" style="width: 50px;" name="button" value="'.$order_number.'">'.$order_number.'</a>';
+						}
 						else
-							echo '<button type="submit" class="btn btn-outline-dark disabled me-2 mb-2" style="width: 50px;" name="button" value="'.$order_number.'">'.$order_number.'</a>';
-					}
-					else
-						echo '<button type="button" class="btn btn-dark disabled me-2 mb-2" style="width: 50px;">'.$row_question['order_number'].'</button>';
-				}	
-				?>
+							echo '<button type="button" class="btn btn-dark disabled me-2 mb-2" style="width: 50px;">'.$row_question['order_number'].'</button>';
+					}	
+					?>
+				</div>
 			</div>
 		</div>
-			
+		
 		<?php
 		if($row_quiz['solving_time']>0){ ?>
-			<div class="row mt-3">
-				<div class="col-6">
-					<div class="d-grid ms-4">
-						<?php if($_SESSION['question_order']==1){ 
-							echo '<button type="submit" class="btn btn-secondary disabled" name="button" value="previous"><i class="bi bi-arrow-left me-4"></i>Anteriorul</button>';
-						} else {
-							echo '<button type="submit" class="btn btn-secondary" name="button" value="previous"><i class="bi bi-arrow-left me-4"></i>Anteriorul</button>';
-						} ?>
+			<div class="mb-3">
+				<div class="row mt-3">
+					<div class="col-6">
+						<div class="d-grid ms-3">
+							<?php if($_SESSION['question_order']==1){ 
+								echo '<button type="submit" class="btn btn-secondary disabled" name="button" value="previous"><i class="bi bi-arrow-left me-4"></i>Anteriorul</button>';
+							} else {
+								echo '<button type="submit" class="btn btn-secondary" name="button" value="previous"><i class="bi bi-arrow-left me-4"></i>Anteriorul</button>';
+							} ?>
+						</div>
 					</div>
-				</div>
-				<div class="col-6">
-					<div class="d-grid me-4">
-						<?php if($_SESSION['question_order']<$nr_row) {
-							echo '<button type="submit" class="btn btn-secondary" name="button" value="next" >Următorul<i class="bi bi-arrow-right ms-4"></i></button>';
-						} else { 
-							echo '<button type="submit" class="btn btn-secondary disabled" name="button" value="next">Următorul<i class="bi bi-arrow-right ms-4"></i></button>';
-						} ?>
+					<div class="col-6">
+						<div class="d-grid me-3">
+							<?php if($_SESSION['question_order']<$nr_row) {
+								echo '<button type="submit" class="btn btn-secondary" name="button" value="next" >Următorul<i class="bi bi-arrow-right ms-4"></i></button>';
+							} else { 
+								echo '<button type="submit" class="btn btn-secondary disabled" name="button" value="next">Următorul<i class="bi bi-arrow-right ms-4"></i></button>';
+							} ?>
+						</div>
 					</div>
+					
 				</div>
-				
-			</div>
-			<div class="d-grid mt-3 mx-4">
-				<button type="submit" class="btn btn-secondary" name="button" value="complet">Finalizare</button>
+				<div class="d-grid mt-3 mx-3">
+					<button type="submit" class="btn btn-secondary" name="button" value="complet">Finalizare</button>
+				</div>
 			</div>
 		<?php } else { ?>
-			<div class="mx-4 mt-3">
+			<div class="mx-3 mt-3">
 				<div class="d-grid">
 					<?php if($_SESSION['question_order']<$nr_row){
 						echo '<button type="submit" class="btn btn-secondary" name="button" value="next" id="next_button">Următorul<i class="bi bi-arrow-right ms-4"></i></button>';

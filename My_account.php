@@ -18,7 +18,7 @@
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
-    	<nav class="ms-4" aria-label="breadcrumb">
+    	<nav class="mx-3" aria-label="breadcrumb">
   			<ol class="breadcrumb">
   		  		<?php
   		  		if($_SESSION['user_type']=="admin")
@@ -84,7 +84,7 @@
 			      		$user_t="Administrator";
 			      	?>
 			      	<div class="col-xl-9 col-md-8 mt-4">
-			      		<div class="mx-4">
+			      		<div class="mx-3 mb-3">
 				      		<div class="container p-3 border border-3 rounded-1">
 					      		<?php echo '<h5><b>Nume: '.$row['name'].'</b></h5>'; ?>
 					      		<?php echo '<h5><b>Email: '.$row['email'].'</b></h5>'; ?>

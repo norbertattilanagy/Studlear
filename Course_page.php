@@ -21,7 +21,7 @@ $_SESSION["course_id"]=$_GET['id'];
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
-    	<nav class="ms-4" aria-label="breadcrumb">
+    	<nav class="mx-3" aria-label="breadcrumb">
   			<ol class="breadcrumb">
   		  		<?php
   		  		if($_SESSION['user_type']=="admin")
@@ -39,7 +39,7 @@ $_SESSION["course_id"]=$_GET['id'];
 		    </div>
 
 		    <div class="col-md-9">
-			    <div class="container">
+			    <div class="mx-3 mb-3">
 			    	<?php
 				    	$course_id=$_SESSION['course_id'];
 				    	$sql="SELECT * FROM course WHERE id LIKE $course_id";

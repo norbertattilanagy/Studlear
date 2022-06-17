@@ -27,7 +27,7 @@ if(empty($_SESSION['homework']))
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
-    	<nav class="ms-4" aria-label="breadcrumb">
+    	<nav class="mx-3" aria-label="breadcrumb">
   			<ol class="breadcrumb">
   		  		<?php
   		  		if($_SESSION['user_type']=="admin")
@@ -47,14 +47,25 @@ if(empty($_SESSION['homework']))
 		    	<?php include 'Courses_group.php' ?>
 		    </div>
 		    <div class="col-md-9">
-		    	<?php
-		    	$homework_id=$_SESSION['homework'];
-		    	$course_id=$_SESSION['course_id'];
+		    	<div class="mx-3 mb-3">
+			    	<?php
+			    	if(isset($_GET['page']))
+					    $page=$_GET['page'];
+					else
+					   	$page=1;			
+					$limit=20;
+				    $start=$limit*($page-1);
 
-		    	$sql="SELECT * FROM course_user AS c JOIN user AS u ON u.id=c.user_id WHERE c.course_id LIKE $course_id and u.type LIKE 'student' ORDER BY name";
-		    	$results=mysqli_query($db,$sql);
-		    	?>
-		    	<div class="me-3">
+			    	$homework_id=$_SESSION['homework'];
+			    	$course_id=$_SESSION['course_id'];
+
+			    	$sql="SELECT * FROM user AS u JOIN course_user AS c ON u.id=c.user_id WHERE c.course_id LIKE $course_id AND u.type LIKE 'student'";
+				    $results=mysqli_query($db,$sql);
+					$nr_row=mysqli_num_rows($results);
+
+					$sql="SELECT * FROM user AS u JOIN course_user AS c ON u.id=c.user_id WHERE c.course_id LIKE $course_id AND u.type LIKE 'student' ORDER BY name LIMIT $start, $limit";
+				    $results=mysqli_query($db,$sql);
+			    	?>
 			    	<table class="table">
 	  					<thead>
 	  						<tr>
@@ -104,6 +115,46 @@ if(empty($_SESSION['homework']))
 
 					    </tbody>
 					</table>
+
+					<?php //pagination?>
+					<ul class="pagination justify-content-center">
+					    <?php
+					    if($nr_row%$limit==0)
+					    	$max_page=intdiv($nr_row,$limit);
+					    else
+					    	$max_page=intdiv($nr_row,$limit)+1;
+
+					    if($page>1)
+					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">Anterior</a></li>'; 
+					    else
+					    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page-1).'">Anterior</a></li>';
+
+					    if($page==$max_page and $page>4)
+					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-4).'">'.($page-4).'</a></li>';
+					    if(($page==$max_page or $page==$max_page-1) and $page>3)
+					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-3).'">'.($page-3).'</a></li>';
+					    if($page>2)
+					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-2).'">'.($page-2).'</a></li>';
+						if($page>1)
+					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">'.($page-1).'</a></li>';
+
+					    echo '<li class="page-item active" aria-current="page"><span class="page-link">'.$page.'</span></li>';
+					    if(($page+1)<=$max_page)
+					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">'.($page+1).'</a></li>';
+						if(($page+2)<=$max_page)
+					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+2).'">'.($page+2).'</a></li>';
+
+					    if($page<=2 and ($page+3)<=$max_page)
+					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+3).'">'.($page+3).'</a></li>';
+						if($page==1 and ($page+4)<=$max_page)
+					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+4).'">'.($page+4).'</a></li>';
+					    if($page<$max_page)
+					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">Următorul</a></li>';
+					    else
+					    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page+1).'">Următorul</a></li>';
+					    ?>
+					</ul>
+
 				</div>
 		    </div>
 		</div>
