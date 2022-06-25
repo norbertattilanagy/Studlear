@@ -41,7 +41,6 @@
       <?php } 
       else
 
-        setlocale(LC_ALL, 'ro', 'ro_RO');
         if(empty($_SESSION['calendar_date']))
           $_SESSION['calendar_date']=date("Y-m-d");
 
@@ -98,7 +97,6 @@
             <div class="days ms-4">
                 <?php
                 //calendar
-                    //calendar header
                     foreach ($days_write as $day) {
                         echo '<div class="day_name">' . $day . '</div>';
                     }
