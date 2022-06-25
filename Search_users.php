@@ -102,6 +102,7 @@
 								$results=mysqli_query($db,$sql);
 							}
 							$nr=($page-1)*$limit+1;
+							$pagination=0;
 							while ($row=mysqli_fetch_array($results,MYSQLI_ASSOC))
 							{
 								$user_id=$row["id"];
@@ -112,6 +113,7 @@
 								$nr_row_verify=mysqli_num_rows($results_verify);
 
 								if($nr_row_verify==0){
+									$pagination=1;
 									echo '<tr>';
 										echo '<td><a href="Enroll_in_course.php?enroll=2&course_user='.$row["id"].'" class="link-dark" style="text-decoration: none;">'.$nr.'.</a></td>';
 										echo '<td><a href="Enroll_in_course.php?enroll=2&course_user='.$row["id"].'" class="link-dark" style="text-decoration: none;">'.$row["name"].'</a></td>';
@@ -124,7 +126,7 @@
 							?>
 						</tbody>
 					</table>
-					<?php if($nr_row>$limit){ //pagination?>
+					<?php if($pagination==1){ ?>
 						<ul class="pagination justify-content-center">
 						    <?php
 						    if($nr_row%$limit==0)
@@ -133,9 +135,9 @@
 						    	$max_page=intdiv($nr_row,$limit)+1;
 
 						    if($page>1)
-						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">Previous</a></li>'; 
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">Anterior</a></li>'; 
 						    else
-						    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page-1).'">Previous</a></li>';
+						    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page-1).'">Anterior</a></li>';
 
 						    if($page==$max_page and $page>4)
 						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-4).'">'.($page-4).'</a></li>';
@@ -146,7 +148,7 @@
 							if($page>1)
 						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">'.($page-1).'</a></li>';
 
-						    echo '<li class="page-item active"><a class="page-link" href="?page='.$page.'">'.$page.'</a></li>';
+						    echo '<li class="page-item active" aria-current="page"><span class="page-link">'.$page.'</span></li>';
 						    if(($page+1)<=$max_page)
 						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">'.($page+1).'</a></li>';
 							if(($page+2)<=$max_page)
@@ -157,12 +159,12 @@
 							if($page==1 and ($page+4)<=$max_page)
 						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+4).'">'.($page+4).'</a></li>';
 						    if($page<$max_page)
-						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">Next</a></li>';
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">Următorul</a></li>';
 						    else
-						    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page+1).'">Next</a></li>';
-						    ?>
-						</ul>
-					<?php } ?>
+						    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page+1).'">Următorul</a></li>';
+							    ?>
+							</ul>
+						<?php } ?>
 		    	</div>
 
 		    </div>

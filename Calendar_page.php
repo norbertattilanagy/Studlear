@@ -55,6 +55,9 @@
         $days = [0 => 'Mon', 1 => 'Tue', 2 => 'Wed', 3 => 'Thu', 4 => 'Fri', 5 => 'Sat', 6 => 'Sun'];
         $first_day_of_week = array_search(date('D', strtotime($active_year . '-' . $active_month . '-1')), $days);
         $days_write=['Lu','Ma','Mi','Jo','Vi','Sa','Du'];
+        $month_write=['Ianuarie','Februarie','Martie','Aprilie','Mai','Iunie','Iulie','August','Septembrie','Octombrie','Noiembrie','Decembrie'];
+        $a_month=(int) $active_month;
+
         ?>
         <div class="calendar mb-3">
             <div class="header">
@@ -73,7 +76,7 @@
 
                             <div class="col-sm-4">
                                 <h4>
-                                    <?php echo strftime('%B %Y', strtotime($active_year . '-' . $active_month . '-' . $active_day)); ?>
+                                    <?php echo $month_write[$a_month-1].' '.$active_year; ?>
                                 </h4>
                             </div>
                         </div>
@@ -81,7 +84,7 @@
                     <?php //phone view?>
                     <div class="d-md-none d-block">
                         <h4>
-                            <?php echo strftime('%B %Y', strtotime($active_year . '-' . $active_month . '-' . $active_day)); ?>
+                            <?php echo $month_write[$a_month-1].' '.$active_year; ?>
                         </h4>
                         <div class="btn-group">
                             <a class="btn btn-outline-dark" href="Calendar_change.php?button=previous"><</a>

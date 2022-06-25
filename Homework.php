@@ -18,6 +18,17 @@
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
+    	<?php 
+    	$homework_id=$_GET['id'];
+    	if(empty($_SESSION['course_id']))
+    	{
+    		$sql="SELECT * FROM homework AS h JOIN lesson_group AS lg ON h.lesson_group_id=lg.id WHERE h.id LIKE $homework_id";
+    		$results=mysqli_query($db,$sql);
+			$row=mysqli_fetch_array($results);
+			$_SESSION['course_id']=$row['course_id'];
+    	}
+    	?>
+
     	<nav class="mx-3" aria-label="breadcrumb">
   			<ol class="breadcrumb">
   		  		<?php
@@ -39,7 +50,6 @@
 		    <div class="col-md-9">
 		    	<div class="mx-3 mb-3">
 			    	<?php
-				    $homework_id=$_GET['id'];
 				    $_SESSION['homework']=$homework_id;
 					$sql="SELECT * FROM homework WHERE id LIKE $homework_id";
 					$results=mysqli_query($db,$sql);

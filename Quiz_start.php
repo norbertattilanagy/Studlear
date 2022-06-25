@@ -18,6 +18,17 @@
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
+    	<?php 
+    	$quiz_id=$_GET['id'];
+    	if(empty($_SESSION['course_id']))
+    	{
+    		$sql="SELECT * FROM quiz AS q JOIN lesson_group AS lg ON q.lesson_group_id=lg.id WHERE q.id LIKE $quiz_id";
+    		$results=mysqli_query($db,$sql);
+			$row=mysqli_fetch_array($results);
+			$_SESSION['course_id']=$row['course_id'];
+    	}
+    	?>
+
     	<nav class="mx-3" aria-label="breadcrumb">
   			<ol class="breadcrumb">
   		  		<?php
@@ -38,7 +49,6 @@
 		    <div class="col-md-9">
 		    	<div class="mx-3 mb-3">
 			    	<?php
-			    	$quiz_id=$_GET['id'];
 				    $_SESSION['quiz']=$quiz_id;
 				    $_SESSION['question_order']=1;
 			    	$sql="SELECT * FROM quiz WHERE id LIKE $quiz_id";

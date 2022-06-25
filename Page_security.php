@@ -50,7 +50,7 @@ if(basename($_SERVER['PHP_SELF'])=="Add_announcement.php" or basename($_SERVER['
   	}
 }
 
-if(basename($_SERVER['PHP_SELF'])=="Announcement.php" or basename($_SERVER['PHP_SELF'])=="Course_file.php" or basename($_SERVER['PHP_SELF'])=="Course_participants.php" or basename($_SERVER['PHP_SELF'])=="Folder.php" or basename($_SERVER['PHP_SELF'])=="Homework.php" or basename($_SERVER['PHP_SELF'])=="Homework_answer_table.php" or basename($_SERVER['PHP_SELF'])=="Link.php" or basename($_SERVER['PHP_SELF'])=="Poll.php" or basename($_SERVER['PHP_SELF'])=="Quiz.php" or basename($_SERVER['PHP_SELF'])=="Quiz_solve.php" or basename($_SERVER['PHP_SELF'])=="Quiz_solve_table.php" or basename($_SERVER['PHP_SELF'])=="Quiz_teacher.php" or basename($_SERVER['PHP_SELF'])=="Search_users.php" or basename($_SERVER['PHP_SELF'])=="Video_conference.php")
+if(basename($_SERVER['PHP_SELF'])=="Announcement.php" or basename($_SERVER['PHP_SELF'])=="Course_file.php" or basename($_SERVER['PHP_SELF'])=="Course_participants.php" or basename($_SERVER['PHP_SELF'])=="Folder.php" or basename($_SERVER['PHP_SELF'])=="Homework_answer_table.php" or basename($_SERVER['PHP_SELF'])=="Link.php" or basename($_SERVER['PHP_SELF'])=="Poll.php" or basename($_SERVER['PHP_SELF'])=="Quiz.php" or basename($_SERVER['PHP_SELF'])=="Quiz_solve.php" or basename($_SERVER['PHP_SELF'])=="Quiz_solve_table.php" or basename($_SERVER['PHP_SELF'])=="Search_users.php")
 {
 	if(!isset($_SESSION['course_id']))
 	{

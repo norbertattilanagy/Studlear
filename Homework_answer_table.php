@@ -79,10 +79,12 @@ if(empty($_SESSION['homework']))
 						<tbody>
 					    	<?php
 					    	$i=1;
+					    	$pagination=0;
 							while($row=mysqli_fetch_array($results))
 							{
 								$tema="";
 								$point=0;
+								$pagination=1;
 
 								$user_id=$row["user_id"];
 								$sql_homework="SELECT * FROM answer_homework WHERE homework_id LIKE $homework_id AND user_id LIKE $user_id";
@@ -116,44 +118,45 @@ if(empty($_SESSION['homework']))
 					    </tbody>
 					</table>
 
-					<?php //pagination?>
-					<ul class="pagination justify-content-center">
-					    <?php
-					    if($nr_row%$limit==0)
-					    	$max_page=intdiv($nr_row,$limit);
-					    else
-					    	$max_page=intdiv($nr_row,$limit)+1;
+					<?php if($pagination==1){ //pagination?>
+						<ul class="pagination justify-content-center">
+						    <?php
+						    if($nr_row%$limit==0)
+						    	$max_page=intdiv($nr_row,$limit);
+						    else
+						    	$max_page=intdiv($nr_row,$limit)+1;
 
-					    if($page>1)
-					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">Anterior</a></li>'; 
-					    else
-					    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page-1).'">Anterior</a></li>';
+						    if($page>1)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">Anterior</a></li>'; 
+						    else
+						    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page-1).'">Anterior</a></li>';
 
-					    if($page==$max_page and $page>4)
-					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-4).'">'.($page-4).'</a></li>';
-					    if(($page==$max_page or $page==$max_page-1) and $page>3)
-					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-3).'">'.($page-3).'</a></li>';
-					    if($page>2)
-					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-2).'">'.($page-2).'</a></li>';
-						if($page>1)
-					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">'.($page-1).'</a></li>';
+						    if($page==$max_page and $page>4)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-4).'">'.($page-4).'</a></li>';
+						    if(($page==$max_page or $page==$max_page-1) and $page>3)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-3).'">'.($page-3).'</a></li>';
+						    if($page>2)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-2).'">'.($page-2).'</a></li>';
+							if($page>1)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page-1).'">'.($page-1).'</a></li>';
 
-					    echo '<li class="page-item active" aria-current="page"><span class="page-link">'.$page.'</span></li>';
-					    if(($page+1)<=$max_page)
-					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">'.($page+1).'</a></li>';
-						if(($page+2)<=$max_page)
-					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+2).'">'.($page+2).'</a></li>';
+						    echo '<li class="page-item active" aria-current="page"><span class="page-link">'.$page.'</span></li>';
+						    if(($page+1)<=$max_page)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">'.($page+1).'</a></li>';
+							if(($page+2)<=$max_page)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+2).'">'.($page+2).'</a></li>';
 
-					    if($page<=2 and ($page+3)<=$max_page)
-					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+3).'">'.($page+3).'</a></li>';
-						if($page==1 and ($page+4)<=$max_page)
-					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+4).'">'.($page+4).'</a></li>';
-					    if($page<$max_page)
-					    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">Următorul</a></li>';
-					    else
-					    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page+1).'">Următorul</a></li>';
-					    ?>
-					</ul>
+						    if($page<=2 and ($page+3)<=$max_page)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+3).'">'.($page+3).'</a></li>';
+							if($page==1 and ($page+4)<=$max_page)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+4).'">'.($page+4).'</a></li>';
+						    if($page<$max_page)
+						    	echo '<li class="page-item"><a class="page-link" href="?page='.($page+1).'">Următorul</a></li>';
+						    else
+						    	echo '<li class="page-item disabled"><a class="page-link" href="?page='.($page+1).'">Următorul</a></li>';
+						    ?>
+						</ul>
+					<?php } ?>
 
 				</div>
 		    </div>

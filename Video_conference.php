@@ -18,6 +18,17 @@
 		<!--Top bar-->
     	<?php include 'Top_bar.php' ?>
 
+    	<?php 
+    	$video_conference_id=$_GET['id'];
+    	if(empty($_SESSION['course_id']))
+    	{
+    		$sql="SELECT * FROM video_conference AS vc JOIN lesson_group AS lg ON vc.lesson_group_id=lg.id WHERE vc.id LIKE $video_conference_id";
+    		$results=mysqli_query($db,$sql);
+			$row=mysqli_fetch_array($results);
+			$_SESSION['course_id']=$row['course_id'];
+    	}
+    	?>
+
     	<nav class="mx-3" aria-label="breadcrumb">
   			<ol class="breadcrumb">
   		  		<?php
@@ -39,7 +50,6 @@
 		    <div class="col-md-9">
 		    	<div class="mx-3 mb-3">
 				    <?php
-				    $video_conference_id=$_GET['id'];
 				    $_SESSION['video_conference']=$video_conference_id;
 					$sql="SELECT * FROM video_conference WHERE id LIKE $video_conference_id";
 					$results=mysqli_query($db,$sql);
