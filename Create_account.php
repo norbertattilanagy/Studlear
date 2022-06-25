@@ -123,8 +123,6 @@ function validatePassword(){
   }
   if(password1.value != password2.value)
   {
-    //lert(password1.value);
-    //alert(password2.value);
     $("#p1").remove();
     $("#p2").remove();
     $(".password1").append(`<p id="p1">Parola nu coincide</p>`);
