@@ -28,7 +28,7 @@ if ($_GET["edit"]==0)//edit profile image
 			$sql="SELECT * FROM user WHERE id LIKE $user_id";
 			$results=mysqli_query($db,$sql);
 			$row=mysqli_fetch_array($results);
-			$delete_file=$target_dir.$row["profile_image"];
+			$delete_file=$row["profile_image"];
 			unlink($delete_file);
 			//upload image
 			$sql="UPDATE user SET profile_image=$new_name WHERE id LIKE $user_id";
@@ -60,12 +60,13 @@ else if ($_GET["edit"]==1)//delete profile image
 }
 else if ($_GET["edit"]==2)//edit data
 {
+
 	$name='"'.$_POST['name'].'"';
 	$email='"'.$_POST['email'].'"';
-	$user_id=$_SESSION['user_id'];
+	$user_id=$_GET['id'];
 
 	$sql="UPDATE user SET name=$name, email=$email WHERE id LIKE $user_id";
-	//$results=mysqli_query($db,$sql);
+	$results=mysqli_query($db,$sql);
 
 	$link='location:'.$_SERVER['HTTP_REFERER'];
 	header("$link");
@@ -101,7 +102,7 @@ else  if ($_GET["edit"]==3)//edit password
 }
 else  if ($_GET["edit"]==4)//delete profile
 {
-	$user_id=$_SESSION['user_id'];
+	$user_id=$_GET['id'];
 
 	$sql="DELETE FROM calendar WHERE user_id LIKE $user_id";
 	$results=mysqli_query($db,$sql);
@@ -136,7 +137,8 @@ else  if ($_GET["edit"]==4)//delete profile
 	$sql="DELETE FROM user WHERE id LIKE $user_id";
 	$results=mysqli_query($db,$sql);
 	
-	$_SESSION['user_type']="not_logged";
+	if($_SESSION['user_id']==$_GET['id'])
+		$_SESSION['user_type']="not_logged";
 
 	$link='location:Sign_in.php';
 	header("$link");

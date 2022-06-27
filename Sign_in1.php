@@ -27,12 +27,12 @@
 			if(empty($row=mysqli_fetch_array($results,MYSQLI_ASSOC)))
 			{
 				$_SESSION['email']=$_POST['email'];
-				$_SESSION['incorrect']="Email și parolă inorectă.";
+				$_SESSION['incorrect']="Email și parolă incorectă.";
 			}
 			else
 			{
 				$_SESSION['email']=$_POST['email'];
-				$_SESSION['incorrect']="Parolă inorectă";
+				$_SESSION['incorrect']="Parolă incorectă";
 			}
 			$link='location:'.$_SERVER['HTTP_REFERER'];
 		    header("$link");

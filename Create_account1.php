@@ -39,7 +39,8 @@
 
 	if($error==0)
 	{
-		$sql="INSERT INTO user (name,email,password,type) VALUES ($name,$email,$password,$type)";
+        $type='"'."student".'"';
+		echo $sql="INSERT INTO user (name,email,password,type) VALUES ($name,$email,$password,$type)";
 		$results=mysqli_query($db,$sql);
 		$link='location:Sign_in.php';
 		$_SESSION['incorrect_email']="";

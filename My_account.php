@@ -68,7 +68,7 @@
 			      				}
 			      				?>
 			      			</div>
-			      			<?php if($_SESSION['user_type']=="admin" or $search_user_id==$user_id){ ?>
+			      			<?php if($search_user_id==$user_id){ ?>
 				      			<div class="p-2">
 				      				<p><a href="#" style="text-decoration: none;" data-bs-toggle="modal" data-bs-target="#Edit_profile_photo">Scimbă fotografia de profil</a></p>
 				      			</div>
@@ -256,8 +256,8 @@
 
 		      		<!-- Modal body -->
 		      		<div class="modal-body">
-		      			<form action="My_account_edit.php?edit=2" class="needs-validation" method="post" novalidate>
 		      				<?php
+		      				echo '<form action="My_account_edit.php?edit=2&id='.$_GET['id'].'" class="needs-validation" method="post" novalidate>';
 			      				$sql="SELECT * FROM user WHERE id LIKE $search_user_id";
 			      				$results=mysqli_query($db,$sql);
 			      				$row=mysqli_fetch_array($results,MYSQLI_ASSOC);
@@ -339,7 +339,7 @@
 		      			</div>
 		      			<div class="d-flex justify-content-around">
 		      				<div class="d-grid gap-1 col-4">
-		      					<a href="My_account_edit.php?edit=4" class="btn btn-danger">Da</a>
+		      					<?php echo '<a href="My_account_edit.php?edit=4&id='.$_GET['id'].'" class="btn btn-danger">Da</a>'; ?>
 		      				</div>
 		      				<div class="d-grid gap-1 col-4">
 		      					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-bs-target="#Delete_lesson_group">Nu</button>
