@@ -38,8 +38,7 @@
 
 
       <div class="col-md-9 row">
-      <?php } 
-      else
+      <?php }
 
         if(empty($_SESSION['calendar_date']))
           $_SESSION['calendar_date']=date("Y-m-d");
