@@ -103,8 +103,8 @@ if(empty($_SESSION['homework']))
 								
 								echo '<tr>';
 	        						echo '<td>'.$i.'</td>';
-	        						echo '<td><a href="My_account.php?id='.$row['id'].'" class="link-dark" style="text-decoration:none;">'.$row['name'].'</a></td>';
-	        						echo '<td><a href="My_account.php?id='.$row['id'].'" class="link-dark" style="text-decoration:none;">'.$row['email'].'</a></td>';
+	        						echo '<td><a href="My_account.php?id='.$row['user_id'].'" class="link-dark" style="text-decoration:none;">'.$row['name'].'</a></td>';
+	        						echo '<td><a href="My_account.php?id='.$row['user_id'].'" class="link-dark" style="text-decoration:none;">'.$row['email'].'</a></td>';
 	        						echo '<td><a href="Add_homework1.php?edit=7&user_id='.$user_id.'" class="link-dark">'.$tema.'</a></td>';
 	        						if($point>0)
 	        							echo '<td><a href="Add_homework1.php?edit=8&user_id='.$user_id.'" class="link-dark" style="text-decoration: none;">'.$point.'</a></td>';
