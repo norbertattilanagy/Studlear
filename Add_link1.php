@@ -103,7 +103,7 @@ else if($_GET["edit"]==4)//set add=0
 	$link='location: Add_link.php';
 	header("$link");
 }
-else
+else//security
 {
  	if($_SESSION['user_type']=="admin")
 		header("location:Search_courses.php");

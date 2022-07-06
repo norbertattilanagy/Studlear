@@ -1,7 +1,7 @@
 <?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <?php
-if(empty($_GET['button']))
+if(empty($_GET['button']))//security
 {
     if($_SESSION['user_type']=="admin")
         header("location:Search_courses.php");
@@ -18,23 +18,22 @@ if($_GET['button']=="previous")//change month
     $link='location:Calendar_page.php';
     header("$link");
 }    
-else if($_GET['button']=="next")
+else if($_GET['button']=="next")//change month
 {
     $_SESSION['calendar_date'] = date("Y-m-d", strtotime ( '+1 month' , strtotime ( $_SESSION['calendar_date'] ) )) ;
     echo "qa=".$date;
     $link='location:Calendar_page.php';
     header("$link");
 }
-else if($_GET['button']=="today")//go today
+else if($_GET['button']=="today")//set date today
 {
     $_SESSION['calendar_date']=date("Y-m-d");
     $link='location:Calendar_page.php';
     header("$link");
 }
-else if($_GET['button']=="change_day")
+else if($_GET['button']=="change_day")//save dateand open Event_Modal
 {
     $_SESSION['event_id']=1;
-    "i=".$_GET['day'];
     $date = DateTime::createFromFormat("Y-m-d", $_SESSION['calendar_date']);
     $year=$date->format('Y');
     $month=$date->format('m');
@@ -42,16 +41,16 @@ else if($_GET['button']=="change_day")
     $link='location:Calendar_page.php#Event_Modal';
     header("$link");
 }
-else if($_GET['button']=="save_id")
+else if($_GET['button']=="save_id")//save event id and open Description_event_Modal
 {
     $_SESSION['event_id']=$_GET['id'];
     $_SESSION['event_type']=$_GET['event_type'];
     $link='location:Calendar_page.php#Description_event_Modal';
     header("$link");
 }
-else if($_GET['button']=="save_id_home")
+else if($_GET['button']=="save_id_home")//save event id home page event
 {
-    $_SESSION['event_id']=$_GET['id'];
+    echo  $_SESSION['event_id']=$_GET['id'];
     $link='location:Home_page.php#Description_event_Modal';
     header("$link");
 }
@@ -109,7 +108,7 @@ elseif ($_GET['button']=="delete_event") {
     $link='location:'.$_SERVER['HTTP_REFERER'];
     header("$link");
 }
-else
+else//security
 {
     if($_SESSION['user_type']=="admin")
         header("location:Search_courses.php");

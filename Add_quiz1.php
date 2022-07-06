@@ -6,6 +6,14 @@
 //2-delete
 //3-set add=1
 //4-set add=0
+//5-save answer type set add answer
+//6-set edit answer
+//7-next/previous question, insert answer
+//8-add correct answer
+//9-edit correct answer
+//10-open delete answer model
+//11-delete answer
+//12-update point
 if ($_GET["edit"]==1)//add
 {
 	$lesson_id=$_SESSION['lesson_id'];
@@ -476,7 +484,7 @@ else if($_GET["edit"]==7)//next/previous question, insert answer
 
 	header("$link");
 }
-else if($_GET["edit"]==8)//add answer
+else if($_GET["edit"]==8)//add correct answer
 {
 	$quiz_id=$_SESSION['quiz'];
 	$question=$_POST['question'];
@@ -631,7 +639,7 @@ else if($_GET["edit"]==8)//add answer
 	$link='location: Quiz_teacher.php?id='.$_SESSION['quiz'];
 	header("$link");
 }
-else if($_GET["edit"]==9)//edit answer
+else if($_GET["edit"]==9)//edit correct answer
 {
 	$quiz_id=$_SESSION['quiz'];
 	$answer_id=$_GET['answer_id'];
@@ -906,7 +914,7 @@ else if($_GET["edit"]==9)//edit answer
 	$link='location: Quiz_teacher.php?id='.$_SESSION['quiz'];
 	header("$link");
 }
-else if($_GET["edit"]==10)//delete answer
+else if($_GET["edit"]==10)//open delete answer model
 {
 	$_SESSION['answer_id']=$_GET['answer_id'];
 	$_SESSION['element']=$_GET['element'];
@@ -1031,7 +1039,7 @@ else if($_GET["edit"]==12)//update point
 	$link='location:Quiz_solve_table.php';
 	header("$link");
 }
-else
+else//security
 {
  	if($_SESSION['user_type']=="admin")
 		header("location:Search_courses.php");

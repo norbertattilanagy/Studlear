@@ -9,7 +9,7 @@ $user_type='"'.$_SESSION['user_type'].'"';
 $sql="SELECT * FROM security WHERE page=$page and user_type=$user_type";
 $results= mysqli_query($db,$sql);
 $row=mysqli_fetch_array($results,MYSQLI_ASSOC);
-if(empty($row["id"]))
+if(empty($row["id"]))//acces user type
 {
 	if($_SESSION['user_type']=="not_logged")
 		header("location:Sign_in.php");
@@ -89,7 +89,7 @@ if(basename($_SERVER['PHP_SELF'])=="Quiz.php" or basename($_SERVER['PHP_SELF'])=
 		    header("location:Home_page.php");
 	}
 }
-
+//verify ID
 if(basename($_SERVER['PHP_SELF'])=="My_account.php")
 {
 	$id=$_GET['id'];

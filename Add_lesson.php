@@ -109,7 +109,7 @@ else if($_GET["edit"]==5)//set lesson group id delete
 	$link='location:'.$_SERVER['HTTP_REFERER'];
 	header("$link");
 }
-else
+else//security
 {
  	if($_SESSION['user_type']=="admin")
 		header("location:Search_courses.php");

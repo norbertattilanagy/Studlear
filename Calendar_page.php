@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
     <script src="assets\js\bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <title>Studlear</title>
+    <title>Studlearn</title>
   </head>
   <body>
     <!--Top bar-->

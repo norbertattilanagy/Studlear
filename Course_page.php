@@ -15,7 +15,7 @@ $_SESSION["course_id"]=$_GET['id'];
 	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 	    <script src="assets\js\bootstrap.bundle.min.js"></script>
 	    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	    <title>Studlear</title>
+	    <title>Studlearn</title>
 	</head>
 	<body>
 		<!--Top bar-->
@@ -220,7 +220,7 @@ $_SESSION["course_id"]=$_GET['id'];
 					  			echo '<div class="mt-3">';
 						  			if($_SESSION['user_type']!='student') {
 							 			if($row_homework["visibility"]==0)
-						  					echo '<a class="link-dark " style="text-decoration: none;" href="Homework.php?id='.$row_homework["id"].'"><i class="bi bi-book me-3"></i>'.$title.'<i class="bi bi-eye-slash ms-3"></i></a>';
+						  					echo '<a class="link-dark " style="text-decoration: none;" href="Homework.php?id='.$row_homework["id"].'"><i class="bi bi-house-door me-3"></i>'.$title.'<i class="bi bi-eye-slash ms-3"></i></a>';
 						  				else
 						  					echo '<a class="link-dark " style="text-decoration: none;" href="Homework.php?id='.$row_homework["id"].'"><i class="bi bi-house-door me-3"></i>'.$title.'</a>';
 						  			}

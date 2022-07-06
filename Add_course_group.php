@@ -5,7 +5,7 @@
 //1-edit course
 //2-delete
 //3-add session group_name and open Edit_course_Modal
-if($_GET['edit']==0)
+if($_GET['edit']==0)//new group
 {
 	$group_name="'".$_POST['group_name']."'";
 	$user_id=$_SESSION['user_id'];
@@ -27,7 +27,7 @@ if($_GET['edit']==0)
 	$link='location:'.$_SERVER['HTTP_REFERER'];
 	header("$link");
 }
-else if($_GET['edit']==1)
+else if($_GET['edit']==1)//edit course
 {
 	$group_name="'".$_SESSION['group_name']."'";
 	
@@ -71,7 +71,7 @@ else if($_GET['edit']==1)
 	$link='location:'.$_SERVER['HTTP_REFERER'];
 	header("$link");
 }
-else if($_GET['edit']==2)
+else if($_GET['edit']==2)//delete
 {
 	$group_name="'".$_SESSION['group_name']."'";
 	$sql="DELETE FROM course_group WHERE group_name LIKE $group_name";
@@ -79,13 +79,13 @@ else if($_GET['edit']==2)
 	$link='location:'.$_SERVER['HTTP_REFERER'];
 	header("$link");
 }
-else if($_GET['edit']==3)
+else if($_GET['edit']==3)//open Edit_course_Modal
 {
 	$_SESSION['group_name']=$_GET['group'];
 	$link='location:'.$_SERVER['HTTP_REFERER'].'#Edit_course_Modal';
     header("$link");
 }
-else
+else//security
 {
 	if($_SESSION['user_type']=="admin")
 		header("location:Search_courses.php");

@@ -12,7 +12,7 @@
 	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 	    <script src="assets\js\bootstrap.bundle.min.js"></script>
 	    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	    <title>Studlear</title>
+	    <title>Studlearn</title>
 	</head>
 	<body>
 		<!--Top bar-->
@@ -68,27 +68,28 @@
 	</body>
 </html>
 <script type="text/javascript">
+    (function () {
+
+        var forms = document.querySelectorAll('.needs-validation')
+        Array.prototype.slice.call(forms).forEach(function (form) {
+
+            form.addEventListener('submit', function (event)
+            {
+                if (!form.checkValidity())
+                {
+                    validateUser_type();
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+    })()
+</script>
+<script type="text/javascript">
 var password1=document.getElementById("password1");
 var password2=document.getElementById("password2");
 var user_type=document.getElementById("user_type");
-
-(function () {
-	
-  	var forms = document.querySelectorAll('.needs-validation') 
-  	Array.prototype.slice.call(forms).forEach(function (form) {
-			
-      	form.addEventListener('submit', function (event)
-      	{			
-        	if (!form.checkValidity())
-        	{	
-        		validateUser_type();
-          		event.preventDefault()
-          		event.stopPropagation()
-        	}
-        	form.classList.add('was-validated')
-      	}, false)
-    })
-})()
 
 function validatePassword(){
 	if(password1.value=="")

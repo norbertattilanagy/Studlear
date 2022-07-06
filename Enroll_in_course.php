@@ -1,14 +1,17 @@
 <?php include 'Connection.php'; ?>
 <?php include 'Page_security.php'; ?>
 <?php
-//0-enroll search course
+//0-open modal Enroll_in_course
 //1-enroll search course
-//2-enroll course
-//3-enroll course
-//4-delete course
-//5-delete course
+//2-open modal Add_user_in_course
+//3-enroll course by the teacher
+//4-remove user modal
+//5-remove user
+//6-set default search user
+//7-search
+//8-set default search courses
 
-if(!isset($_GET['enroll']))
+if(!isset($_GET['enroll']))//security
 {
 	if($_SESSION['user_type']=="admin")
 		header("location:Search_courses.php");
@@ -25,7 +28,7 @@ if($_GET["enroll"]==0)
 	$link='location:'.$_SERVER['HTTP_REFERER'].'#Enroll_in_course';
 	header("$link");
 }
-else if($_GET["enroll"]==1)
+else if($_GET["enroll"]==1)//enroll search course
 {
 	$password="'".$_POST['password']."'";
 	$course_id=$_SESSION["course_id"];
@@ -49,14 +52,14 @@ else if($_GET["enroll"]==1)
 	
     header("$link");
 }
-else if($_GET["enroll"]==2)
+else if($_GET["enroll"]==2)//open modal course
 {
 	$_SESSION['course_user']=$_GET['course_user'];
 
 	$link='location:'.$_SERVER['HTTP_REFERER'].'#Add_user_in_course';
     header("$link");
 }
-else if($_GET["enroll"]==3)
+else if($_GET["enroll"]==3)//enroll course by the teacher
 {
 	$course_user=$_SESSION['course_user'];
 	$course_id=$_SESSION['course_id'];
@@ -66,14 +69,14 @@ else if($_GET["enroll"]==3)
 	$link='location:'.$_SERVER['HTTP_REFERER'];
     header("$link");
 }
-else if($_GET["enroll"]==4)
+else if($_GET["enroll"]==4)//remove user modal
 {
 	$_SESSION['course_user']=$_GET['course_user'];
 
 	$link='location:'.$_SERVER['HTTP_REFERER'].'#Delete_user_from_course';
     header("$link");
 }
-else if($_GET["enroll"]==5)
+else if($_GET["enroll"]==5)//remove user
 {
 	$course_user=$_SESSION['course_user'];
 	$course_id=$_SESSION['course_id'];
@@ -83,14 +86,14 @@ else if($_GET["enroll"]==5)
 	$link='location:'.$_SERVER['HTTP_REFERER'];
     header("$link");
 }
-else if($_GET["enroll"]==6)
+else if($_GET["enroll"]==6)//set default search_users
 {
 	$_SESSION['s']=0;
 
 	$link='location:Search_users.php';
     header("$link");
 }
-else if($_GET["enroll"]==7)
+else if($_GET["enroll"]==7)//search
 {
 	$_SESSION['s']=1;
 	$_SESSION['search']=$_POST['search'];
@@ -98,14 +101,14 @@ else if($_GET["enroll"]==7)
 	$link='location:'.$_SERVER['HTTP_REFERER'];
 	header("$link");
 }
-else if($_GET["enroll"]==8)
+else if($_GET["enroll"]==8)//set default search courses
 {
 	$_SESSION['s']=0;
 
 	$link='location:Search_courses.php';
     header("$link");
 }
-else
+else//security
 {
     if($_SESSION['user_type']=="admin")
         header("location:Search_courses.php");

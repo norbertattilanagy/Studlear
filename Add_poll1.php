@@ -182,7 +182,7 @@ else if($_GET["edit"]==5)//answer poll
 	$link='location: Poll.php?id='.$_SESSION['poll'];
 	header("$link");
 }
-else
+else//security
 {
  	if($_SESSION['user_type']=="admin")
 		header("location:Search_courses.php");

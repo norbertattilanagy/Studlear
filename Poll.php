@@ -12,7 +12,7 @@
 	    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
 	    <script src="assets\js\bootstrap.bundle.min.js"></script>
 	    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-	    <title>Studlear</title>
+	    <title>Studlearn</title>
 	</head>
 	<body>
 		<!--Top bar-->
@@ -70,12 +70,22 @@
 					</div>
 					
 					<?php
-					$user_id=$_SESSION['user_id'];
-					$sql_option="SELECT * FROM answer_quiz_option WHERE user_id LIKE $user_id";
-					$results_option=mysqli_query($db,$sql_option);
-					$row_option=mysqli_fetch_array($results_option);
+                    $sql_option="SELECT * FROM quiz_option WHERE element LIKE 'poll' AND question_id LIKE $poll_id";
+                    $results_option=mysqli_query($db,$sql_option);
+                    $i=0;
+                    while($row_option=mysqli_fetch_array($results_option))
+                    {
+                        $user_id=$_SESSION['user_id'];
+                        $qo_id=$row_option['id'];
+                        $sql_opt="SELECT * FROM answer_quiz_option WHERE user_id LIKE $user_id AND quiz_option_id LIKE $qo_id";
+                        $results_opt=mysqli_query($db,$sql_opt);
+                        $row_opt=mysqli_fetch_array($results_opt);
+                        if(!empty($row_opt['id']))
+                            $i++;
+                    }
 
-					if(empty($row_option["id"]) && $_SESSION['user_type']=="student") { ?>
+
+					if($i==0 && $_SESSION['user_type']=="student") { ?>
 						<form action="Add_poll1.php?edit=5" method="post" enctype="multipart/form-data">
 							<div class="mt-3">
 								<?php
